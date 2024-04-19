@@ -1,0 +1,197 @@
+#!/bin/bash
+
+while true
+do
+
+# Logo
+
+curl -s https://raw.githubusercontent.com/111STAVR111/props/main/logo_1.txt | bash
+
+# Menu
+
+PS3='Select an action: '
+options=(
+"Install Node"
+"Create wallet"
+"Check node logs"
+"Synchronization via StateSync"
+"Synchronization via SnapShot"
+"UPDATE"
+"Delete Node"
+"Exit")
+select opt in "${options[@]}"
+do
+case $opt in
+
+"Install Node")
+echo "*********************"
+echo -e "\e[1m\e[35m		Lets's begin\e[0m"
+echo "*********************"
+echo -e "\e[1m\e[32m	Enter your Validator_Name:\e[0m"
+echo "_|-_|-_|-_|-_|-_|-_|"
+read Validator_Name
+echo "_|-_|-_|-_|-_|-_|-_|"
+echo export Validator_Name=${Validator_Name} >> $HOME/.bash_profile
+echo export CHAIN_ID="buenavista-1" >> $HOME/.bash_profile
+source ~/.bash_profile
+
+echo -e "\e[1m\e[32m1. Updating packages and dependencies--> \e[0m" && sleep 1
+#UPDATE APT
+sudo apt update && sudo apt upgrade -y
+sudo apt install curl tar wget clang pkg-config libssl-dev libleveldb-dev jq build-essential bsdmainutils git make ncdu htop screen unzip bc fail2ban htop -y
+
+echo -e "        \e[1m\e[32m2. Installing GO--> \e[0m" && sleep 1
+#INSTALL GO
+ver="1.21.4"
+wget "https://golang.org/dl/go$ver.linux-amd64.tar.gz"
+sudo rm -rf /usr/local/go
+sudo tar -C /usr/local -xzf "go$ver.linux-amd64.tar.gz"
+rm "go$ver.linux-amd64.tar.gz"
+echo "export PATH=$PATH:/usr/local/go/bin:$HOME/go/bin" >> $HOME/.bash_profile
+source $HOME/.bash_profile
+go version
+
+echo -e "              \e[1m\e[32m3. Downloading and building binaries--> \e[0m" && sleep 1
+#INSTALL
+cd $HOME && mkdir -p go/bin/
+wget https://github.com/warden-protocol/wardenprotocol/releases/download/v0.3.0/wardend_Linux_x86_64.zip
+unzip wardend_Linux_x86_64.zip
+rm -rf wardend_Linux_x86_64.zip
+chmod +x wardend
+mv wardend $HOME/go/bin/wardend
+
+wardend init $Validator_Name --chain-id $CHAIN_ID
+wardend config chain-id $CHAIN_ID
+
+wget -O $HOME/.warden/config/genesis.json "https://raw.githubusercontent.com/111STAVR111/props/main/Warden/genesis.json"
+wget -O $HOME/.warden/config/addrbook.json "https://raw.githubusercontent.com/111STAVR111/props/main/Warden/addrbook.json"
+
+echo -e "                     \e[1m\e[32m4. Node optimization and improvement--> \e[0m" && sleep 1
+
+sed -i.bak -e "s/^minimum-gas-prices *=.*/minimum-gas-prices = \"0.0025uward\"/;" ~/.warden/config/app.toml
+external_address=$(wget -qO- eth0.me) 
+sed -i.bak -e "s/^external_address *=.*/external_address = \"$external_address:26656\"/" $HOME/.warden/config/config.toml
+peers="b14f35c07c1b2e58c4a1c1727c89a5933739eeea@warden-testnet-peer.itrocket.net:18656,61446070887838944c455cb713a7770b41f35ac5@37.60.249.101:26656,0be8cf6de2a01a6dc7adb29a801722fe4d061455@65.109.115.100:27060,dc0122e37c203dec43306430a1f1879650653479@37.27.97.16:26656,6fb5cf2179ca9dd98ababd1c8d29878b2021c5c3@146.19.24.175:26856,8288657cb2ba075f600911685670517d18f54f3b@65.108.231.124:18656"
+sed -i.bak -e "s/^persistent_peers *=.*/persistent_peers = \"$peers\"/" $HOME/.warden/config/config.toml
+seeds=""
+sed -i.bak -e "s/^seeds =.*/seeds = \"$seeds\"/" $HOME/.warden/config/config.toml
+sed -i 's/max_num_inbound_peers =.*/max_num_inbound_peers = 50/g' $HOME/.warden/config/config.toml
+sed -i 's/max_num_outbound_peers =.*/max_num_outbound_peers = 50/g' $HOME/.warden/config/config.toml
+
+# pruning
+pruning="custom"
+pruning_keep_recent="1000"
+pruning_keep_every="0"
+pruning_interval="10"
+sed -i -e "s/^pruning *=.*/pruning = \"$pruning\"/" $HOME/.warden/config/app.toml
+sed -i -e "s/^pruning-keep-recent *=.*/pruning-keep-recent = \"$pruning_keep_recent\"/" $HOME/.warden/config/app.toml
+sed -i -e "s/^pruning-keep-every *=.*/pruning-keep-every = \"$pruning_keep_every\"/" $HOME/.warden/config/app.toml
+sed -i -e "s/^pruning-interval *=.*/pruning-interval = \"$pruning_interval\"/" $HOME/.warden/config/app.toml
+
+
+sudo tee /etc/systemd/system/wardend.service > /dev/null <<EOF
+[Unit]
+Description=wardend
+After=network-online.target
+
+[Service]
+User=$USER
+ExecStart=$(which wardend) start
+Restart=on-failure
+RestartSec=3
+LimitNOFILE=65535
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+
+# start service
+sudo systemctl daemon-reload
+sudo systemctl enable wardend
+sudo systemctl restart wardend
+
+echo '=============== SETUP FINISHED ==================='
+echo -e 'Congratulations:        \e[1m\e[32mSUCCESSFUL NODE INSTALLATION\e[0m'
+echo -e 'To check logs:        \e[1m\e[33mjournalctl -u wardend -f -o cat\e[0m'
+echo -e "To check sync status: \e[1m\e[35mcurl -s localhost:26657/status\e[0m"
+
+break
+;;
+"Create wallet")
+echo "_|-_|-_|-_|-_|-_|-_|"
+echo -e "      \e[1m\e[35m Your WalletName:\e[0m"
+echo "_|-_|-_|-_|-_|-_|-_|"
+read Wallet
+echo export Wallet=${Wallet} >> $HOME/.bash_profile
+source ~/.bash_profile
+wardend keys add $Wallet
+echo -e "      \e[1m\e[32m!!!!!!!!!SAVE!!!!!!!!!!!!!!!!SAVE YOUR MNEMONIC PHRASE!!!!!!!!!SAVE!!!!!!!!!!!!!!!!\e[0m'"
+
+break
+;;
+"Synchronization via StateSync")
+SNAP_RPC="https://warden.rpc.t.stavr.tech:443"
+sed -i.bak -e "s/^seeds *=.*/seeds = \"$SEEDS\"/; s/^persistent_peers *=.*/persistent_peers = \"$PEERS\"/" $HOME/.warden/config/config.toml
+LATEST_HEIGHT=$(curl -s $SNAP_RPC/block | jq -r .result.block.header.height) \
+&& BLOCK_HEIGHT=$((LATEST_HEIGHT - 1000)) \
+&& TRUST_HASH=$(curl -s "$SNAP_RPC/block?height=$BLOCK_HEIGHT" | jq -r .result.block_id.hash); \
+echo $LATEST_HEIGHT $BLOCK_HEIGHT $TRUST_HASH
+
+sed -i.bak -E "s|^(enable[[:space:]]+=[[:space:]]+).*$|\1true| ; \
+s|^(rpc_servers[[:space:]]+=[[:space:]]+).*$|\1\"$SNAP_RPC,$SNAP_RPC\"| ; \
+s|^(trust_height[[:space:]]+=[[:space:]]+).*$|\1$BLOCK_HEIGHT| ; \
+s|^(trust_hash[[:space:]]+=[[:space:]]+).*$|\1\"$TRUST_HASH\"|" $HOME/.warden/config/config.toml; \
+wardend tendermint unsafe-reset-all --home $HOME/.warden
+wget -O $HOME/.warden/config/addrbook.json "https://raw.githubusercontent.com/111STAVR111/props/main/Warden/addrbook.json"
+sudo systemctl restart wardend && journalctl -u wardend -f -o cat
+
+
+break
+;;
+"UPDATE")
+cd $HOME
+wget https://github.com/warden-protocol/wardenprotocol/releases/download/v0.3.0/wardend_Linux_x86_64.zip
+unzip wardend_Linux_x86_64.zip
+rm -rf wardend_Linux_x86_64.zip
+chmod +x wardend
+mv wardend $(which wardend)
+sudo systemctl restart wardend && sudo journalctl -u wardend -f -o cat
+
+break
+;;
+"Check node logs")
+sudo journalctl -u wardend -f -o cat
+
+break
+;;
+"Synchronization via SnapShot")
+cd $HOME
+apt install lz4
+sudo systemctl stop wardend
+cp $HOME/.warden/data/priv_validator_state.json $HOME/.warden/priv_validator_state.json.backup
+rm -rf $HOME/.warden/data
+curl -o - -L https://warden-t.snapshot.stavr.tech/warden-snap.tar.lz4 | lz4 -c -d - | tar -x -C $HOME/.warden --strip-components 2
+mv $HOME/.warden/priv_validator_state.json.backup $HOME/.warden/data/priv_validator_state.json
+wget -O $HOME/.warden/config/addrbook.json "https://raw.githubusercontent.com/111STAVR111/props/main/Warden/addrbook.json"
+sudo systemctl restart wardend && journalctl -u wardend -f -o cat
+
+break
+;;
+"Delete Node")
+sudo systemctl stop wardend
+sudo systemctl disable wardend
+rm /etc/systemd/system/wardend.service
+sudo systemctl daemon-reload
+cd $HOME
+rm -rf wardenprotocol
+rm -rf .wardend
+rm -rf $(which wardend)
+
+break
+;;
+"Exit")
+exit
+esac
+done
+done
