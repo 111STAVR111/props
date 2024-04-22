@@ -61,9 +61,8 @@ make install
 
 bandd init $Validator_Name --chain-id $CHAIN_ID
 
-wget -O $HOME/.band/config/genesis.json "https://raw.githubusercontent.com/obajay/nodes-Guides/main/Projects/BandProtocol/Testnet/genesis.json"
-wget -O $HOME/.band/config/addrbook.json "https://raw.githubusercontent.com/obajay/nodes-Guides/main/Projects/BandProtocol/Testnet/addrbook.json"
-
+curl https://config-t.noders.services/band/genesis.json -o ~/.band/config/genesis.json
+curl https://config-t.noders.services/band/addrbook.json -o ~/.band/config/addrbook.json
 
 echo -e "                     \e[1m\e[32m4. Node optimization and improvement--> \e[0m" && sleep 1
 
