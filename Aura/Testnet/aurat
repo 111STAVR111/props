@@ -32,7 +32,7 @@ echo "_|-_|-_|-_|-_|-_|-_|"
 read Validator_Name
 echo "_|-_|-_|-_|-_|-_|-_|"
 echo export Validator_Name=${Validator_Name} >> $HOME/.bash_profile
-echo export CHAIN_ID="euphoria-2" >> $HOME/.bash_profile
+echo export CHAIN_ID="aura_6321-3" >> $HOME/.bash_profile
 source ~/.bash_profile
 
 echo -e "\e[1m\e[32m1. Updating packages and dependencies--> \e[0m" && sleep 1
@@ -55,14 +55,14 @@ echo -e "              \e[1m\e[32m3. Downloading and building binaries--> \e[0m"
 #INSTALL
 cd $HOME && mkdir -p go/bin/
 git clone https://github.com/aura-nw/aura && cd aura
-git checkout v0.7.3-euphoria
+git checkout v0.8.0-euphoria
 make install
 
 aurad init $Validator_Name --chain-id $CHAIN_ID
 
-wget https://github.com/aura-nw/testnets/raw/main/euphoria-2/euphoria-2-genesis.tar.gz
-tar -xzvf euphoria-2-genesis.tar.gz
-mv euphoria-2-genesis.json $HOME/.aura/config/genesis.json
+wget https://aura-network.s3.ap-southeast-1.amazonaws.com/aura_6321-3-genesis.tar.gz
+tar -xzvf aura_6321-3-genesis.tar.gz
+mv aura_6321-3-genesis.json $HOME/.aura/config/genesis.json
 wget -O $HOME/.aura/config/addrbook.json "https://raw.githubusercontent.com/111STAVR111/props/main/Aura/Testnet/addrbook.json"
 
 
@@ -73,7 +73,7 @@ external_address=$(wget -qO- eth0.me)
 sed -i.bak -e "s/^external_address *=.*/external_address = \"$external_address:26656\"/" $HOME/.aura/config/config.toml
 peers=""
 sed -i.bak -e "s/^persistent_peers *=.*/persistent_peers = \"$peers\"/" $HOME/.aura/config/config.toml
-seeds=""
+seeds="705e3c2b2b554586976ed88bb27f68e4c4176a33@52.76.203.126:26656"
 sed -i.bak -e "s/^seeds =.*/seeds = \"$seeds\"/" $HOME/.aura/config/config.toml
 sed -i 's/max_num_inbound_peers =.*/max_num_inbound_peers = 100/g' $HOME/.aura/config/config.toml
 sed -i 's/max_num_outbound_peers =.*/max_num_outbound_peers = 100/g' $HOME/.aura/config/config.toml
@@ -140,8 +140,8 @@ break
 ;;
 "UPDATE")
 cd $HOME/aura
-git fetch --all
-git checkout v0.7.2-euphoria
+git pull
+git checkout v0.8.0-euphoria
 make install
 sudo systemctl restart aurad && journalctl -u aurad -f -o cat
 
