@@ -32,7 +32,7 @@ echo "_|-_|-_|-_|-_|-_|-_|"
 read Validator_Name
 echo "_|-_|-_|-_|-_|-_|-_|"
 echo export Validator_Name=${Validator_Name} >> $HOME/.bash_profile
-echo export CHAIN_ID="althea_417834-4" >> $HOME/.bash_profile
+echo export CHAIN_ID="althea_258432-1" >> $HOME/.bash_profile
 source ~/.bash_profile
 
 echo -e "\e[1m\e[32m1. Updating packages and dependencies--> \e[0m" && sleep 1
@@ -54,14 +54,14 @@ go version
 echo -e "              \e[1m\e[32m3. Downloading and building binaries--> \e[0m" && sleep 1
 #INSTALL
 cd $HOME && mkdir -p go/bin/
-wget https://github.com/althea-net/althea-L1/releases/download/v1.0.0-rc1/althea-linux-amd64
+wget https://github.com/althea-net/althea-L1/releases/download/v1.3.0/althea-linux-amd64
 chmod +x althea-linux-amd64
 sudo mv althea-linux-amd64 $HOME/go/bin/althea
 
 althea init $Validator_Name --chain-id $CHAIN_ID
 althea config chain-id $CHAIN_ID
 
-wget -O $HOME/.althea/config/genesis.json "https://raw.githubusercontent.com/111STAVR111/props/main/Althea/genesis.json"
+wget -O $HOME/.althea/config/genesis.json "https://raw.githubusercontent.com/AltheaFoundation/althea-L1-docs/main/althea-l1-mainnet-genesis.json"
 wget -O $HOME/.althea/config/addrbook.json "https://raw.githubusercontent.com/111STAVR111/props/main/Althea/addrbook.json"
 
 echo -e "                     \e[1m\e[32m4. Node optimization and improvement--> \e[0m" && sleep 1
@@ -69,7 +69,7 @@ echo -e "                     \e[1m\e[32m4. Node optimization and improvement-->
 sed -i.bak -e "s/^minimum-gas-prices *=.*/minimum-gas-prices = \"0.0aalthea\"/;" ~/.althea/config/app.toml
 external_address=$(wget -qO- eth0.me) 
 sed -i.bak -e "s/^external_address *=.*/external_address = \"$external_address:26656\"/" $HOME/.althea/config/config.toml
-peers="ab9a9e6ea747839652dfe4480e66a5eb78a385e8@51.81.167.60:17200,cbdcc6edc9b2cbd652fe94ef774e1f483095a8a3@66.172.36.142:14656"
+peers="4d9c73a9e541453b56add8fadf0839fd1442d979@15.235.115.155:17200,a0eca501485cc74e0568973ef502d05023f6500d@158.247.226.255:17200,ab9a9e6ea747839652dfe4480e66a5eb78a385e8@51.81.167.60:17200,46ad21a616527181ea3d992339268a5a25c771fa@95.216.38.96:14656"
 sed -i.bak -e "s/^persistent_peers *=.*/persistent_peers = \"$peers\"/" $HOME/.althea/config/config.toml
 seeds=""
 sed -i.bak -e "s/^seeds =.*/seeds = \"$seeds\"/" $HOME/.althea/config/config.toml
