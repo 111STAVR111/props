@@ -64,7 +64,7 @@ carbond init $Validator_Name --chain-id $CHAIN_ID
 
 wget -O genesis.json https://snapshots.polkachu.com/genesis/carbon/genesis.json --inet4-only
 mv genesis.json ~/.carbon/config
-wget -O $HOME/.carbon/config/genesis.json "https://raw.githubusercontent.com/111STAVR111/props/main/Carbon/addrbook.json"
+wget -O $HOME/.carbon/config/addrbook.json "https://raw.githubusercontent.com/111STAVR111/props/main/Carbon/addrbook.json"
 
 echo -e "                     \e[1m\e[32m4. Node optimization and improvement--> \e[0m" && sleep 1
 
@@ -145,7 +145,7 @@ s|^(trust_height[[:space:]]+=[[:space:]]+).*$|\1$BLOCK_HEIGHT| ; \
 s|^(trust_hash[[:space:]]+=[[:space:]]+).*$|\1\"$TRUST_HASH\"| ; \
 s|^(seeds[[:space:]]+=[[:space:]]+).*$|\1\"\"|" $HOME/.carbon/config/config.toml
 carbond tendermint unsafe-reset-all
-wget -O $HOME/.carbon/config/genesis.json "https://raw.githubusercontent.com/111STAVR111/props/main/Carbon/addrbook.json"
+wget -O $HOME/.carbon/config/addrbook.json "https://raw.githubusercontent.com/111STAVR111/props/main/Carbon/addrbook.json"
 sudo systemctl restart carbond && sudo journalctl -u carbond -f -o cat
 
 break
@@ -169,7 +169,7 @@ cp $HOME/.carbon/data/priv_validator_state.json $HOME/.carbon/priv_validator_sta
 rm -rf $HOME/.carbon/data
 curl -o - -L https://carbon.snapshot.stavr.tech/carbon-snap.tar.lz4 | lz4 -c -d - | tar -x -C $HOME/.carbon --strip-components 2
 mv $HOME/.carbon/priv_validator_state.json.backup $HOME/.carbon/data/priv_validator_state.json
-wget -O $HOME/.carbon/config/genesis.json "https://raw.githubusercontent.com/111STAVR111/props/main/Carbon/addrbook.json"
+wget -O $HOME/.carbon/config/addrbook.json "https://raw.githubusercontent.com/111STAVR111/props/main/Carbon/addrbook.json"
 sudo systemctl restart carbond && journalctl -u carbond -f -o cat
 
 break
