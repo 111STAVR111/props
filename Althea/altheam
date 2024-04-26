@@ -54,9 +54,10 @@ go version
 echo -e "              \e[1m\e[32m3. Downloading and building binaries--> \e[0m" && sleep 1
 #INSTALL
 cd $HOME && mkdir -p go/bin/
-wget https://github.com/althea-net/althea-L1/releases/download/v1.3.0/althea-linux-amd64
-chmod +x althea-linux-amd64
-sudo mv althea-linux-amd64 $HOME/go/bin/althea
+git clone https://github.com/AltheaFoundation/althea-L1/
+cd $HOME/althea-L1 && git pull
+git checkout v1.4.0
+make install
 
 althea init $Validator_Name --chain-id $CHAIN_ID
 althea config chain-id $CHAIN_ID
@@ -151,8 +152,11 @@ systemctl restart althea && journalctl -u althea -f -o cat
 break
 ;;
 "UPDATE")
-echo -e "      \e[1m\e[32m SOOOON\e[0m"
-althea version
+git clone https://github.com/AltheaFoundation/althea-L1/
+cd $HOME/althea-L1 && git pull
+git checkout v1.4.0
+make install
+sudo systemctl restart althea && journalctl -fu althea -o cat
 
 break
 ;;
