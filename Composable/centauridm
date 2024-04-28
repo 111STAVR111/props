@@ -5,7 +5,7 @@ do
 
 # Logo
 
-curl -s https://raw.githubusercontent.com/obajay/nodes-Guides/main/logo_1 | bash
+curl -s https://raw.githubusercontent.com/111STAVR111/props/main/logo_1.txt | bash
 
 # Menu
 
@@ -42,7 +42,7 @@ sudo apt install curl tar wget clang pkg-config libssl-dev libleveldb-dev jq bui
 
 echo -e "        \e[1m\e[32m2. Installing GO--> \e[0m" && sleep 1
 #INSTALL GO
-ver="1.20"
+ver="1.21.6"
 wget "https://golang.org/dl/go$ver.linux-amd64.tar.gz"
 sudo rm -rf /usr/local/go
 sudo tar -C /usr/local -xzf "go$ver.linux-amd64.tar.gz"
@@ -53,16 +53,16 @@ go version
 
 echo -e "              \e[1m\e[32m3. Downloading and building binaries--> \e[0m" && sleep 1
 #INSTALL
-cd $HOME
+cd $HOME && mkdir -p go/bin/
 git clone https://github.com/notional-labs/composable-centauri
 cd composable-centauri
-git checkout v3.0.2
+git checkout v6.5.4
 make install
 
 centaurid init $Validator_Name --chain-id $CHAIN_ID
 
-wget -O ~/.banksy/config/genesis.json https://raw.githubusercontent.com/notional-labs/composable-networks/main/mainnet/genesis.json
-wget -O $HOME/.banksy/config/addrbook.json "https://raw.githubusercontent.com/obajay/nodes-Guides/main/Composable/addrbook.json"
+wget -O ~/.banksy/config/genesis.json "https://raw.githubusercontent.com/111STAVR111/props/main/Composable/genesis.json"
+wget -O $HOME/.banksy/config/addrbook.json "https://raw.githubusercontent.com/111STAVR111/props/main/Composable/addrbook.json"
 
 
 echo -e "                     \e[1m\e[32m4. Node optimization and improvement--> \e[0m" && sleep 1
@@ -70,9 +70,9 @@ echo -e "                     \e[1m\e[32m4. Node optimization and improvement-->
 sed -i.bak -e "s/^minimum-gas-prices *=.*/minimum-gas-prices = \"0ppica\"/;" ~/.banksy/config/app.toml
 external_address=$(wget -qO- eth0.me) 
 sed -i.bak -e "s/^external_address *=.*/external_address = \"$external_address:26656\"/" $HOME/.banksy/config/config.toml
-peers="4cb008db9c8ae2eb5c751006b977d6910e990c5d@65.108.71.163:2630,63559b939442512ed82d2ded46d02ab1021ea29a@95.214.55.138:53656"
+peers=""
 sed -i.bak -e "s/^persistent_peers *=.*/persistent_peers = \"$peers\"/" $HOME/.banksy/config/config.toml
-seeds="c7f52f81ee1b1f7107fc78ca2de476c730e00be9@65.109.80.150:2635"
+seeds=""
 sed -i.bak -e "s/^seeds =.*/seeds = \"$seeds\"/" $HOME/.banksy/config/config.toml
 sed -i 's/max_num_inbound_peers =.*/max_num_inbound_peers = 50/g' $HOME/.banksy/config/config.toml
 sed -i 's/max_num_outbound_peers =.*/max_num_outbound_peers = 50/g' $HOME/.banksy/config/config.toml
@@ -132,14 +132,31 @@ echo -e "      \e[1m\e[32m!!!!!!!!!SAVE!!!!!!!!!!!!!!!!SAVE YOUR MNEMONIC PHRASE
 break
 ;;
 "Synchronization via StateSync")
-echo -e "      \e[1m\e[32m SOOOON\e[0m"
+SNAP_RPC=https://composable.rpc.m.stavr.tech:443
+peers="aa6398f9644e98fa3d04f7dbdd7740c995eb0530@composable.seed.stavr.tech:20306"
+sed -i.bak -e "s/^persistent_peers *=.*/persistent_peers = \"$peers\"/" $HOME/.banksy/config/config.toml
+LATEST_HEIGHT=$(curl -s $SNAP_RPC/block | jq -r .result.block.header.height); \
+BLOCK_HEIGHT=$((LATEST_HEIGHT - 1000)); \
+TRUST_HASH=$(curl -s "$SNAP_RPC/block?height=$BLOCK_HEIGHT" | jq -r .result.block_id.hash)
+
+echo $LATEST_HEIGHT $BLOCK_HEIGHT $TRUST_HASH
+
+sed -i.bak -E "s|^(enable[[:space:]]+=[[:space:]]+).*$|\1true| ; \
+s|^(rpc_servers[[:space:]]+=[[:space:]]+).*$|\1\"$SNAP_RPC,$SNAP_RPC\"| ; \
+s|^(trust_height[[:space:]]+=[[:space:]]+).*$|\1$BLOCK_HEIGHT| ; \
+s|^(trust_hash[[:space:]]+=[[:space:]]+).*$|\1\"$TRUST_HASH\"| ; \
+s|^(seeds[[:space:]]+=[[:space:]]+).*$|\1\"\"|" $HOME/.banksy/config/config.toml
+centaurid tendermint unsafe-reset-all --home /root/.banksy
+wget -O $HOME/.banksy/config/addrbook.json "https://raw.githubusercontent.com/111STAVR111/props/main/Composable/addrbook.json"
+curl -o - -L https://composable.wasm.stavr.tech/wasm-composable.tar.lz4 | lz4 -c -d - | tar -x -C $HOME/.banksy --strip-components 2
+systemctl restart centaurid && journalctl -fu centaurid -o cat
 
 break
 ;;
 "UPDATE")
 cd $HOME/composable-centauri
 git pull
-git checkout v3.0.2
+git checkout v6.5.4
 make install
 sudo systemctl restart centaurid && sudo journalctl -u centaurid -f -o cat
 
@@ -151,7 +168,16 @@ sudo journalctl -u centaurid -f -o cat
 break
 ;;
 "Synchronization via SnapShot")
-echo -e "      \e[1m\e[32m SOOOON\e[0m"
+cd $HOME
+apt install lz4
+sudo systemctl stop centaurid
+cp $HOME/.banksy/data/priv_validator_state.json $HOME/.banksy/priv_validator_state.json.backup
+rm -rf $HOME/.banksy/data
+curl -o - -L https://composable.snapshot.stavr.tech/centauri-snap.tar.lz4 | lz4 -c -d - | tar -x -C $HOME/.banksy --strip-components 2
+curl -o - -L https://composable.wasm.stavr.tech/wasm-composable.tar.lz4 | lz4 -c -d - | tar -x -C $HOME/.banksy --strip-components 2
+wget -O $HOME/.banksy/config/addrbook.json "https://raw.githubusercontent.com/111STAVR111/props/main/Composable/addrbook.json"
+wget -O $HOME/.banksy/config/addrbook.json "https://raw.githubusercontent.com/obajay/nodes-Guides/main/Projects/Composable/addrbook.json"
+sudo systemctl restart centaurid && journalctl -fu centaurid -o cat
 
 break
 ;;
