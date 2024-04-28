@@ -5,7 +5,7 @@ do
 
 # Logo
 
-curl -s https://raw.githubusercontent.com/obajay/nodes-Guides/main/logo_1 | bash
+curl -s https://raw.githubusercontent.com/111STAVR111/props/main/logo_1.txt | bash
 
 # Menu
 
