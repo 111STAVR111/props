@@ -32,7 +32,7 @@ echo "_|-_|-_|-_|-_|-_|-_|"
 read Validator_Name
 echo "_|-_|-_|-_|-_|-_|-_|"
 echo export Validator_Name=${Validator_Name} >> $HOME/.bash_profile
-echo export CHAIN_ID="banksy-testnet-4" >> $HOME/.bash_profile
+echo export CHAIN_ID="banksy-testnet-5" >> $HOME/.bash_profile
 source ~/.bash_profile
 
 echo -e "\e[1m\e[32m1. Updating packages and dependencies--> \e[0m" && sleep 1
@@ -42,7 +42,7 @@ sudo apt install curl tar wget clang pkg-config libssl-dev libleveldb-dev jq bui
 
 echo -e "        \e[1m\e[32m2. Installing GO--> \e[0m" && sleep 1
 #INSTALL GO
-ver="1.20.5"
+ver="1.21.6"
 wget "https://golang.org/dl/go$ver.linux-amd64.tar.gz"
 sudo rm -rf /usr/local/go
 sudo tar -C /usr/local -xzf "go$ver.linux-amd64.tar.gz"
@@ -53,18 +53,16 @@ go version
 
 echo -e "              \e[1m\e[32m3. Downloading and building binaries--> \e[0m" && sleep 1
 #INSTALL
-cd $HOME
-git clone https://github.com/notional-labs/composable-centauri
-cd composable-centauri
-git checkout v6.2.3-testnet
-make build
-cd bin
-mv layerd $HOME/go/bin/layerd
+cd $HOME && mkdir -p go/bin/
+git clone https://github.com/ComposableFi/composable-cosmos
+cd $HOME/composable-cosmos
+git checkout v6.6.1
+make install
 
-layerd init $Validator_Name --chain-id $CHAIN_ID
+picad init $Validator_Name --chain-id $CHAIN_ID
 
-wget https://raw.githubusercontent.com/notional-labs/composable-networks/main/banksy-testnet-4/genesis.json -O $HOME/.banksy/config/genesis.json
-wget -O $HOME/.banksy/config/addrbook.json "https://raw.githubusercontent.com/obajay/nodes-Guides/main/Projects/Composable/Testnet-4/addrbook.json"
+wget "https://raw.githubusercontent.com/111STAVR111/props/main/Composable/Testnet/genesis.json" -O $HOME/.banksy/config/genesis.json
+wget -O $HOME/.banksy/config/addrbook.json "https://raw.githubusercontent.com/111STAVR111/props/main/Composable/Testnet/addrbook.json"
 
 
 echo -e "                     \e[1m\e[32m4. Node optimization and improvement--> \e[0m" && sleep 1
@@ -74,7 +72,7 @@ external_address=$(wget -qO- eth0.me)
 sed -i.bak -e "s/^external_address *=.*/external_address = \"$external_address:26656\"/" $HOME/.banksy/config/config.toml
 peers=""
 sed -i.bak -e "s/^persistent_peers *=.*/persistent_peers = \"$peers\"/" $HOME/.banksy/config/config.toml
-seeds="a89d3d9fc0465615aa1100dcf53172814aa2b8cf@168.119.91.22:2260"
+seeds=""
 sed -i.bak -e "s/^seeds =.*/seeds = \"$seeds\"/" $HOME/.banksy/config/config.toml
 sed -i 's/max_num_inbound_peers =.*/max_num_inbound_peers = 50/g' $HOME/.banksy/config/config.toml
 sed -i 's/max_num_outbound_peers =.*/max_num_outbound_peers = 50/g' $HOME/.banksy/config/config.toml
@@ -91,14 +89,14 @@ sed -i -e "s/^pruning-keep-every *=.*/pruning-keep-every = \"$pruning_keep_every
 sed -i -e "s/^pruning-interval *=.*/pruning-interval = \"$pruning_interval\"/" $HOME/.banksy/config/app.toml
 
 
-tee /etc/systemd/system/layerd.service > /dev/null <<EOF
+sudo tee /etc/systemd/system/picad.service > /dev/null <<EOF
 [Unit]
-Description=layerd
+Description=picad
 After=network-online.target
 
 [Service]
 User=$USER
-ExecStart=$(which layerd) start
+ExecStart=$(which picad) start
 Restart=on-failure
 RestartSec=3
 LimitNOFILE=65535
@@ -110,12 +108,12 @@ EOF
 
 # start service
 sudo systemctl daemon-reload
-sudo systemctl enable layerd
-sudo systemctl restart layerd
+sudo systemctl enable picad
+sudo systemctl restart picad
 
 echo '=============== SETUP FINISHED ==================='
 echo -e 'Congratulations:        \e[1m\e[32mSUCCESSFUL NODE INSTALLATION\e[0m'
-echo -e 'To check logs:        \e[1m\e[33mjournalctl -u layerd -f -o cat\e[0m'
+echo -e 'To check logs:        \e[1m\e[33mjournalctl -u picad -f -o cat\e[0m'
 echo -e "To check sync status: \e[1m\e[35mcurl -s localhost:26657/status\e[0m"
 
 break
@@ -127,7 +125,7 @@ echo "_|-_|-_|-_|-_|-_|-_|"
 read Wallet
 echo export Wallet=${Wallet} >> $HOME/.bash_profile
 source ~/.bash_profile
-layerd keys add $Wallet
+picad keys add $Wallet
 echo -e "      \e[1m\e[32m!!!!!!!!!SAVE!!!!!!!!!!!!!!!!SAVE YOUR MNEMONIC PHRASE!!!!!!!!!SAVE!!!!!!!!!!!!!!!!\e[0m'"
 
 break
@@ -140,29 +138,38 @@ break
 ;;
 "UPDATE")
 echo -e "      \e[1m\e[32m SOOOON\e[0m"
-layerd version
+picad version
 
 break
 ;;
 "Check node logs")
-sudo journalctl -u layerd -f -o cat
+sudo journalctl -u picad -f -o cat
 
 break
 ;;
 "Synchronization via SnapShot")
-echo -e "      \e[1m\e[32m SOOOON\e[0m"
+cd $HOME
+apt install lz4
+sudo systemctl stop picad
+cp $HOME/.banksy/data/priv_validator_state.json $HOME/.banksy/priv_validator_state.json.backup
+rm -rf $HOME/.banksy/data
+curl -o - -L https://composable-t4.snapshot.stavr.tech/composable/composable-snap.tar.lz4 | lz4 -c -d - | tar -x -C $HOME/.banksy --strip-components 2
+curl -o - -L https://composable.wasmt4.stavr.tech/wasm-composable.tar.lz4 | lz4 -c -d - | tar -x -C $HOME/.banksy --strip-components 2
+mv $HOME/.banksy/priv_validator_state.json.backup $HOME/.banksy/data/priv_validator_state.json
+wget -O $HOME/.banksy/config/addrbook.json "https://raw.githubusercontent.com/111STAVR111/props/main/Composable/Testnet/addrbook.json"
+sudo systemctl restart picad && journalctl -fu picad -o cat
 
 break
 ;;
 "Delete Node")
-sudo systemctl stop layerd
-sudo systemctl disable layerd
-rm /etc/systemd/system/layerd.service
+sudo systemctl stop picad
+sudo systemctl disable picad
+rm /etc/systemd/system/picad.service
 sudo systemctl daemon-reload
 cd $HOME
-rm -rf composable-centauri
+rm -rf composable-cosmos
 rm -rf .banksy
-rm -rf $(which layerd)
+rm -rf $(which picad)
 
 break
 ;;
