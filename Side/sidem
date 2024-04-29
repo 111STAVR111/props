@@ -145,6 +145,7 @@ s|^(trust_hash[[:space:]]+=[[:space:]]+).*$|\1\"$TRUST_HASH\"| ; \
 s|^(seeds[[:space:]]+=[[:space:]]+).*$|\1\"\"|" $HOME/.side/config/config.toml
 sided tendermint unsafe-reset-all --home /root/.side
 wget -O $HOME/.side/config/addrbook.json "https://raw.githubusercontent.com/111STAVR111/props/main/Side/addrbook.json"
+curl -o - -L https://side-t.wasm.stavr.tech/wasm-side.tar.lz4 | lz4 -c -d - | tar -x -C $HOME/.side --strip-components 2
 systemctl restart sided && journalctl -u sided -f -o cat
 
 break
@@ -167,6 +168,7 @@ sudo systemctl stop sided
 cp $HOME/.side/data/priv_validator_state.json $HOME/.side/priv_validator_state.json.backup
 rm -rf $HOME/.side/data
 curl -o - -L https://side-t.snapshot.stavr.tech/side-snap.tar.lz4 | lz4 -c -d - | tar -x -C $HOME/.side --strip-components 2
+curl -o - -L https://side-t.wasm.stavr.tech/wasm-side.tar.lz4 | lz4 -c -d - | tar -x -C $HOME/.side --strip-components 2
 mv $HOME/.side/priv_validator_state.json.backup $HOME/.side/data/priv_validator_state.json
 wget -O $HOME/.side/config/addrbook.json "https://raw.githubusercontent.com/111STAVR111/props/main/Side/addrbook.json"
 sudo systemctl restart sided && journalctl -u sided -f -o cat
