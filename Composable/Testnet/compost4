@@ -56,7 +56,7 @@ echo -e "              \e[1m\e[32m3. Downloading and building binaries--> \e[0m"
 cd $HOME && mkdir -p go/bin/
 git clone https://github.com/ComposableFi/composable-cosmos
 cd $HOME/composable-cosmos
-git checkout v6.6.2
+git checkout v6.6.3
 make install
 
 picad init $Validator_Name --chain-id $CHAIN_ID
@@ -139,7 +139,7 @@ break
 "UPDATE")
 cd $HOME/composable-cosmos
 git pull
-git checkout v6.6.2
+git checkout v6.6.3
 make install
 sudo systemctl restart picad && sudo journalctl -fu picad -o cat
 
