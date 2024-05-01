@@ -128,7 +128,15 @@ echo -e "      \e[1m\e[32m!!!!!!!!!SAVE!!!!!!!!!!!!!!!!SAVE YOUR MNEMONIC PHRASE
 break
 ;;
 "Synchronization via SnapShot")
-echo -e "      \e[1m\e[32m SOOOON\e[0m"
+cd $HOME
+sudo systemctl stop sourced
+cp $HOME/.source/data/priv_validator_state.json $HOME/.source/priv_validator_state.json.backup
+rm -rf $HOME/.source/data
+curl -o - -L https://source-t.snapshot.stavr.tech/source-snap.tar.lz4 | lz4 -c -d - | tar -x -C $HOME/.source --strip-components 2
+curl -o - -L https://source-t.wasm.stavr.tech/wasm-snap.tar.lz4 | lz4 -c -d - | tar -x -C $HOME/.source/data --strip-components 3
+mv $HOME/.source/priv_validator_state.json.backup $HOME/.source/data/priv_validator_state.json
+wget -O $HOME/.source/config/addrbook.json "https://raw.githubusercontent.com/111STAVR111/props/main/Source/addrbook.json"
+sudo systemctl restart sourced && journalctl -u sourced -f -o cat
 
 break
 ;;
