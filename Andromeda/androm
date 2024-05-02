@@ -56,9 +56,8 @@ echo -e "              \e[1m\e[32m3. Downloading and building binaries--> \e[0m"
 cd $HOME && mkdir -p go/bin/
 git clone https://github.com/andromedaprotocol/andromedad.git
 cd $HOME/andromedad
-wget https://github.com/andromedaprotocol/andromedad/releases/download/andromeda-1-v0.1.1/andromedad
-chmod +x andromedad
-mv andromedad $HOME/go/bin/andromedad
+git checkout v0.1.1-patch
+make install
 
 andromedad init $Validator_Name --chain-id $CHAIN_ID
 
@@ -155,9 +154,9 @@ break
 ;;
 "UPDATE")
 cd $HOME/andromedad
-wget https://github.com/andromedaprotocol/andromedad/releases/download/andromeda-1-v0.1.1/andromedad
-chmod +x andromedad
-mv andromedad $(which andromedad)
+git pull
+git checkout v0.1.1-patch
+make install
 sudo systemctl restart andromedad && sudo journalctl -fu andromedad -o cat
 
 break
