@@ -5,7 +5,7 @@ do
 
 # Logo
 
-curl -s https://raw.githubusercontent.com/obajay/nodes-Guides/main/logo_1 | bash
+curl -s https://raw.githubusercontent.com/111STAVR111/props/main/logo_1.txt | bash
 
 # Menu
 
@@ -42,27 +42,26 @@ sudo apt install curl tar wget clang pkg-config libssl-dev libleveldb-dev jq bui
 
 echo -e "        \e[1m\e[32m2. Installing GO--> \e[0m" && sleep 1
 #INSTALL GO
-ver="1.19" && \
-wget "https://golang.org/dl/go$ver.linux-amd64.tar.gz" && \
-sudo rm -rf /usr/local/go && \
-sudo tar -C /usr/local -xzf "go$ver.linux-amd64.tar.gz" && \
-rm "go$ver.linux-amd64.tar.gz" && \
-echo "export PATH=$PATH:/usr/local/go/bin:$HOME/go/bin" >> $HOME/.bash_profile && \
-source $HOME/.bash_profile && \
+ver="1.21.6"
+wget "https://golang.org/dl/go$ver.linux-amd64.tar.gz"
+sudo rm -rf /usr/local/go
+sudo tar -C /usr/local -xzf "go$ver.linux-amd64.tar.gz"
+rm "go$ver.linux-amd64.tar.gz"
+echo "export PATH=$PATH:/usr/local/go/bin:$HOME/go/bin" >> $HOME/.bash_profile
+source $HOME/.bash_profile
 go version
 
 echo -e "              \e[1m\e[32m3. Downloading and building binaries--> \e[0m" && sleep 1
 #INSTALL
-cd $HOME
-git clone https://github.com/JackalLabs/canine-chain
-cd canine-chain
-git checkout v1.2.0-alpha.11
+cd $HOME && mkdir $HOME/go/bin/
+git clone https://github.com/JackalLabs/canine-chain && cd canine-chain
+git checkout v3.2.2
 make install
 
 canined init $Validator_Name --chain-id $CHAIN_ID
 
-wget -O $HOME/.canine/config/genesis.json "https://raw.githubusercontent.com/JackalLabs/jackal-chain-assets/main/testnet/genesis.json"
-wget -O $HOME/.canine/config/addrbook.json "https://raw.githubusercontent.com/obajay/nodes-Guides/main/Jakal/Jackal-Testnet/addrbook.json"
+curl -s  "https://raw.githubusercontent.com/111STAVR111/props/main/Jackal/Testnet/genesis.json" > ~/.canine/config/genesis.json
+wget -O $HOME/.canine/config/addrbook.json "https://raw.githubusercontent.com/111STAVR111/props/main/Jackal/Testnet/addrbook.json"
 
 
 echo -e "                     \e[1m\e[32m4. Node optimization and improvement--> \e[0m" && sleep 1
@@ -71,30 +70,28 @@ sed -i.bak -e "s/^minimum-gas-prices *=.*/minimum-gas-prices = \"0.0ujkl\"/;" ~/
 sed -i -e "s/^filter_peers *=.*/filter_peers = \"true\"/" $HOME/.canine/config/config.toml
 external_address=$(wget -qO- eth0.me) 
 sed -i.bak -e "s/^external_address *=.*/external_address = \"$external_address:26656\"/" $HOME/.canine/config/config.toml
-peers="5eedbfbe64b942f4ab54db3842acf3bfab034c24@161.97.74.88:46656"
+peers=""
 sed -i.bak -e "s/^persistent_peers *=.*/persistent_peers = \"$peers\"/" $HOME/.canine/config/config.toml
 seeds=""
 sed -i.bak -e "s/^seeds =.*/seeds = \"$seeds\"/" $HOME/.canine/config/config.toml
-sed -i 's/max_num_inbound_peers =.*/max_num_inbound_peers = 100/g' $HOME/.canine/config/config.toml
-sed -i 's/max_num_outbound_peers =.*/max_num_outbound_peers = 100/g' $HOME/.canine/config/config.toml
+sed -i 's/max_num_inbound_peers =.*/max_num_inbound_peers = 50/g' $HOME/.canine/config/config.toml
+sed -i 's/max_num_outbound_peers =.*/max_num_outbound_peers = 50/g' $HOME/.canine/config/config.toml
 
 
-# pruning and indexer
+# pruning
 pruning="custom"
-pruning_keep_recent="100"
+pruning_keep_recent="1000"
 pruning_keep_every="0"
 pruning_interval="10"
 sed -i -e "s/^pruning *=.*/pruning = \"$pruning\"/" $HOME/.canine/config/app.toml
 sed -i -e "s/^pruning-keep-recent *=.*/pruning-keep-recent = \"$pruning_keep_recent\"/" $HOME/.canine/config/app.toml
 sed -i -e "s/^pruning-keep-every *=.*/pruning-keep-every = \"$pruning_keep_every\"/" $HOME/.canine/config/app.toml
 sed -i -e "s/^pruning-interval *=.*/pruning-interval = \"$pruning_interval\"/" $HOME/.canine/config/app.toml
-indexer="null" && \
-sed -i -e "s/^indexer *=.*/indexer = \"$indexer\"/" $HOME/.canine/config/config.toml
 
 
 sudo tee /etc/systemd/system/canined.service > /dev/null <<EOF
 [Unit]
-Description=canined
+Description=canined Testnet
 After=network-online.target
 
 [Service]
@@ -134,7 +131,23 @@ echo -e "      \e[1m\e[32m!!!!!!!!!SAVE!!!!!!!!!!!!!!!!SAVE YOUR MNEMONIC PHRASE
 break
 ;;
 "Synchronization via StateSync")
-echo -e "      \e[1m\e[32m SOOOON\e[0m"
+SNAP_RPC=https://jkl.rpc.t.stavr.tech:443
+peers="80613772b20df144945801b42f327d0945a24374@jkltest.peer.stavr.tech:19126"
+sed -i.bak -e "s/^persistent_peers *=.*/persistent_peers = \"$peers\"/" $HOME/.canine/config/config.toml
+LATEST_HEIGHT=$(curl -s $SNAP_RPC/block | jq -r .result.block.header.height); \
+BLOCK_HEIGHT=$((LATEST_HEIGHT - 100)); \
+TRUST_HASH=$(curl -s "$SNAP_RPC/block?height=$BLOCK_HEIGHT" | jq -r .result.block_id.hash)
+
+echo $LATEST_HEIGHT $BLOCK_HEIGHT $TRUST_HASH
+
+sed -i.bak -E "s|^(enable[[:space:]]+=[[:space:]]+).*$|\1true| ; \
+s|^(rpc_servers[[:space:]]+=[[:space:]]+).*$|\1\"$SNAP_RPC,$SNAP_RPC\"| ; \
+s|^(trust_height[[:space:]]+=[[:space:]]+).*$|\1$BLOCK_HEIGHT| ; \
+s|^(trust_hash[[:space:]]+=[[:space:]]+).*$|\1\"$TRUST_HASH\"| ; \
+s|^(seeds[[:space:]]+=[[:space:]]+).*$|\1\"\"|" $HOME/.canine/config/config.toml
+canined tendermint unsafe-reset-all --home /root/.canine
+wget -O $HOME/.canine/config/addrbook.json "https://raw.githubusercontent.com/111STAVR111/props/main/Jackal/Testnet/addrbook.json"
+systemctl restart canined && journalctl -u canined -f -o cat
 
 break
 ;;
@@ -150,18 +163,26 @@ sudo journalctl -u canined -f -o cat
 break
 ;;
 "Synchronization via SnapShot")
-echo -e "      \e[1m\e[32m SOOOON\e[0m"
+cd $HOME
+apt install lz4
+sudo systemctl stop canined
+cp $HOME/.canine/data/priv_validator_state.json $HOME/.canine/priv_validator_state.json.backup
+rm -rf $HOME/.canine/data
+curl -o - -L https://jkltest.snapshot.stavr.tech/jackalt-snap.tar.lz4 | lz4 -c -d - | tar -x -C $HOME/.canine --strip-components 2
+mv $HOME/.canine/priv_validator_state.json.backup $HOME/.canine/data/priv_validator_state.json
+wget -O $HOME/.canine/config/addrbook.json "https://raw.githubusercontent.com/111STAVR111/props/main/Jackal/Testnet/addrbook.json"
+sudo systemctl restart canined && journalctl -u canined -f -o cat
 
 break
 ;;
 "Delete Node")
-sudo systemctl stop canined && \
-sudo systemctl disable canined && \
-rm /etc/systemd/system/canined.service && \
-sudo systemctl daemon-reload && \
-cd $HOME && \
-rm -rf canine-chain && \
-rm -rf .canine && \
+sudo systemctl stop canined
+sudo systemctl disable canined
+rm /etc/systemd/system/canined.service
+sudo systemctl daemon-reload
+cd $HOME
+rm -rf canine-chain
+rm -rf .canine
 rm -rf $(which canined)
 
 break
