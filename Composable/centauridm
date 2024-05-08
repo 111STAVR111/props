@@ -54,12 +54,12 @@ go version
 echo -e "              \e[1m\e[32m3. Downloading and building binaries--> \e[0m" && sleep 1
 #INSTALL
 cd $HOME && mkdir -p go/bin/
-git clone https://github.com/notional-labs/composable-centauri
-cd composable-centauri
-git checkout v6.5.4
+git clone https://github.com/ComposableFi/composable-cosmos
+cd composable-cosmos
+git checkout v6.6.41
 make install
 
-centaurid init $Validator_Name --chain-id $CHAIN_ID
+picad init $Validator_Name --chain-id $CHAIN_ID
 
 wget -O ~/.banksy/config/genesis.json "https://raw.githubusercontent.com/111STAVR111/props/main/Composable/genesis.json"
 wget -O $HOME/.banksy/config/addrbook.json "https://raw.githubusercontent.com/111STAVR111/props/main/Composable/addrbook.json"
@@ -90,14 +90,14 @@ sed -i -e "s/^pruning-keep-every *=.*/pruning-keep-every = \"$pruning_keep_every
 sed -i -e "s/^pruning-interval *=.*/pruning-interval = \"$pruning_interval\"/" $HOME/.banksy/config/app.toml
 
 
-tee /etc/systemd/system/centaurid.service > /dev/null <<EOF
+tee /etc/systemd/system/picad.service > /dev/null <<EOF
 [Unit]
 Description=centaurid
 After=network-online.target
 
 [Service]
 User=$USER
-ExecStart=$(which centaurid) start
+ExecStart=$(which picad) start
 Restart=on-failure
 RestartSec=3
 LimitNOFILE=65535
@@ -109,12 +109,12 @@ EOF
 
 # start service
 sudo systemctl daemon-reload
-sudo systemctl enable centaurid
-sudo systemctl restart centaurid
+sudo systemctl enable picad
+sudo systemctl restart picad
 
 echo '=============== SETUP FINISHED ==================='
 echo -e 'Congratulations:        \e[1m\e[32mSUCCESSFUL NODE INSTALLATION\e[0m'
-echo -e 'To check logs:        \e[1m\e[33mjournalctl -u centaurid -f -o cat\e[0m'
+echo -e 'To check logs:        \e[1m\e[33mjournalctl -fu picad -o cat\e[0m'
 echo -e "To check sync status: \e[1m\e[35mcurl -s localhost:26657/status\e[0m"
 
 break
@@ -126,7 +126,7 @@ echo "_|-_|-_|-_|-_|-_|-_|"
 read Wallet
 echo export Wallet=${Wallet} >> $HOME/.bash_profile
 source ~/.bash_profile
-centaurid keys add $Wallet
+picad keys add $Wallet
 echo -e "      \e[1m\e[32m!!!!!!!!!SAVE!!!!!!!!!!!!!!!!SAVE YOUR MNEMONIC PHRASE!!!!!!!!!SAVE!!!!!!!!!!!!!!!!\e[0m'"
 
 break
@@ -146,50 +146,50 @@ s|^(rpc_servers[[:space:]]+=[[:space:]]+).*$|\1\"$SNAP_RPC,$SNAP_RPC\"| ; \
 s|^(trust_height[[:space:]]+=[[:space:]]+).*$|\1$BLOCK_HEIGHT| ; \
 s|^(trust_hash[[:space:]]+=[[:space:]]+).*$|\1\"$TRUST_HASH\"| ; \
 s|^(seeds[[:space:]]+=[[:space:]]+).*$|\1\"\"|" $HOME/.banksy/config/config.toml
-centaurid tendermint unsafe-reset-all --home /root/.banksy
+picad tendermint unsafe-reset-all --home /root/.banksy
 wget -O $HOME/.banksy/config/addrbook.json "https://raw.githubusercontent.com/111STAVR111/props/main/Composable/addrbook.json"
 curl -o - -L https://composable.wasm.stavr.tech/wasm-composable.tar.lz4 | lz4 -c -d - | tar -x -C $HOME/.banksy --strip-components 2
-systemctl restart centaurid && journalctl -fu centaurid -o cat
+systemctl restart picad && journalctl -fu picad -o cat
 
 break
 ;;
 "UPDATE")
-cd $HOME/composable-centauri
+cd $HOME/composable-cosmos
 git pull
-git checkout v6.5.4
+git checkout v6.6.41
 make install
-sudo systemctl restart centaurid && sudo journalctl -u centaurid -f -o cat
+sudo systemctl restart picad && sudo journalctl -fu picad -o cat
 
 break
 ;;
 "Check node logs")
-sudo journalctl -u centaurid -f -o cat
+sudo journalctl -fu picad  -o cat
 
 break
 ;;
 "Synchronization via SnapShot")
 cd $HOME
 apt install lz4
-sudo systemctl stop centaurid
+sudo systemctl stop picad
 cp $HOME/.banksy/data/priv_validator_state.json $HOME/.banksy/priv_validator_state.json.backup
 rm -rf $HOME/.banksy/data
 curl -o - -L https://composable.snapshot.stavr.tech/centauri-snap.tar.lz4 | lz4 -c -d - | tar -x -C $HOME/.banksy --strip-components 2
 curl -o - -L https://composable.wasm.stavr.tech/wasm-composable.tar.lz4 | lz4 -c -d - | tar -x -C $HOME/.banksy --strip-components 2
 wget -O $HOME/.banksy/config/addrbook.json "https://raw.githubusercontent.com/111STAVR111/props/main/Composable/addrbook.json"
 wget -O $HOME/.banksy/config/addrbook.json "https://raw.githubusercontent.com/obajay/nodes-Guides/main/Projects/Composable/addrbook.json"
-sudo systemctl restart centaurid && journalctl -fu centaurid -o cat
+sudo systemctl restart picad && journalctl -fu picad -o cat
 
 break
 ;;
 "Delete Node")
-sudo systemctl stop centaurid
-sudo systemctl disable centaurid
-rm /etc/systemd/system/centaurid.service
+sudo systemctl stop picad
+sudo systemctl disable picad
+rm /etc/systemd/system/picad.service
 sudo systemctl daemon-reload
 cd $HOME
-rm -rf composable-centauri
+rm -rf composable-cosmos
 rm -rf .banksy
-rm -rf $(which centaurid)
+rm -rf $(which picad)
 
 break
 ;;
