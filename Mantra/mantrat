@@ -132,7 +132,24 @@ echo -e "      \e[1m\e[32m!!!!!!!!!SAVE!!!!!!!!!!!!!!!!SAVE YOUR MNEMONIC PHRASE
 break
 ;;
 "Synchronization via StateSync")
-echo -e "      \e[1m\e[32m SOOOON\e[0m"
+SNAP_RPC=https://mantra.rpc.t.stavr.tech:443
+peers="b6943ba9d189c545d92051250d2a3641f2216b2b@mantra-t.seed.stavr.tech:36056"
+sed -i.bak -e "s/^persistent_peers *=.*/persistent_peers = \"$peers\"/" $HOME/.mantrachain/config/config.toml
+LATEST_HEIGHT=$(curl -s $SNAP_RPC/block | jq -r .result.block.header.height); \
+BLOCK_HEIGHT=$((LATEST_HEIGHT - 1000)); \
+TRUST_HASH=$(curl -s "$SNAP_RPC/block?height=$BLOCK_HEIGHT" | jq -r .result.block_id.hash)
+
+echo $LATEST_HEIGHT $BLOCK_HEIGHT $TRUST_HASH
+
+sed -i.bak -E "s|^(enable[[:space:]]+=[[:space:]]+).*$|\1true| ; \
+s|^(rpc_servers[[:space:]]+=[[:space:]]+).*$|\1\"$SNAP_RPC,$SNAP_RPC\"| ; \
+s|^(trust_height[[:space:]]+=[[:space:]]+).*$|\1$BLOCK_HEIGHT| ; \
+s|^(trust_hash[[:space:]]+=[[:space:]]+).*$|\1\"$TRUST_HASH\"| ; \
+s|^(seeds[[:space:]]+=[[:space:]]+).*$|\1\"\"|" $HOME/.mantrachain/config/config.toml
+mantrachaind tendermint unsafe-reset-all --home $HOME/.mantrachain
+curl -o - -L https://mantra-t.wasm.stavr.tech/wasm-mantra.tar.lz4 | lz4 -c -d - | tar -x -C $HOME/.mantrachain --strip-components 2
+wget -O $HOME/.mantrachain/config/addrbook.json "https://raw.githubusercontent.com/111STAVR111/props/main/Mantra/addrbook.json"
+sudo systemctl restart mantrachaind && journalctl -fu mantrachaind -o cat
 
 
 break
@@ -149,7 +166,16 @@ sudo journalctl -u mantrachaind -f -o cat
 break
 ;;
 "Synchronization via SnapShot")
-echo -e "      \e[1m\e[32m SOOOON\e[0m"
+cd $HOME
+apt install lz4
+sudo systemctl stop mantrachaind
+cp $HOME/.mantrachain/data/priv_validator_state.json $HOME/.mantrachain/priv_validator_state.json.backup
+rm -rf $HOME/.mantrachain/data
+curl -o - -L https://mantra-t.snapshot.stavr.tech/mantra-snap.tar.lz4 | lz4 -c -d - | tar -x -C $HOME/.mantrachain --strip-components 2
+curl -o - -L https://mantra-t.wasm.stavr.tech/wasm-mantra.tar.lz4 | lz4 -c -d - | tar -x -C $HOME/.mantrachain --strip-components 2
+mv $HOME/.mantrachain/priv_validator_state.json.backup $HOME/.mantrachain/data/priv_validator_state.json
+wget -O $HOME/.mantrachain/config/addrbook.json "https://raw.githubusercontent.com/111STAVR111/props/main/Mantra/addrbook.json"
+sudo systemctl restart mantrachaind && journalctl -fu mantrachaind -o cat
 
 break
 ;;
