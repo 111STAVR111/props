@@ -5,7 +5,7 @@ do
 
 # Logo
 
-curl -s https://raw.githubusercontent.com/obajay/nodes-Guides/main/logo_1 | bash
+curl -s https://raw.githubusercontent.com/111STAVR111/props/main/logo_1.txt | bash
 
 # Menu
 
@@ -56,14 +56,14 @@ echo -e "              \e[1m\e[32m3. Downloading and building binaries--> \e[0m"
 cd $HOME && mkdir -p go/bin/
 git clone https://github.com/persistenceOne/persistenceCore
 cd persistenceCore
-git checkout v11.7.0-fix
+git checkout v11.11.0-rc0
 make install
 
 persistenceCore init $Validator_Name --chain-id $CHAIN_ID
 persistenceCore config chain-id $CHAIN_ID
 
-wget -O $HOME/.persistenceCore/config/genesis.json "https://raw.githubusercontent.com/obajay/nodes-Guides/main/Projects/Persistence/Testnet/genesis.json"
-wget -O $HOME/.persistenceCore/config/genesis.json "https://raw.githubusercontent.com/obajay/nodes-Guides/main/Projects/Persistence/Testnet/genesis.json"
+wget -O $HOME/.persistenceCore/config/genesis.json "https://raw.githubusercontent.com/111STAVR111/props/main/Persistence/Testnet/genesis.json"
+wget -O $HOME/.persistenceCore/config/addrbook.json "https://raw.githubusercontent.com/111STAVR111/props/main/Persistence/Testnet/addrbook.json"
 
 echo -e "                     \e[1m\e[32m4. Node optimization and improvement--> \e[0m" && sleep 1
 
@@ -130,7 +130,23 @@ echo -e "      \e[1m\e[32m!!!!!!!!!SAVE!!!!!!!!!!!!!!!!SAVE YOUR MNEMONIC PHRASE
 break
 ;;
 "Synchronization via StateSync")
-echo -e "      \e[1m\e[32m SOOOON\e[0m"
+SNAP_RPC=https://persistence.rpc.t.stavr.tech:443
+peers="65ede6cac953fe855d7961f39e3a629fa6d4e469@persis-t.seed.stavr.tech:4156"
+sed -i 's|^persistent_peers *=.*|persistent_peers = "'$peers'"|' $HOME/.persistenceCore/config/config.toml
+LATEST_HEIGHT=$(curl -s $SNAP_RPC/block | jq -r .result.block.header.height); \
+BLOCK_HEIGHT=$((LATEST_HEIGHT - 1000)); \
+TRUST_HASH=$(curl -s "$SNAP_RPC/block?height=$BLOCK_HEIGHT" | jq -r .result.block_id.hash)
+
+echo $LATEST_HEIGHT $BLOCK_HEIGHT $TRUST_HASH
+
+sed -i.bak -E "s|^(enable[[:space:]]+=[[:space:]]+).*$|\1true| ; \
+s|^(rpc_servers[[:space:]]+=[[:space:]]+).*$|\1\"$SNAP_RPC,$SNAP_RPC\"| ; \
+s|^(trust_height[[:space:]]+=[[:space:]]+).*$|\1$BLOCK_HEIGHT| ; \
+s|^(trust_hash[[:space:]]+=[[:space:]]+).*$|\1\"$TRUST_HASH\"| ; \
+s|^(seeds[[:space:]]+=[[:space:]]+).*$|\1\"\"|" $HOME/.persistenceCore/config/config.toml
+persistenceCore tendermint unsafe-reset-all --home /root/.persistenceCore
+wget -O $HOME/.persistenceCore/config/addrbook.json "https://raw.githubusercontent.com/111STAVR111/props/main/Persistence/Testnet/addrbook.json"
+systemctl restart persistenceCore && journalctl -fu persistenceCore -o cat
 
 
 break
@@ -147,7 +163,15 @@ sudo journalctl -u persistenceCore -f -o cat
 break
 ;;
 "Synchronization via SnapShot")
-echo -e "      \e[1m\e[32m SOOOON\e[0m"
+cd $HOME
+apt install lz4
+sudo systemctl stop persistenceCore
+cp $HOME/.persistenceCore/data/priv_validator_state.json $HOME/.persistenceCore/priv_validator_state.json.backup
+rm -rf $HOME/.persistenceCore/data
+curl -o - -L https://persis-t.snapshot.stavr.tech/persist-snap.tar.lz4 | lz4 -c -d - | tar -x -C $HOME/.persistenceCore --strip-components 2
+mv $HOME/.persistenceCore/priv_validator_state.json.backup $HOME/.persistenceCore/data/priv_validator_state.json
+wget -O $HOME/.persistenceCore/config/addrbook.json "https://raw.githubusercontent.com/111STAVR111/props/main/Persistence/Testnet/addrbook.json"
+sudo systemctl restart persistenceCore && journalctl -fu persistenceCore -o cat
 
 break
 ;;
