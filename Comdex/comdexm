@@ -169,7 +169,7 @@ rm -rf $HOME/.comdex/data
 curl -o - -L https://comdex.snapshot.stavr.tech/comdex/comdex-snap.tar.lz4 | lz4 -c -d - | tar -x -C $HOME/.comdex --strip-components 2
 curl -o - -L https://comdex.wasm.stavr.tech/wasm-comdex.tar.lz4 | lz4 -c -d - | tar -x -C $HOME/.comdex --strip-components 2
 mv $HOME/.comdex/priv_validator_state.json.backup $HOME/.comdex/data/priv_validator_state.json
-wget -O $HOME/.comdex/config/addrbook.json "https://raw.githubusercontent.com/obajay/nodes-Guides/main/Projects/Comdex/addrbook.json"
+wget -O $HOME/.comdex/config/addrbook.json "https://raw.githubusercontent.com/111STAVR111/props/main/Comdex/addrbook.json"
 sudo systemctl restart comdex && journalctl -u comdex -f -o cat
 
 break
