@@ -169,7 +169,7 @@ apt install lz4
 sudo systemctl stop teritorid
 cp $HOME/.teritorid/data/priv_validator_state.json $HOME/.teritorid/priv_validator_state.json.backup
 rm -rf $HOME/.teritorid/data
-curl -o - -L https://teritori.snapshot.stavr.tech/teritori-snap.tar.lz4 | lz4 -c -d - | tar -x -C $HOME/.teritorid --strip-components 2
+curl -o - -L http://teritori.snapshot.stavr.tech:1001/teritori-snap.tar.lz4 | lz4 -c -d - | tar -x -C $HOME/.teritorid --strip-components 2
 mv $HOME/.teritorid/priv_validator_state.json.backup $HOME/.teritorid/data/priv_validator_state.json
 wget -O $HOME/.teritorid/config/addrbook.json "https://raw.githubusercontent.com/111STAVR111/props/main/Teritori/addrbook.json"
 sudo systemctl restart teritorid && journalctl -fu teritorid -o cat
