@@ -166,7 +166,7 @@ apt install lz4
 sudo systemctl stop uptickd
 cp $HOME/.uptickd/data/priv_validator_state.json $HOME/.uptickd/priv_validator_state.json.backup
 rm -rf $HOME/.uptickd/data
-curl -o - -L http://uptick.snapshot.stavr.tech:1027/uptickd/uptickd-snap.tar.lz4 | lz4 -c -d - | tar -x -C $HOME/.uptickd --strip-components 2
+curl -o - -L https://uptick.snapshot.stavr.tech/uptickd-snap.tar.lz4 | lz4 -c -d - | tar -x -C $HOME/.uptickd --strip-components 2
 mv $HOME/.uptickd/priv_validator_state.json.backup $HOME/.uptickd/data/priv_validator_state.json
 wget -O $HOME/.uptickd/config/addrbook.json "https://raw.githubusercontent.com/111STAVR111/props/main/Uptick/addrbook.json"
 sudo systemctl restart uptickd && journalctl -fu uptickd -o cat
