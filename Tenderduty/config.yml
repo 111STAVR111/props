@@ -87,6 +87,7 @@ chains:
 
     nodes:
       - url: http://65.21.224.11:26757
+        alert_if_down: no
       - url: http://161.97.71.152:26657
         alert_if_down: no
 
@@ -123,7 +124,7 @@ chains:
         channel: "" # default if empty
 
     nodes:
-      - url: http://212.47.253.23:26657
+      - url: https://dym.rpc.m.stavr.tech:443
         alert_if_down: no
       - url: http://107.182.163.2:31891
         alert_if_down: no
