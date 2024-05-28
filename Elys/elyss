@@ -56,7 +56,7 @@ echo -e "              \e[1m\e[32m3. Downloading and building binaries--> \e[0m"
 cd $HOME && mkdir -p go/bin/
 git clone https://github.com/elys-network/elys elys
 cd elys
-git checkout fix/v0.31.0-restore-clock-gas-limit-value
+git checkout v0.32.0
 make install
 
 elysd init $Validator_Name --chain-id $CHAIN_ID
@@ -152,7 +152,7 @@ break
 "UPDATE")
 cd $HOME/elys
 git pull
-git checkout fix/v0.31.0-restore-clock-gas-limit-value
+git checkout v0.32.0
 make install
 sudo systemctl restart elysd && sudo journalctl -fu elysd -o cat
 
