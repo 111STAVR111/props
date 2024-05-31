@@ -32,7 +32,7 @@ echo "_|-_|-_|-_|-_|-_|-_|"
 read Validator_Name
 echo "_|-_|-_|-_|-_|-_|-_|"
 echo export Validator_Name=${Validator_Name} >> $HOME/.bash_profile
-echo export CHAIN_ID="xstaxy-1" >> $HOME/.bash_profile
+echo export CHAIN_ID="aura_6322-2" >> $HOME/.bash_profile
 source ~/.bash_profile
 
 echo -e "\e[1m\e[32m1. Updating packages and dependencies--> \e[0m" && sleep 1
@@ -56,12 +56,14 @@ echo -e "              \e[1m\e[32m3. Downloading and building binaries--> \e[0m"
 cd $HOME && mkdir -p go/bin/
 git clone https://github.com/aura-nw/aura
 cd aura
-git checkout v0.7.3
+git checkout v0.8.2
 make install
 
 aurad init $Validator_Name --chain-id $CHAIN_ID
 
-wget -O $HOME/.aura/config/genesis.json "https://raw.githubusercontent.com/111STAVR111/props/main/Aura/genesis.json"
+wget https://images.aura.network/aura_6322-2-genesis.tar.gz
+tar -xzvf aura_6322-2-genesis.tar.gz
+mv aura_6322-2-genesis.json $HOME/.aura/config/genesis.json
 wget -O $HOME/.aura/config/addrbook.json "https://raw.githubusercontent.com/111STAVR111/props/main/Aura/addrbook.json"
 
 echo -e "                     \e[1m\e[32m4. Node optimization and improvement--> \e[0m" && sleep 1
@@ -153,8 +155,10 @@ sudo systemctl restart aurad && journalctl -u aurad -f -o cat
 break
 ;;
 "UPDATE")
-echo -e "      \e[1m\e[32m SOOOON\e[0m"
-aurad version
+cd $HOME/aura && git pull
+git checkout v0.8.2
+make install
+sudo systemctl restart aurad && journalctl -fu aurad -o cat
 
 break
 ;;
