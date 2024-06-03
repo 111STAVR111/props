@@ -1,4 +1,4 @@
-#!/bin/bash
+22222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222#!/bin/bash
 
 while true
 do
@@ -54,7 +54,7 @@ go version
 echo -e "              \e[1m\e[32m3. Downloading and building binaries--> \e[0m" && sleep 1
 #INSTALL
 cd $HOME && mkdir -p go/bin/
-wget -O quicksilverd https://github.com/quicksilver-zone/quicksilver/releases/download/v1.6.1-rc2/quicksilverd-v1.6.1-rc2-amd64
+wget -O quicksilverd https://github.com/quicksilver-zone/quicksilver/releases/download/v1.6.1-rc3/quicksilverd-v1.6.1-rc3-amd64
 chmod +x quicksilverd
 mv $HOME/quicksilverd $HOME/go/bin/quicksilverd
 
@@ -153,7 +153,7 @@ break
 ;;
 "UPDATE")
 cd $HOME
-wget -O quicksilverd https://github.com/quicksilver-zone/quicksilver/releases/download/v1.6.1-rc2/quicksilverd-v1.6.1-rc2-amd64
+wget -O quicksilverd https://github.com/quicksilver-zone/quicksilver/releases/download/v1.6.1-rc3/quicksilverd-v1.6.1-rc3-amd64
 chmod +x quicksilverd
 mv $HOME/quicksilverd $(which quicksilverd)
 sudo systemctl restart quicksilverd && sudo journalctl -u quicksilverd -f -o cat
