@@ -54,13 +54,13 @@ go version
 echo -e "              \e[1m\e[32m3. Downloading and building binaries--> \e[0m" && sleep 1
 #INSTALL
 cd $HOME && mkdir -p go/bin/
-wget https://github.com/haqq-network/haqq/releases/download/v1.7.5/haqq_1.7.5_linux_amd64.tar.gz
-tar -xvzf haqq_1.7.5_linux_amd64.tar.gz
+wget https://github.com/haqq-network/haqq/releases/download/v1.7.6/haqq_1.7.6_linux_amd64.tar.gz
+tar -xvzf haqq_1.7.6_linux_amd64.tar.gz
 cd bin && chmod +x haqqd
 cd bin
 chmod +x haqqd
 mv haqqd $HOME/go/bin/
-cd $HOME && rm -rf haqq_1.7.5_Linux_x86_64.tar.gz
+cd $HOME && rm -rf haqq_1.7.6_linux_amd64.tar.gz
 
 haqqd init $Validator_Name --chain-id $CHAIN_ID
 
@@ -139,8 +139,13 @@ echo -e "      \e[1m\e[32m SOOOON\e[0m"
 break
 ;;
 "UPDATE")
-echo -e "      \e[1m\e[32m SOOOON\e[0m"
-haqqd version
+cd $HOME
+wget https://github.com/haqq-network/haqq/releases/download/v1.7.6/haqq_1.7.6_linux_amd64.tar.gz
+tar -xvzf haqq_1.7.6_linux_amd64.tar.gz
+cd bin && chmod +x haqqd
+mv haqqd $(which haqqd)
+cd $HOME && rm -rf haqq_1.7.6_linux_amd64.tar.gz
+sudo systemctl restart haqqd && journalctl -fu haqqd -o cat
 
 break
 ;;
