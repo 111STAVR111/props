@@ -55,7 +55,7 @@ echo -e "              \e[1m\e[32m3. Downloading and building binaries--> \e[0m"
 #INSTALL
 cd $HOME && mkdir $HOME/go/bin/
 cd $HOME
-wget -O lavad https://github.com/lavanet/lava/releases/download/v2.0.0/lavad-v2.0.0-linux-amd64
+wget -O lavad https://github.com/lavanet/lava/releases/download/v2.1.1/lavad-v2.1.1-linux-amd64
 chmod +x lavad
 mv lavad $HOME/go/bin/lavad
 
@@ -161,8 +161,11 @@ systemctl restart lavad && journalctl -fu lavad -o cat
 break
 ;;
 "UPDATE")
-echo -e "      \e[1m\e[32m SOOOON\e[0m"
-lavad version
+cd $HOME
+wget -O lavad https://github.com/lavanet/lava/releases/download/v2.1.1/lavad-v2.1.1-linux-amd64
+chmod +x lavad
+mv lavad $(which lavad)
+sudo systemctl restart lavad && sudo journalctl -fu lavad -o cat
 
 break
 ;;
