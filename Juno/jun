@@ -56,7 +56,7 @@ echo -e "              \e[1m\e[32m3. Downloading and building binaries--> \e[0m"
 cd $HOME && mkdir $HOME/go/bin/
 git clone https://github.com/CosmosContracts/juno juno
 cd juno
-git checkout v22.0.0
+git checkout v22.0.1
 make install
 
 junod init $Validator_Name --chain-id $CHAIN_ID
@@ -154,8 +154,11 @@ sudo systemctl restart junod && journalctl -fu junod -o cat
 break
 ;;
 "UPDATE")
-echo -e "      \e[1m\e[32m SOOOON\e[0m"
-junod version
+cd $HOME
+wget https://github.com/CosmosContracts/juno/releases/download/v22.0.1/junod
+chmod +x junod
+mv junod $(which junod)
+sudo systemctl restart junod && sudo journalctl -fu junod -o cat
 
 break
 ;;
