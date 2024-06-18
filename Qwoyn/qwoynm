@@ -56,7 +56,7 @@ echo -e "              \e[1m\e[32m3. Downloading and building binaries--> \e[0m"
 cd $HOME && mkdir -p go/bin/
 git clone https://github.com/cosmic-horizon/QWOYN.git
 cd QWOYN
-git checkout v5.4.2
+git checkout v5.4.1
 make install
 
 qwoynd init $Validator_Name --chain-id $CHAIN_ID
