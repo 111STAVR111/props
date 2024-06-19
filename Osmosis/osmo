@@ -55,7 +55,7 @@ echo -e "              \e[1m\e[32m3. Downloading and building binaries--> \e[0m"
 #INSTALL
 cd $HOME && mkdir -p go/bin/
 git clone https://github.com/osmosis-labs/osmosis && cd osmosis
-git checkout v25.0.0
+git checkout v25.1.1
 make install
 
 osmosisd init $Validator_Name --chain-id $CHAIN_ID
@@ -138,13 +138,8 @@ break
 "UPDATE")
 cd $HOME/osmosis
 git pull
-git checkout v25.0.0
+git checkout v25.1.1
 make install
-sed -i.bak -e "s/^timeout_commit *=.*/timeout_commit = \"1.5s\"/;" ~/.osmosisd/config/config.toml
-sed -i.bak -e "s/^timeout_propose *=.*/timeout_propose = \"2s\"/;" ~/.osmosisd/config/config.toml
-sed -i.bak -e "s/^minimum-gas-prices *=.*/minimum-gas-prices = \"0uosmo\"/;" ~/.osmosisd/config/app.toml
-sed -i.bak -e "s/^max-gas-wanted-per-tx *=.*/max-gas-wanted-per-tx = \"60000000\"/;" ~/.osmosisd/config/app.toml
-sed -i.bak -e "s/^arbitrage-min-gas-fee *=.*/arbitrage-min-gas-fee = \"0.1\"/;" ~/.osmosisd/config/app.toml
 sudo systemctl restart osmosisd && sudo journalctl -fu osmosisd -o cat
 
 break
