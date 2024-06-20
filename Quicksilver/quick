@@ -151,10 +151,10 @@ systemctl restart quicksilverd && sudo journalctl -fu quicksilverd -o cat
 break
 ;;
 "UPDATE")
-cd $HOME
-wget -O quicksilverd https://github.com/quicksilver-zone/quicksilver/releases/download/v1.5.6/quicksilverd-v1.5.6-amd64
-chmod +x quicksilverd
-mv $HOME/quicksilverd $(which quicksilverd)
+cd $HOME/quicksilver
+git fetch origin refs/aa61f5df3ad4609b787932fbbd21d6d09900c023
+git checkout aa61f5df3ad4609b787932fbbd21d6d09900c023
+make install
 sudo systemctl restart quicksilverd && sudo journalctl -fu quicksilverd -o cat
 
 break
