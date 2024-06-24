@@ -56,7 +56,7 @@ echo -e "              \e[1m\e[32m3. Downloading and building binaries--> \e[0m"
 cd $HOME && mkdir -p go/bin/
 git clone https://github.com/comdex-official/comdex comdex
 cd comdex
-git checkout v13.4.0
+git checkout v14.1.0
 make install
 
 comdex init $Validator_Name --chain-id $CHAIN_ID
@@ -150,7 +150,11 @@ sudo systemctl restart comdex && sudo journalctl -u comdex -f -o cat
 break
 ;;
 "UPDATE")
-echo -e "      \e[1m\e[32m SOOOON\e[0m"
+cd $HOME/comdex
+git fetch --all
+git checkout v14.1.0
+make install
+sudo systemctl restart comdex && sudo journalctl -fu comdex -o cat
 
 
 break
