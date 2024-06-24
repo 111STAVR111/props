@@ -57,7 +57,7 @@ cd $HOME && mkdir -p go/bin/
 git checkout 00ae85d4df52a4e2e86b78698fbd82db35168360
 cd odin-core
 git fetch --tags
-git checkout v0.7.12
+git checkout v0.8.3
 make install
 
 odind init $Validator_Name --chain-id $CHAIN_ID
@@ -157,8 +157,11 @@ sudo systemctl restart odind && journalctl -fu odind -o cat
 break
 ;;
 "UPDATE")
-echo -e "      \e[1m\e[32m SOOOON\e[0m"
-odind version
+cd $HOME/odin-core
+git pull
+git checkout v0.8.3
+make install
+sudo systemctl restart odind && sudo journalctl -fu odind -o cat
 
 break
 ;;
