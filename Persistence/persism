@@ -56,7 +56,7 @@ echo -e "              \e[1m\e[32m3. Downloading and building binaries--> \e[0m"
 cd $HOME && mkdir -p go/bin/
 git clone https://github.com/persistenceOne/persistenceCore
 cd persistenceCore
-git checkout v11.13.0
+git checkout v11.14.0
 make install
 
 persistenceCore init $Validator_Name --chain-id $CHAIN_ID
@@ -155,7 +155,7 @@ break
 "UPDATE")
 cd $HOME/persistenceCore
 git pull
-git checkout v11.13.0
+git checkout v11.14.0
 make install
 sudo systemctl restart persistenceCore && sudo journalctl -fu persistenceCore -o cat
 
