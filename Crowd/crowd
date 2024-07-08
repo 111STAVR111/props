@@ -32,7 +32,7 @@ echo "_|-_|-_|-_|-_|-_|-_|"
 read Validator_Name
 echo "_|-_|-_|-_|-_|-_|-_|"
 echo export Validator_Name=${Validator_Name} >> $HOME/.bash_profile
-echo export CHAIN_ID="cardtestnet-10" >> $HOME/.bash_profile
+echo export CHAIN_ID="cardtestnet-11" >> $HOME/.bash_profile
 source ~/.bash_profile
 
 echo -e "\e[1m\e[32m1. Updating packages and dependencies--> \e[0m" && sleep 1
@@ -55,13 +55,13 @@ echo -e "              \e[1m\e[32m3. Downloading and building binaries--> \e[0m"
 #INSTALL
 cd $HOME && mkdir -p go/bin/
 git clone https://github.com/DecentralCardGame/Cardchain
-wget -O Cardchaind https://github.com/DecentralCardGame/Cardchain/releases/download/v0.14.2/cardchaind
+wget -O Carchaind https://github.com/DecentralCardGame/Cardchain/releases/download/v0.16.0/cardchaind
 chmod +x Cardchaind
 mv $HOME/Cardchaind /usr/local/bin
 
 Cardchaind init $Validator_Name --chain-id $CHAIN_ID
 
-wget -O $HOME/.cardchaind/config/genesis.json "http://45.136.28.158:3000/genesis.json"
+wget -O $HOME/.cardchaind/config/genesis.json "https://cardchain.crowdcontrol.network/files/genesis.json"
 wget -O $HOME/.cardchaind/config/addrbook.json "https://raw.githubusercontent.com/111STAVR111/props/main/Crowd/addrbook.json"
 
 
@@ -70,7 +70,7 @@ echo -e "                     \e[1m\e[32m4. Node optimization and improvement-->
 sed -i.bak -e "s/^minimum-gas-prices *=.*/minimum-gas-prices = \"0.0ubpf\"/;" ~/.cardchaind/config/app.toml
 external_address=$(wget -qO- eth0.me) 
 sed -i.bak -e "s/^external_address *=.*/external_address = \"$external_address:26656\"/" $HOME/.cardchaind/config/config.toml
-peers=""
+peers="86b643ba743ccc78e6e086120d43c96f85872601@202.61.225.157:20056"
 sed -i.bak -e "s/^persistent_peers *=.*/persistent_peers = \"$peers\"/" $HOME/.cardchaind/config/config.toml
 seeds=""
 sed -i.bak -e "s/^seeds =.*/seeds = \"$seeds\"/" $HOME/.cardchaind/config/config.toml
@@ -153,7 +153,7 @@ Cardchaind version
 break
 ;;
 "Check node logs")
-sudo journalctl -u Cardchaind -f -o cat
+sudo journalctl -fu Cardchaind -o cat
 
 break
 ;;
