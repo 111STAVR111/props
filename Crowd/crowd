@@ -55,7 +55,7 @@ echo -e "              \e[1m\e[32m3. Downloading and building binaries--> \e[0m"
 #INSTALL
 cd $HOME && mkdir -p go/bin/
 git clone https://github.com/DecentralCardGame/Cardchain
-wget -O Carchaind https://github.com/DecentralCardGame/Cardchain/releases/download/v0.16.0/cardchaind
+wget -O Cardchaind https://github.com/DecentralCardGame/Cardchain/releases/download/v0.16.0/cardchaind
 chmod +x Cardchaind
 mv $HOME/Cardchaind /usr/local/bin
 
