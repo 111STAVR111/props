@@ -55,7 +55,7 @@ echo -e "              \e[1m\e[32m3. Downloading and building binaries--> \e[0m"
 cd $HOME && mkdir $HOME/go/bin/
 git clone https://github.com/bze-alphateam/bze
 cd bze
-git checkout v6.1.0
+git checkout v7.0.0
 make install
 
 bzed init $Validator_Name --chain-id $CHAIN_ID
@@ -153,8 +153,11 @@ sudo systemctl restart bzed && journalctl -u bzed -f -o cat
 break
 ;;
 "UPDATE")
-bzed version
-echo -e "        \e[1m\e[35mSOOOOON\e[0m"
+cd $HOME/bze
+git fetch --all
+git checkout v7.0.0
+make install
+systemctl restart bzed && journalctl -fu bzed -o cat
 
 break
 ;;
