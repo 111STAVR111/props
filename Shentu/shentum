@@ -56,7 +56,7 @@ echo -e "              \e[1m\e[32m3. Downloading and building binaries--> \e[0m"
 cd $HOME && mkdir -p go/bin/
 git clone https://github.com/shentufoundation/shentu
 cd shentu
-git checkout v2.10.0
+git checkout v2.11.0
 make install
 
 shentud init $Validator_Name --chain-id $CHAIN_ID
@@ -157,7 +157,7 @@ break
 ;;
 "UPDATE")
 cd $HOME/shentu && git pull
-git checkout v2.10.0
+git checkout v2.11.0
 make install
 sudo systemctl restart sged && journalctl -u sged -f -o cat
 
