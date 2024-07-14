@@ -159,7 +159,7 @@ break
 cd $HOME/shentu && git pull
 git checkout v2.11.0
 make install
-sudo systemctl restart sged && journalctl -u sged -f -o cat
+sudo systemctl restart shentud && journalctl -fu shentud -o cat
 
 break
 ;;
