@@ -1,6 +1,6 @@
 {
-  "genesis_time": "2024-05-07T00:29:31.924951801Z",
-  "chain_id": "S2-testnet-2",
+  "genesis_time": "2024-07-11T13:13:17.745426433Z",
+  "chain_id": "grimoria-testnet-1",
   "initial_height": "1",
   "consensus_params": {
     "block": {
@@ -36,16 +36,44 @@
       "accounts": [
         {
           "@type": "/cosmos.auth.v1beta1.BaseAccount",
-          "address": "bc1q0fd47xqqj9vp4plucm5zhmppgnqz6k0ax0gw86",
+          "address": "tb1qjhl66curvawtgdep0ct9c049qjh6mrhv5fcdsw",
           "pub_key": null,
           "account_number": "0",
           "sequence": "0"
         },
         {
           "@type": "/cosmos.auth.v1beta1.BaseAccount",
-          "address": "bc1qmw00t66gduj9c4985r7zr0fksppnj34p9l9nhp",
+          "address": "tb1qr6t6gra5a9w729a08m3ev9l0zda45wd8zwvckv",
           "pub_key": null,
           "account_number": "1",
+          "sequence": "0"
+        },
+        {
+          "@type": "/cosmos.auth.v1beta1.BaseAccount",
+          "address": "tb1q9rvx98r9nwkcvur5egemfs0spwguq2mur0psqw",
+          "pub_key": null,
+          "account_number": "2",
+          "sequence": "0"
+        },
+        {
+          "@type": "/cosmos.auth.v1beta1.BaseAccount",
+          "address": "tb1q3q776wlrg6wljqyv4e52ls84zcw38yat2ym55t",
+          "pub_key": null,
+          "account_number": "3",
+          "sequence": "0"
+        },
+        {
+          "@type": "/cosmos.auth.v1beta1.BaseAccount",
+          "address": "tb1qmu8nt6wye4vd644dm4tluurewa3yjdj76jnypw",
+          "pub_key": null,
+          "account_number": "4",
+          "sequence": "0"
+        },
+        {
+          "@type": "/cosmos.auth.v1beta1.BaseAccount",
+          "address": "tb1qcr8te4kr609gcawutmrza0j4xv80jy8zmfp6l0",
+          "pub_key": null,
+          "account_number": "5",
           "sequence": "0"
         }
       ]
@@ -60,12 +88,8 @@
       },
       "balances": [
         {
-          "address": "bc1q0fd47xqqj9vp4plucm5zhmppgnqz6k0ax0gw86",
+          "address": "tb1qr6t6gra5a9w729a08m3ev9l0zda45wd8zwvckv",
           "coins": [
-            {
-              "denom": "abtct",
-              "amount": "500000000000000"
-            },
             {
               "denom": "uside",
               "amount": "500000000000000"
@@ -75,46 +99,14 @@
               "amount": "500000000000000"
             },
             {
-              "denom": "uusdc.axl",
-              "amount": "500000000000000"
-            },
-            {
-              "denom": "uusdc.noble",
-              "amount": "500000000000000"
-            },
-            {
               "denom": "uusdt",
-              "amount": "500000000000000"
-            },
-            {
-              "denom": "uusdt.axl",
-              "amount": "500000000000000"
-            },
-            {
-              "denom": "uusdt.kava",
-              "amount": "500000000000000"
-            },
-            {
-              "denom": "uwbtc",
-              "amount": "500000000000000"
-            },
-            {
-              "denom": "uwbtc.axl",
-              "amount": "500000000000000"
-            },
-            {
-              "denom": "uwbtc.osmo",
               "amount": "500000000000000"
             }
           ]
         },
         {
-          "address": "bc1qmw00t66gduj9c4985r7zr0fksppnj34p9l9nhp",
+          "address": "tb1q9rvx98r9nwkcvur5egemfs0spwguq2mur0psqw",
           "coins": [
-            {
-              "denom": "abtct",
-              "amount": "500000000000000"
-            },
             {
               "denom": "uside",
               "amount": "500000000000000"
@@ -124,35 +116,75 @@
               "amount": "500000000000000"
             },
             {
-              "denom": "uusdc.axl",
+              "denom": "uusdt",
+              "amount": "500000000000000"
+            }
+          ]
+        },
+        {
+          "address": "tb1q3q776wlrg6wljqyv4e52ls84zcw38yat2ym55t",
+          "coins": [
+            {
+              "denom": "uside",
               "amount": "500000000000000"
             },
             {
-              "denom": "uusdc.noble",
+              "denom": "uusdc",
               "amount": "500000000000000"
             },
             {
               "denom": "uusdt",
               "amount": "500000000000000"
-            },
+            }
+          ]
+        },
+        {
+          "address": "tb1qjhl66curvawtgdep0ct9c049qjh6mrhv5fcdsw",
+          "coins": [
             {
-              "denom": "uusdt.axl",
+              "denom": "uside",
               "amount": "500000000000000"
             },
             {
-              "denom": "uusdt.kava",
+              "denom": "uusdc",
               "amount": "500000000000000"
             },
             {
-              "denom": "uwbtc",
+              "denom": "uusdt",
+              "amount": "500000000000000"
+            }
+          ]
+        },
+        {
+          "address": "tb1qcr8te4kr609gcawutmrza0j4xv80jy8zmfp6l0",
+          "coins": [
+            {
+              "denom": "uside",
               "amount": "500000000000000"
             },
             {
-              "denom": "uwbtc.axl",
+              "denom": "uusdc",
               "amount": "500000000000000"
             },
             {
-              "denom": "uwbtc.osmo",
+              "denom": "uusdt",
+              "amount": "500000000000000"
+            }
+          ]
+        },
+        {
+          "address": "tb1qmu8nt6wye4vd644dm4tluurewa3yjdj76jnypw",
+          "coins": [
+            {
+              "denom": "uside",
+              "amount": "500000000000000"
+            },
+            {
+              "denom": "uusdc",
+              "amount": "500000000000000"
+            },
+            {
+              "denom": "uusdt",
               "amount": "500000000000000"
             }
           ]
@@ -161,6 +193,41 @@
       "supply": [],
       "denom_metadata": [],
       "send_enabled": []
+    },
+    "btcbridge": {
+      "params": {
+        "authorized_relayers": [
+          "tb1q9rvx98r9nwkcvur5egemfs0spwguq2mur0psqw"
+        ],
+        "confirmations": 2,
+        "max_acceptable_block_depth": "100",
+        "btc_voucher_denom": "sat",
+        "vaults": [
+          {
+            "address": "tb1q3q776wlrg6wljqyv4e52ls84zcw38yat2ym55t",
+            "pub_key": "03373e0c66a0f71a59e967b6300216b9e5cae95172eb0e297167a7a4e0a1df5ed0",
+            "asset_type": "ASSET_TYPE_BTC"
+          },
+          {
+            "address": "tb1qmu8nt6wye4vd644dm4tluurewa3yjdj76jnypw",
+            "pub_key": "02529b1fa19e22a82dfe4689a44288c195ad633f40786dbbbba9b6fad83067c4a9",
+            "asset_type": "ASSET_TYPE_RUNE"
+          }
+        ]
+      },
+      "best_block_header": {
+        "version": "536870912",
+        "hash": "0000017317a7dfa637773406765d308e93cb5a8e5e266bb21687e120bf0e13d3",
+        "height": "1",
+        "previous_block_hash": "00000008819873e925422c1ff0f99f7cc9bbb232af63a077a480a3633bee1ef6",
+        "merkle_root": "f1192075c6416b02df1487f1f302d925a875bec7e37cf38079e00b1cd831898a",
+        "nonce": "13603325",
+        "bits": "1e0377ae",
+        "time": "1718707794",
+        "ntx": "1"
+      },
+      "block_headers": [],
+      "utxos": []
     },
     "capability": {
       "index": "1",
@@ -198,13 +265,6 @@
     "feegrant": {
       "allowances": []
     },
-    "feeibc": {
-      "identified_fees": [],
-      "fee_enabled_channels": [],
-      "registered_payees": [],
-      "registered_counterparty_payees": [],
-      "forward_relayers": []
-    },
     "feemarket": {
       "block_gas": "10000000"
     },
@@ -228,11 +288,11 @@
                   "max_change_rate": "0.010000000000000000"
                 },
                 "min_self_delegation": "1",
-                "delegator_address": "bc1q0fd47xqqj9vp4plucm5zhmppgnqz6k0ax0gw86",
-                "validator_address": "bcvaloper1qq8sjrg4rcrqqqqjq5xqz9gpruwpsxc5qgt3kqgppqfsqqs6zc836d9l32a",
+                "delegator_address": "tb1qjhl66curvawtgdep0ct9c049qjh6mrhv5fcdsw",
+                "validator_address": "sidevaloper1qqfpw8c6rgvpcqcvr58qkzqdryqs7xqtq5vq79g9qqfpwxsmqvtsc5rs5c6",
                 "pubkey": {
                   "@type": "/cosmos.crypto.ed25519.PubKey",
-                  "key": "tDwdimjkZvHwPcmH4j9QrbpRTMoqsQ40hOazKa83i+A="
+                  "key": "PX4WaeRtRAOq3lbx07fZ9IdDXwD5zbxCAZPjILX8IAw="
                 },
                 "value": {
                   "denom": "uside",
@@ -240,7 +300,7 @@
                 }
               }
             ],
-            "memo": "2b2ad344919d591cad2af6fe1b88e51fb02e926b@172.31.38.50:26656",
+            "memo": "6bef0693d7a31fed473b95123ad19b544b414093@202.182.119.24:26656",
             "timeout_height": "0",
             "extension_options": [],
             "non_critical_extension_options": []
@@ -250,7 +310,7 @@
               {
                 "public_key": {
                   "@type": "/cosmos.crypto.segwit.PubKey",
-                  "key": "ApgCKkZx2GZf3GcbNHVIW4pQ2P0cUZjrpcr63lHpCOfH"
+                  "key": "AtOGNuZFp5mXcmhmUJaTS2VRVhX387dRiH/4T9GDbzrv"
                 },
                 "mode_info": {
                   "single": {
@@ -269,7 +329,7 @@
             "tip": null
           },
           "signatures": [
-            "Hy1Y/M0hZ6nyKga573nxSrD599oo8rWLnqixU/FOCIQiZ/Sh1/hJfO8ET8vdd/5gogQOhv8p9tOQjWAf+JKQ77U="
+            "IAOo2l0PMPvqXtjIfHTX2U9Cd46/S0caJWiT1gfJrE/wP3Lzebig5OV+MG8rJMvZD/M+UXjm7MzEQsbk7cK8xCg="
           ]
         }
       ]
@@ -436,11 +496,6 @@
       "codes": [],
       "contracts": [],
       "sequences": []
-    },
-    "yield": {
-      "params": {
-        "admin": ""
-      }
     }
   }
 }
