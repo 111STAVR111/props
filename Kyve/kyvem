@@ -54,10 +54,8 @@ go version
 echo -e "              \e[1m\e[32m3. Downloading and building binaries--> \e[0m" && sleep 1
 #INSTALL
 cd $HOME && mkdir -p go/bin/
-wget https://github.com/KYVENetwork/chain/releases/download/v1.4.0/kyved_mainnet_linux_amd64.tar.gz
-tar -xvzf kyved_mainnet_linux_amd64.tar.gz
+wget -O kyved https://github.com/KYVENetwork/chain/releases/download/v1.5.0/kyved_mainnet_linux_amd64
 chmod +x kyved
-rm kyved_mainnet_linux_amd64.tar.gz
 sudo mv kyved $HOME/go/bin/kyved
 
 kyved init $Validator_Name --chain-id $CHAIN_ID
@@ -156,8 +154,11 @@ sudo systemctl restart kyved && journalctl -fu kyved -o cat
 break
 ;;
 "UPDATE")
-echo -e "      \e[1m\e[32m SOOOON\e[0m"
-kyved version
+cd $HOME
+wget -O kyved https://github.com/KYVENetwork/chain/releases/download/v1.5.0/kyved_mainnet_linux_amd64
+chmod +x kyved
+mv kyved $(which kyved)
+systemctl restart kyved && journalctl -fu kyved -o cat
 
 break
 ;;
