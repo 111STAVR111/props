@@ -55,7 +55,7 @@ echo -e "              \e[1m\e[32m3. Downloading and building binaries--> \e[0m"
 #INSTALL
 cd $HOME && mkdir -p go/bin/
 git clone https://github.com/Stride-Labs/stride.git && cd stride
-git checkout v22.0.0
+git checkout v23.0.0
 make install
 
 strided init $Validator_Name --chain-id $CHAIN_ID
@@ -149,8 +149,11 @@ sudo systemctl restart strided && journalctl -fu strided -o cat
 break
 ;;
 "UPDATE")
-echo -e "      \e[1m\e[32m SOOOON\e[0m"
-strided version
+cd $HOME/stride
+git fetch --all
+git checkout v23.0.0
+make install
+sudo systemctl restart strided && journalctl -u strided -f -o cat
 
 break
 ;;
