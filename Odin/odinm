@@ -54,7 +54,7 @@ go version
 echo -e "              \e[1m\e[32m3. Downloading and building binaries--> \e[0m" && sleep 1
 #INSTALL
 cd $HOME && mkdir -p go/bin/
-git checkout 00ae85d4df52a4e2e86b78698fbd82db35168360
+git clone https://github.com/ODIN-PROTOCOL/odin-core odin
 cd odin-core
 git fetch --tags
 git checkout v0.9.3
