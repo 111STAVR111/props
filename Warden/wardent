@@ -63,7 +63,7 @@ mv wardend $HOME/go/bin/wardend
 wardend init $Validator_Name --chain-id $CHAIN_ID
 wardend config chain-id $CHAIN_ID
 
-wget -O $HOME/.warden/config/genesis.json "https://raw.githubusercontent.com/111STAVR111/props/main/Warden/genesis.json"
+wget -O $HOME/.warden/config/genesis.json http://135.181.210.171:29/genesis.json
 wget -O $HOME/.warden/config/addrbook.json "https://raw.githubusercontent.com/111STAVR111/props/main/Warden/addrbook.json"
 
 echo -e "                     \e[1m\e[32m4. Node optimization and improvement--> \e[0m" && sleep 1
