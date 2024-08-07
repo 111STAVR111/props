@@ -54,9 +54,9 @@ go version
 echo -e "              \e[1m\e[32m3. Downloading and building binaries--> \e[0m" && sleep 1
 #INSTALL
 cd $HOME && mkdir -p go/bin/
-git clone -b v0.2.3 https://github.com/0glabs/0g-chain.git
-cd 0g-chain
-make install
+wget -O 0gchaind https://zgchaind-test.s3.ap-east-1.amazonaws.com/0gchaind-linux-v0.3.0
+chmod +x 0gchaind
+mv 0gchaind $HOME/go/bin/
 
 0gchaind  init $Validator_Name --chain-id $CHAIN_ID
 0gchaind  config chain-id $CHAIN_ID
@@ -150,8 +150,10 @@ systemctl restart 0gchaind && journalctl -fu 0gchaind -o cat
 break
 ;;
 "UPDATE")
-echo -e "      \e[1m\e[32m SOOOON\e[0m"
-0gchaind version
+cd $HOME
+wget -O 0gchaind https://zgchaind-test.s3.ap-east-1.amazonaws.com/0gchaind-linux-v0.3.0
+chmod +x 0gchaind
+systemctl restart 0gchaind && journalctl -fu 0gchaind -o cat
 
 break
 ;;
