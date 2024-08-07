@@ -153,6 +153,7 @@ break
 cd $HOME
 wget -O 0gchaind https://zgchaind-test.s3.ap-east-1.amazonaws.com/0gchaind-linux-v0.3.0
 chmod +x 0gchaind
+mv 0gchaind $(which 0gchaind)
 systemctl restart 0gchaind && journalctl -fu 0gchaind -o cat
 
 break
@@ -163,7 +164,6 @@ sudo journalctl -u 0gchaind -f -o cat
 break
 ;;
 "Synchronization via SnapShot")
-cd $HOME
 cd $HOME
 snap install lz4
 sudo systemctl stop 0gchaind 
