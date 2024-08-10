@@ -54,7 +54,7 @@ go version
 echo -e "              \e[1m\e[32m3. Downloading and building binaries--> \e[0m" && sleep 1
 #INSTALL
 cd $HOME && mkdir -p go/bin/
-wget -O 0gchaind https://zgchaind-test.s3.ap-east-1.amazonaws.com/0gchaind-linux-v0.3.0
+wget -O 0gchaind https://github.com/0glabs/0g-chain/releases/download/v0.3.1.alpha.0/0gchaind-linux-v0.3.1.alpha.0
 chmod +x 0gchaind
 mv 0gchaind $HOME/go/bin/
 
@@ -151,7 +151,7 @@ break
 ;;
 "UPDATE")
 cd $HOME
-wget -O 0gchaind https://zgchaind-test.s3.ap-east-1.amazonaws.com/0gchaind-linux-v0.3.0
+wget -O 0gchaind https://github.com/0glabs/0g-chain/releases/download/v0.3.1.alpha.0/0gchaind-linux-v0.3.1.alpha.0
 chmod +x 0gchaind
 mv 0gchaind $(which 0gchaind)
 systemctl restart 0gchaind && journalctl -fu 0gchaind -o cat
