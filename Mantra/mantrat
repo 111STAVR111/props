@@ -54,10 +54,10 @@ go version
 echo -e "              \e[1m\e[32m3. Downloading and building binaries--> \e[0m" && sleep 1
 #INSTALL
 cd $HOME && mkdir -p go/bin/
-sudo wget -O /usr/lib/libwasmvm.x86_64.so https://github.com/CosmWasm/wasmvm/releases/download/v1.3.1/libwasmvm.x86_64.so
-wget https://github.com/MANTRA-Finance/public/raw/main/mantrachain-hongbai/mantrachaind-linux-amd64.zip
-unzip mantrachaind-linux-amd64.zip
-rm mantrachaind-linux-amd64.zip
+wget https://github.com/MANTRA-Finance/public/releases/download/v2.0.0/mantrachaind-2.0.0-linux-amd64.tar.gz
+tar -xvzf mantrachaind-2.0.0-linux-amd64.tar.gz
+chmod +x mantrachaind
+rm -rf mantrachaind-2.0.0-linux-amd64.tar.gz
 mv mantrachaind $HOME/go/bin
 
 mantrachaind init $Validator_Name --chain-id $CHAIN_ID
@@ -155,7 +155,13 @@ sudo systemctl restart mantrachaind && journalctl -fu mantrachaind -o cat
 break
 ;;
 "UPDATE")
-echo -e "      \e[1m\e[32m SOOOON\e[0m"
+cd $HOME
+wget https://github.com/MANTRA-Finance/public/releases/download/v2.0.0/mantrachaind-2.0.0-linux-amd64.tar.gz
+tar -xvzf mantrachaind-2.0.0-linux-amd64.tar.gz
+chmod +x mantrachaind
+rm -rf mantrachaind-2.0.0-linux-amd64.tar.gz
+mv mantrachaind $(which mantrachaind)
+sudo systemctl restart mantrachaind && sudo journalctl -fu mantrachaind -o cat
 
 
 break
