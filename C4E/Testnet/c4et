@@ -56,7 +56,7 @@ echo -e "              \e[1m\e[32m3. Downloading and building binaries--> \e[0m"
 cd $HOME && mkdir -p $HOME/go/bin
 git clone https://github.com/chain4energy/c4e-chain.git
 cd c4e-chain
-git checkout tags/v1.3.0
+git checkout tags/v1.4.0
 make install
 
 c4ed init $Validator_Name --chain-id $CHAIN_ID
@@ -138,7 +138,11 @@ echo -e "      \e[1m\e[32m SOOOON\e[0m"
 break
 ;;
 "UPDATE")
-echo -e "      \e[1m\e[32m SOOOON\e[0m"
+cd $HOME/c4e-chain
+git fetch --all
+git checkout v1.4.0
+make install
+sudo systemctl restart c4ed && sudo journalctl -u c4ed -f -o cat
 
 break
 ;;
