@@ -53,7 +53,7 @@ echo -e "              \e[1m\e[32m3. Downloading and building binaries--> \e[0m"
 cd $HOME && mkdir $HOME/go/bin/
 git clone https://github.com/Canto-Network/Canto
 cd Canto
-git checkout v8.1.0
+git checkout v8.1.1
 make install
 
 cantod init $NODENAME --chain-id $CHAIN_ID
@@ -115,7 +115,7 @@ break
 "Update Node")
 cd $HOME/Canto
 git fetch --all
-git checkout v8.1.0
+git checkout v8.1.1
 make install
 sudo systemctl restart cantod && journalctl -fu cantod -o cat
 
