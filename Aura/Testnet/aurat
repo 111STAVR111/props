@@ -55,9 +55,8 @@ echo -e "              \e[1m\e[32m3. Downloading and building binaries--> \e[0m"
 #INSTALL
 cd $HOME && mkdir -p go/bin/
 git clone https://github.com/aura-nw/aura && cd aura
-wget https://github.com/aura-nw/aura/releases/download/v0.8.1-euphoria/aurad
-chmod +x aurad
-mv aurad $HOME/go/bin/
+git checkout v0.9.3-euphoria
+make install
 
 aurad init $Validator_Name --chain-id $CHAIN_ID
 
@@ -141,10 +140,10 @@ break
 ;;
 "UPDATE")
 cd $HOME/aura
-wget https://github.com/aura-nw/aura/releases/download/v0.8.1-euphoria/aurad
-chmod +x aurad
-mv aurad $(which aurad)
-sudo systemctl restart aurad && journalctl -u aurad -f -o cat
+git pull
+git checkout v0.9.3-euphoria
+make install
+sudo systemctl restart aurad && journalctl -fu aurad -o cat
 
 break
 ;;
