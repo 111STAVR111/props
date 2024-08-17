@@ -54,10 +54,10 @@ go version
 echo -e "              \e[1m\e[32m3. Downloading and building binaries--> \e[0m" && sleep 1
 #INSTALL
 cd $HOME && mkdir -p go/bin/
-wget https://github.com/MANTRA-Finance/public/releases/download/v2.0.0/mantrachaind-2.0.0-linux-amd64.tar.gz
-tar -xvzf mantrachaind-2.0.0-linux-amd64.tar.gz
+wget https://github.com/MANTRA-Finance/public/releases/download/v3.0.0/mantrachaind-3.0.0-linux-amd64.tar.gz
+tar -xvzf mantrachaind-3.0.0-linux-amd64.tar.gz
 chmod +x mantrachaind
-rm -rf mantrachaind-2.0.0-linux-amd64.tar.gz
+rm -rf mantrachaind-3.0.0-linux-amd64.tar.gz
 mv mantrachaind $HOME/go/bin
 
 mantrachaind init $Validator_Name --chain-id $CHAIN_ID
@@ -156,10 +156,10 @@ break
 ;;
 "UPDATE")
 cd $HOME
-wget https://github.com/MANTRA-Finance/public/releases/download/v2.0.0/mantrachaind-2.0.0-linux-amd64.tar.gz
-tar -xvzf mantrachaind-2.0.0-linux-amd64.tar.gz
+wget https://github.com/MANTRA-Finance/public/releases/download/v3.0.0/mantrachaind-3.0.0-linux-amd64.tar.gz
+tar -xvzf mantrachaind-3.0.0-linux-amd64.tar.gz
 chmod +x mantrachaind
-rm -rf mantrachaind-2.0.0-linux-amd64.tar.gz
+rm -rf mantrachaind-3.0.0-linux-amd64.tar.gz
 mv mantrachaind $(which mantrachaind)
 sudo systemctl restart mantrachaind && sudo journalctl -fu mantrachaind -o cat
 
