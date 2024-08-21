@@ -170,7 +170,7 @@ apt install lz4
 sudo systemctl stop c4ed
 cp $HOME/.c4e-chain/data/priv_validator_state.json $HOME/.c4e-chain/priv_validator_state.json.backup
 rm -rf $HOME/.c4e-chain/data
-curl -o - -L http://c4e.snapshot.stavr.tech:1018/c4e/c4e-snap.tar.lz4 | lz4 -c -d - | tar -x -C $HOME/.c4e-chain --strip-components 2
+curl -o - -L https://c4e.snapshot.stavr.tech/c4e-snap.tar.lz4 | lz4 -c -d - | tar -x -C $HOME/.c4e-chain --strip-components 2
 mv $HOME/.c4e-chain/priv_validator_state.json.backup $HOME/.c4e-chain/data/priv_validator_state.json
 wget -O $HOME/.c4e-chain/config/addrbook.json "https://raw.githubusercontent.com/111STAVR111/props/main/C4E/addrbook.json"
 sudo systemctl restart c4ed && journalctl -u c4ed -f -o cat
