@@ -56,7 +56,7 @@ echo -e "              \e[1m\e[32m3. Downloading and building binaries--> \e[0m"
 cd $HOME && mkdir -p go/bin/
 git clone https://github.com/xpladev/xpla
 cd xpla
-git checkout v1.5.1
+git checkout v1.6.0
 make install
 
 xplad init $Validator_Name --chain-id $CHAIN_ID
@@ -155,7 +155,7 @@ break
 "UPDATE")
 cd $HOME/xpla
 git fetch --all
-git checkout v1.5.1
+git checkout v1.6.0
 make install
 sudo systemctl restart xplad && sudo journalctl -fu xplad -o cat
 
