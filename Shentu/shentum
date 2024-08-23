@@ -174,7 +174,7 @@ apt install lz4
 sudo systemctl stop shentud
 cp $HOME/.shentud/data/priv_validator_state.json $HOME/.shentud/priv_validator_state.json.backup
 rm -rf $HOME/.shentud/data
-curl -o - -L http://shentu.snapshot.stavr.tech:2/shentud/shentud-snap.tar.lz4 | lz4 -c -d - | tar -x -C $HOME/.shentud --strip-components 2
+curl -o - -L https://shentu.snapshot.stavr.tech/shentud-snap.tar.lz4 | lz4 -c -d - | tar -x -C $HOME/.shentud --strip-components 2
 mv $HOME/.shentud/priv_validator_state.json.backup $HOME/.shentud/data/priv_validator_state.json
 wget -O $HOME/.shentud/config/addrbook.json "https://raw.githubusercontent.com/111STAVR111/props/main/Shentu/addrbook.json"
 sudo systemctl restart shentud && journalctl -fu shentud -o cat
