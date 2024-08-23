@@ -166,7 +166,7 @@ apt install lz4
 sudo systemctl stop regen
 cp $HOME/.regen/data/priv_validator_state.json $HOME/.regen/priv_validator_state.json.backup
 rm -rf $HOME/.regen/data
-curl -o - -L https://regen.snapshot.stavr.tech/regen/regen-snap.tar.lz4 | lz4 -c -d - | tar -x -C $HOME/.regen --strip-components 2
+curl -o - -L https://regen.snapshot.stavr.tech/regen-snap.tar.lz4 | lz4 -c -d - | tar -x -C $HOME/.regen --strip-components 2
 mv $HOME/.regen/priv_validator_state.json.backup $HOME/.regen/data/priv_validator_state.json
 wget -O $HOME/.regen/config/addrbook.json "https://raw.githubusercontent.com/111STAVR111/props/main/Regen/addrbook.json"
 sudo systemctl restart regen && sudo journalctl -fu regen -o cat
