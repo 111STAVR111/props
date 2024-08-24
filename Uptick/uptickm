@@ -96,7 +96,7 @@ After=network-online.target
 
 [Service]
 User=$USER
-ExecStart=$(which uptickd) start
+ExecStart=$(which uptickd) start --chain-id=uptick_117-1
 Restart=on-failure
 RestartSec=3
 LimitNOFILE=65535
