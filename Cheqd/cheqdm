@@ -173,7 +173,7 @@ apt install lz4
 sudo systemctl stop cheqd-noded
 cp $HOME/.cheqdnode/data/priv_validator_state.json $HOME/.cheqdnode/priv_validator_state.json.backup
 rm -rf $HOME/.cheqdnode/data
-curl -o - -L http://cheqd.snapshot.stavr.tech:4/cheqd/cheqd-snap.tar.lz4 | lz4 -c -d - | tar -x -C $HOME/.cheqdnode --strip-components 2
+curl -o - -L https://cheqd.snapshot.stavr.tech/cheqd-snap.tar.lz4 | lz4 -c -d - | tar -x -C $HOME/.cheqdnode --strip-components 2
 mv $HOME/.cheqdnode/priv_validator_state.json.backup $HOME/.cheqdnode/data/priv_validator_state.json
 wget -O $HOME/.cheqdnode/config/addrbook.json "https://raw.githubusercontent.com/111STAVR111/props/main/Cheqd/addrbook.json"
 sudo systemctl restart cheqd-noded && journalctl -u cheqd-noded -f -o cat
