@@ -180,7 +180,7 @@ apt install lz4
 sudo systemctl stop lavad
 cp $HOME/.lava/data/priv_validator_state.json $HOME/.lava/priv_validator_state.json.backup
 rm -rf $HOME/.lava/data
-curl -o - -L http://lava.snapshot.stavr.tech:1020/lava/lava-snap.tar.lz4 | lz4 -c -d - | tar -x -C $HOME/.lava --strip-components 2
+curl -o - -L https://lava.snapshot.stavr.tech/lava-snap.tar.lz4 | lz4 -c -d - | tar -x -C $HOME/.lava --strip-components 2
 mv $HOME/.lava/priv_validator_state.json.backup $HOME/.lava/data/priv_validator_state.json
 wget -O $HOME/.lava/config/addrbook.json "https://raw.githubusercontent.com/111STAVR111/props/main/Lava/addrbook.json"
 systemctl restart lavad && journalctl -fu lavad -o cat
