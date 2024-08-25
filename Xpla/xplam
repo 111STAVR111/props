@@ -172,7 +172,7 @@ apt install lz4
 sudo systemctl stop xplad
 cp $HOME/.xpla/data/priv_validator_state.json $HOME/.xpla/priv_validator_state.json.backup
 rm -rf $HOME/.xpla/data
-curl -o - -L https://xpla.snapshot.stavr.tech/xpla/xpla-snap.tar.lz4 | lz4 -c -d - | tar -x -C $HOME/.xpla --strip-components 2
+curl -o - -L https://xpla.snapshot.stavr.tech/xpla-snap.tar.lz4 | lz4 -c -d - | tar -x -C $HOME/.xpla --strip-components 2
 mv $HOME/.xpla/priv_validator_state.json.backup $HOME/.xpla/data/priv_validator_state.json
 wget -O $HOME/.xpla/config/addrbook.json "https://raw.githubusercontent.com/111STAVR111/props/main/Xpla/addrbook.json"
 sudo systemctl restart xplad && sudo journalctl -fu xplad -o cat
