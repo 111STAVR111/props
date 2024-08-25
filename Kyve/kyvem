@@ -173,7 +173,7 @@ apt install lz4
 sudo systemctl stop kyved
 cp $HOME/.kyve/data/priv_validator_state.json $HOME/.kyve/priv_validator_state.json.backup
 rm -rf $HOME/.kyve/data
-curl -o - -L https://kyve.snapshot.stavr.tech/kyve/kyve-snap.tar.lz4 | lz4 -c -d - | tar -x -C $HOME/.kyve --strip-components 2
+curl -o - -L https://kyve.snapshot.stavr.tech/kyve-snap.tar.lz4 | lz4 -c -d - | tar -x -C $HOME/.kyve --strip-components 2
 mv $HOME/.kyve/priv_validator_state.json.backup $HOME/.kyve/data/priv_validator_state.json
 wget -O $HOME/.kyve/config/addrbook.json "https://raw.githubusercontent.com/111STAVR111/props/main/Kyve/addrbook.json"
 sudo systemctl restart kyved && journalctl -fu kyved -o cat
