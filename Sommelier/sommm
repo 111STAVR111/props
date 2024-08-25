@@ -169,7 +169,7 @@ apt install lz4
 sudo systemctl stop sommelier
 cp $HOME/.sommelier/data/priv_validator_state.json $HOME/.sommelier/priv_validator_state.json.backup
 rm -rf $HOME/.sommelier/data
-curl -o - -L https://sommelier.snapshot.stavr.tech/sommelier/sommelier-snap.tar.lz4 | lz4 -c -d - | tar -x -C $HOME/.sommelier --strip-components 2
+curl -o - -L https://sommelier.snapshot.stavr.tech/sommelier-snap.tar.lz4 | lz4 -c -d - | tar -x -C $HOME/.sommelier --strip-components 2
 mv $HOME/.sommelier/priv_validator_state.json.backup $HOME/.sommelier/data/priv_validator_state.json
 wget -O $HOME/.sommelier/config/addrbook.json "https://raw.githubusercontent.com/111STAVR111/props/main/Sommelier/addrbook.json"
 sudo systemctl restart sommelier && journalctl -fu sommelier -o cat
