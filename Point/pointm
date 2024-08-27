@@ -171,7 +171,7 @@ apt install lz4
 sudo systemctl stop pointd
 cp $HOME/.pointd/data/priv_validator_state.json $HOME/.pointd/priv_validator_state.json.backup
 rm -rf $HOME/.pointd/data
-curl -o - -L http://point.snapshot.stavr.tech:3/pointd/pointd-snap.tar.lz4 | lz4 -c -d - | tar -x -C $HOME/.pointd --strip-components 2
+curl -o - -L https://point.snapshot.stavr.tech/pointd-snap.tar.lz4 | lz4 -c -d - | tar -x -C $HOME/.pointd --strip-components 2
 mv $HOME/.pointd/priv_validator_state.json.backup $HOME/.pointd/data/priv_validator_state.json
 wget -O $HOME/.pointd/config/addrbook.json "https://raw.githubusercontent.com/111STAVR111/props/main/Point/addrbook.json"
 sudo systemctl restart pointd && journalctl -fu pointd -o cat
