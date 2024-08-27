@@ -56,7 +56,7 @@ echo -e "              \e[1m\e[32m3. Downloading and building binaries--> \e[0m"
 cd $HOME && mkdir -p go/bin/
 git clone https://github.com/gitopia/gitopia
 cd gitopia
-git checkout v3.3.0
+git checkout v4.0.0
 make install
 
 gitopiad init $Validator_Name --chain-id $CHAIN_ID
@@ -152,8 +152,12 @@ sudo systemctl restart gitopiad && journalctl -fu gitopiad -o cat
 break
 ;;
 "UPDATE")
-echo -e "      \e[1m\e[32m SOOOON\e[0m"
-gitopiad version
+cd $HOME/gitopia
+git fetch
+git checkout v4.0.0
+make install
+sudo systemctl restart gitopiad && sudo journalctl -fu gitopiad -o cat
+
 
 break
 ;;
