@@ -1,0 +1,174 @@
+#!/bin/bash
+
+while true
+do
+
+# Logo
+
+curl -s https://raw.githubusercontent.com/111STAVR111/props/main/logo_1.txt | bash
+
+# Menu
+
+PS3='Select an action: '
+options=(
+"Install Node"
+"Create wallet"
+"Check node logs"
+"Synchronization via StateSync"
+"Synchronization via SnapShot"
+"UPDATE"
+"Delete Node"
+"Exit")
+select opt in "${options[@]}"
+do
+case $opt in
+
+"Install Node")
+echo "*********************"
+echo -e "\e[1m\e[35m		Lets's begin\e[0m"
+echo "*********************"
+echo -e "\e[1m\e[32m	Enter your Validator_Name:\e[0m"
+echo "_|-_|-_|-_|-_|-_|-_|"
+read Validator_Name
+echo "_|-_|-_|-_|-_|-_|-_|"
+echo export Validator_Name=${Validator_Name} >> $HOME/.bash_profile
+echo export CHAIN_ID="iliad" >> $HOME/.bash_profile
+source ~/.bash_profile
+
+echo -e "\e[1m\e[32m1. Updating packages and dependencies--> \e[0m" && sleep 1
+#UPDATE APT
+sudo apt update && sudo apt upgrade -y
+sudo apt install curl tar wget clang pkg-config libssl-dev libleveldb-dev jq build-essential bsdmainutils git make ncdu htop screen unzip bc fail2ban htop -y
+
+echo -e "        \e[1m\e[32m2. Installing GO--> \e[0m" && sleep 1
+#INSTALL GO
+ver="1.21.6"
+wget "https://golang.org/dl/go$ver.linux-amd64.tar.gz"
+sudo rm -rf /usr/local/go
+sudo tar -C /usr/local -xzf "go$ver.linux-amd64.tar.gz"
+rm "go$ver.linux-amd64.tar.gz"
+echo "export PATH=$PATH:/usr/local/go/bin:$HOME/go/bin" >> $HOME/.bash_profile
+source $HOME/.bash_profile
+go version
+
+echo -e "              \e[1m\e[32m3. Downloading and building binaries--> \e[0m" && sleep 1
+#INSTALL
+cd $HOME && mkdir -p go/bin/
+wget https://story-geth-binaries.s3.us-west-1.amazonaws.com/geth-public/geth-linux-amd64-0.9.2-ea9f0d2.tar.gz
+wget https://story-geth-binaries.s3.us-west-1.amazonaws.com/story-public/story-linux-amd64-0.9.11-2a25df1.tar.gz
+tar -xvf geth-linux-amd64-0.9.2-ea9f0d2.tar.gz
+tar -xvf story-linux-amd64-0.9.11-2a25df1.tar.gz
+mv ~/geth-linux-amd64-0.9.2-ea9f0d2/geth ~/go/bin/
+mv ~/story-linux-amd64-0.9.11-2a25df1/story ~/go/bin/
+mkdir -p ~/.story/story
+mkdir -p ~/.story/geth
+
+story init --network $CHAIN_ID --moniker $Validator_Name
+
+wget -O $HOME/.story/story/config/addrbook.json "https://raw.githubusercontent.com/111STAVR111/props/main/Story/addrbook.json"
+
+
+sudo tee /etc/systemd/system/story-geth.service > /dev/null <<EOF
+[Unit]
+Description=Story Geth Client
+After=network.target
+
+[Service]
+User=$USER
+ExecStart=$HOME/go/bin/story-geth --iliad --syncmode full
+Restart=on-failure
+RestartSec=3
+LimitNOFILE=4096
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+sudo tee /etc/systemd/system/story.service > /dev/null <<EOF
+[Unit]
+Description=Story Consensus Client
+After=network.target
+
+[Service]
+User=$USER
+WorkingDirectory=$HOME/.story/story
+ExecStart=$HOME/go/bin/story run
+Restart=on-failure
+RestartSec=3
+LimitNOFILE=4096
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+
+# start service
+sudo systemctl daemon-reload
+sudo systemctl enable story-geth
+sudo systemctl enable story
+sudo systemctl restart story-geth
+sudo systemctl restart story
+
+echo '=============== SETUP FINISHED ==================='
+echo -e 'Congratulations:        \e[1m\e[32mSUCCESSFUL NODE INSTALLATION\e[0m'
+echo -e 'To check logs:        \e[1m\e[33mjournalctl -fu story-geth -o cat\e[0m'
+echo -e 'To check logs:        \e[1m\e[33mjournalctl -fu story -o cat\e[0m'
+echo -e "To check sync status: \e[1m\e[35mcurl -s http://localhost:26657/status | jq .result.sync_info\e[0m"
+
+break
+;;
+"Create wallet")
+echo "_|-_|-_|-_|-_|-_|-_|"
+echo -e "      \e[1m\e[35m Your WalletName:\e[0m"
+echo "_|-_|-_|-_|-_|-_|-_|"
+read Wallet
+echo export Wallet=${Wallet} >> $HOME/.bash_profile
+source ~/.bash_profile
+story validator export --export-evm-key
+echo -e "      \e[1m\e[32m!!!!!!!!!SAVE!!!!!!!!!!!!!!!!SAVE YOUR PRICATE KEY!!!!!!!!!SAVE!!!!!!!!!!!!!!!!\e[0m'"
+
+break
+;;
+"Synchronization via StateSync")
+echo -e "      \e[1m\e[32m SOOOON\e[0m"
+
+
+break
+;;
+"UPDATE")
+echo -e "      \e[1m\e[32m SOOOON\e[0m"
+story version
+
+break
+;;
+"Check node logs")
+sudo journalctl -fu story-testnet-geth.service -o cat
+
+break
+;;
+"Synchronization via SnapShot")
+echo -e "      \e[1m\e[32m SOOOON\e[0m"
+
+
+break
+;;
+"Delete Node")
+sudo systemctl stop story-geth
+sudo systemctl disable story-geth
+sudo systemctl stop story
+sudo systemctl disable story
+rm /etc/systemd/system/story-geth.service
+rm /etc/systemd/system/story.service
+sudo systemctl daemon-reload
+cd $HOME
+rm -rf .story
+rm -rf $(which story)
+rm -rf $(which geth)
+
+break
+;;
+"Exit")
+exit
+esac
+done
+done
