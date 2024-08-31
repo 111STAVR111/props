@@ -75,7 +75,7 @@ After=network.target
 
 [Service]
 User=$USER
-ExecStart=$HOME/go/bin/story-geth --iliad --syncmode full
+ExecStart=$HOME/go/bin/geth --iliad --syncmode full
 Restart=on-failure
 RestartSec=3
 LimitNOFILE=4096
