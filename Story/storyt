@@ -75,7 +75,7 @@ After=network.target
 
 [Service]
 User=$USER
-ExecStart=$HOME/go/bin/geth --iliad --syncmode full
+ExecStart=$HOME/go/bin/geth --iliad --syncmode full --http --http.api eth,net,web3,engine --http.vhosts '*' --http.addr 127.0.0.1 --http.port 8545 --ws --ws.api eth,web3,net,txpool --ws.addr 127.0.0.1 --ws.port 8546
 Restart=on-failure
 RestartSec=3
 LimitNOFILE=4096
