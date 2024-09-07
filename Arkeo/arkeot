@@ -54,15 +54,15 @@ go version
 echo -e "              \e[1m\e[32m3. Downloading and building binaries--> \e[0m" && sleep 1
 #INSTALL
 cd $HOME && mkdir $HOME/go/bin/
-git clone https://github.com/arkeonetwork/arkeo && cd arkeo
-wget https://share101.utsa.tech/arkeo/arkeod
-chmod +x arkeod
-mv arkeod $HOME/go/bin/
+git clone https://github.com/arkeonetwork/arkeo
+cd arkeo
+git checkout master
+TAG=testnet make install
 
 
 arkeod init $Validator_Name --chain-id $CHAIN_ID
 
-curl -s http://seed.arkeo.network:26657/genesis | jq '.result.genesis' > $HOME/.arkeo/config/genesis.json
+curl -s http://seed.innovationtheory.com:26657/genesis | jq '.result.genesis' > $HOME/.arkeo/config/genesis.json
 wget -O $HOME/.arkeo/config/addrbook.json "https://raw.githubusercontent.com/111STAVR111/props/main/Arkeo/addrbook.json"
 
 
