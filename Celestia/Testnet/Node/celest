@@ -54,7 +54,7 @@ go version
 echo -e "              \e[1m\e[32m3. Downloading and building binaries--> \e[0m" && sleep 1
 #INSTALL
 cd $HOME && mkdir -p go/bin/
-git clone https://github.com/celestiaorg/networks.git
+git clone https://github.com/celestiaorg/celestia-app.git
 cd celestia-app
 git checkout v2.1.2
 make install
