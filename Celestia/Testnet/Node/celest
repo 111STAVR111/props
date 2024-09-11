@@ -55,9 +55,11 @@ echo -e "              \e[1m\e[32m3. Downloading and building binaries--> \e[0m"
 #INSTALL
 cd $HOME && mkdir -p go/bin/
 git clone https://github.com/celestiaorg/celestia-app.git
-cd celestia-app
-git checkout v2.1.2
-make install
+wget https://github.com/celestiaorg/celestia-app/releases/download/v2.1.2/celestia-app_Linux_x86_64.tar.gz
+tar -xvzf celestia-app_Linux_x86_64.tar.gz
+rm -rf celestia-app_Linux_x86_64.tar.gz
+chmod +x celestia-appd
+mv celestia-appd $HOME/go/bin/
 
 celestia-appd init $Validator_Name --chain-id $CHAIN_ID
 
