@@ -31,14 +31,18 @@ echo "_|-_|-_|-_|-_|-_|-_|"
 read Wallet_Name
 echo "_|-_|-_|-_|-_|-_|-_|"
 echo export Wallet_Name=${Wallet} >> $HOME/.bash_profile
-echo -e "\e[1m\e[32m	Enter your Consensus (RPC) Node details\e[0m"
+echo -e "\e[1m\e[32m	Enter your Consensus (RPC) IP address\e[0m"
 echo "_|-_|-_|-_|-_|-_|-_|"
 read RPC_IP_address
 echo "_|-_|-_|-_|-_|-_|-_|"
 echo export RPC_IP_address=${IP} >> $HOME/.bash_profile
+echo -e "\e[1m\e[32m	Enter your Consensus (RPC) RPC PORT\e[0m"
+echo "_|-_|-_|-_|-_|-_|-_|"
 read RPC_PORT
 echo "_|-_|-_|-_|-_|-_|-_|"
 echo export RPC_PORT=${RPC_PORT} >> $HOME/.bash_profile
+echo -e "\e[1m\e[32m	Enter your Consensus (RPC) gRPC PORT\e[0m"
+echo "_|-_|-_|-_|-_|-_|-_|"
 read gRPC_PORT
 echo "_|-_|-_|-_|-_|-_|-_|"
 echo export gRPC_PORT=${gRPC_PORT} >> $HOME/.bash_profile
