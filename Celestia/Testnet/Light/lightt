@@ -14,6 +14,7 @@ options=(
 "Install Node"
 "Check wallet"
 "Check node logs"
+"Check node status"
 "Synchronization via SnapShot"
 "UPDATE"
 "Delete Node"
@@ -121,6 +122,11 @@ break
 ;;
 "Check node logs")
 sudo journalctl -fu celestia-light -o cat
+
+break
+;;
+"Check node status")
+celestia header sync-state --node.store ~/.celestia-light-mocha-4/
 
 break
 ;;
