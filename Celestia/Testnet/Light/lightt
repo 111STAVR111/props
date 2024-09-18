@@ -147,7 +147,6 @@ rm /etc/systemd/system/celestia-light.service
 systemctl daemon-reload
 cd $HOME
 rm -rf .celestia-light-mocha-4
-rm -rf .celestia-app
 rm -rf celestia-node
 rm -rf $(which celestia)
 
