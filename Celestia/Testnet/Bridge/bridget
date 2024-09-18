@@ -143,7 +143,6 @@ rm /etc/systemd/system/celestia-bridge.service
 systemctl daemon-reload
 cd $HOME
 rm -rf .celestia-bridge-mocha-4
-rm -rf .celestia-app
 rm -rf celestia-node
 rm -rf $(which celestia)
 
