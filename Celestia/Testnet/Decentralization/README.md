@@ -1,36 +1,38 @@
 | Data Center | IP Count | Percentage | Freq |
 |:------------:|:--------:|:-----------:|:-----:|
-| HETZNER | 53 | 38.69% | 🟢 |
-| OVH | 15 | 10.95% | 🟢 |
-| AMAZON | 8 | 5.84% | 🟢 |
-| Allnodes | 5 | 3.65% | 🟢 |
-| Contabo | 5 | 3.65% | 🟢 |
-| Scaleway | 5 | 3.65% | 🟢 |
-| Michael Sebastian Schinzel | 3 | 2.19% | 🟢 |
-| DIGITALOCEAN | 2 | 1.46% | 🟢 |
-| Google-Cloud | 2 | 1.46% | 🟢 |
-| Interserver | 2 | 1.46% | 🟢 |
-| IONOS | 2 | 1.46% | 🟢 |
-| LeaseWeb | 2 | 1.46% | 🟢 |
-| M247 | 2 | 1.46% | 🟢 |
-| MEVSPACE | 2 | 1.46% | 🟢 |
-| Oracle | 2 | 1.46% | 🟢 |
-| Vultr | 2 | 1.46% | 🟢 |
-| Coolhousing | 1 | 0.73% | 🟢 |
-| Dialog | 1 | 0.73% | 🟢 |
-| GTHost | 1 | 0.73% | 🟢 |
-| HIVELOCITY | 1 | 0.73% | 🟢 |
-| HOSTKEY | 1 | 0.73% | 🟢 |
-| InfoComm | 1 | 0.73% | 🟢 |
-| Korea Telecom | 1 | 0.73% | 🟢 |
-| Latitude | 1 | 0.73% | 🟢 |
-| Marbis | 1 | 0.73% | 🟢 |
-| Microsoft | 1 | 0.73% | 🟢 |
-| Netcup | 1 | 0.73% | 🟢 |
-| PhoenixNAP | 1 | 0.73% | 🟢 |
-| RETN | 1 | 0.73% | 🟢 |
-| Telconet | 1 | 0.73% | 🟢 |
-| WorldStream | 1 | 0.73% | 🟢 |
-| XENYA | 1 | 0.73% | 🟢 |
-| Xneelo | 1 | 0.73% | 🟢 |
-| OTHER | 8 | 5.84% | 🟢 |
+| HETZNER | 125 | 38.58% | 🟢 |
+| OVH | 39 | 12.04% | 🟢 |
+| AMAZON | 13 | 4.01% | 🟢 |
+| Contabo | 11 | 3.40% | 🟢 |
+| Allnodes | 10 | 3.09% | 🟢 |
+| Scaleway | 9 | 2.78% | 🟢 |
+| Michael Sebastian Schinzel | 6 | 1.85% | 🟢 |
+| Google-Cloud | 5 | 1.54% | 🟢 |
+| M247 | 5 | 1.54% | 🟢 |
+| Oracle | 5 | 1.54% | 🟢 |
+| Vultr | 5 | 1.54% | 🟢 |
+| DIGITALOCEAN | 4 | 1.23% | 🟢 |
+| HIVELOCITY | 4 | 1.23% | 🟢 |
+| Interserver | 4 | 1.23% | 🟢 |
+| IONOS | 4 | 1.23% | 🟢 |
+| MEVSPACE | 4 | 1.23% | 🟢 |
+| Microsoft | 4 | 1.23% | 🟢 |
+| Coolhousing | 3 | 0.93% | 🟢 |
+| Latitude | 3 | 0.93% | 🟢 |
+| Marbis | 3 | 0.93% | 🟢 |
+| RETN | 3 | 0.93% | 🟢 |
+| Telconet | 3 | 0.93% | 🟢 |
+| WorldStream | 3 | 0.93% | 🟢 |
+| Daisy | 2 | 0.62% | 🟢 |
+| LeaseWeb | 2 | 0.62% | 🟢 |
+| Netcup | 2 | 0.62% | 🟢 |
+| PhoenixNAP | 2 | 0.62% | 🟢 |
+| XENYA | 2 | 0.62% | 🟢 |
+| Dialog | 1 | 0.31% | 🟢 |
+| GTHost | 1 | 0.31% | 🟢 |
+| HOSTKEY | 1 | 0.31% | 🟢 |
+| InfoComm | 1 | 0.31% | 🟢 |
+| Korea Telecom | 1 | 0.31% | 🟢 |
+| Vimpelcom | 1 | 0.31% | 🟢 |
+| Xneelo | 1 | 0.31% | 🟢 |
+| OTHER | 32 | 9.88% | 🟢 |
