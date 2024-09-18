@@ -146,7 +146,6 @@ rm /etc/systemd/system/celestia-full.service
 systemctl daemon-reload
 cd $HOME
 rm -rf .celestia-full-mocha-4
-rm -rf .celestia-app
 rm -rf celestia-node
 rm -rf $(which celestia)
 
