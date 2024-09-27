@@ -131,8 +131,18 @@ echo -e "      \e[1m\e[32m!!!!!!!!!SAVE!!!!!!!!!!!!!!!!SAVE YOUR MNEMONIC PHRASE
 break
 ;;
 "Synchronization via StateSync")
-echo -e "      \e[1m\e[32m SOOOON\e[0m"
-
+RPC="https://celestia.rpc.m.stavr.tech:443"
+LATEST_HEIGHT=$(curl -s $RPC/block | jq -r .result.block.header.height); \
+BLOCK_HEIGHT=$((LATEST_HEIGHT - 1000)); \
+TRUST_HASH=$(curl -s "$RPC/block?height=$BLOCK_HEIGHT" | jq -r .result.block_id.hash)
+sed -i.bak -E "s|^(enable[[:space:]]+=[[:space:]]+).*$|\1true| ; \
+s|^(rpc_servers[[:space:]]+=[[:space:]]+).*$|\1\"$RPC,$RPC\"| ; \
+s|^(trust_height[[:space:]]+=[[:space:]]+).*$|\1$BLOCK_HEIGHT| ; \
+s|^(trust_hash[[:space:]]+=[[:space:]]+).*$|\1\"$TRUST_HASH\"| ; \
+s|^(seeds[[:space:]]+=[[:space:]]+).*$|\1\"\"|" $HOME/.celestia-app/config/config.toml
+sudo systemctl stop celestia-appd && celestia-appd tendermint unsafe-reset-all --home $HOME/.celestia-app
+wget -O $HOME/.celestia-app/config/addrbook.json "https://raw.githubusercontent.com/111STAVR111/props/refs/heads/main/Celestia/Mainnet/Node/addrbook.json"
+sudo systemctl restart celestia-appd && sudo journalctl -fu celestia-appd -o cat
 
 break
 ;;
@@ -148,7 +158,14 @@ sudo journalctl -fu celestia-appd -ocat
 break
 ;;
 "Synchronization via SnapShot")
-echo -e "      \e[1m\e[32m SOOOON\e[0m"
+snap install lz4
+sudo systemctl stop celestia-appd
+cp $HOME/.celestia-app/data/priv_validator_state.json $HOME/.celestia-app/priv_validator_state.json.backup
+rm -rf $HOME/.celestia-app/data
+curl -o - -L https://celestia-m.snapshot.stavr.tech/celestia-m-snap.tar.lz4 | lz4 -c -d - | tar -x -C $HOME/.celestia-app --strip-components 2
+mv $HOME/.celestia-app/priv_validator_state.json.backup $HOME/.celestia-app/data/priv_validator_state.json
+wget -O $HOME/.celestia-app/config/addrbook.json "https://raw.githubusercontent.com/111STAVR111/props/refs/heads/main/Celestia/Mainnet/Node/addrbook.json"
+sudo systemctl restart celestia-appd && journalctl -fu celestia-appd -o cat
 
 break
 ;;
