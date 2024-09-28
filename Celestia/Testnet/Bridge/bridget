@@ -79,6 +79,7 @@ After=network-online.target
 
 [Service]
 User=$USER
+Environment=GODEBUG="asynctimerchan=1"
 ExecStart=$(which celestia) bridge start \
 --p2p.network mocha \
 --metrics.tls=true --metrics --metrics.endpoint otel.celestia-mocha.com \
