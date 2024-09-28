@@ -79,6 +79,7 @@ After=network-online.target
 
 [Service]
 User=$USER
+Environment=GODEBUG="asynctimerchan=1"
 ExecStart=$(which celestia) light start \
 --core.ip $IP \
 --core.rpc.port $RPC_PORT \
