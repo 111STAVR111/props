@@ -148,7 +148,7 @@ sudo systemctl restart story-geth && journalctl -fu story-geth -o cat
 break
 ;;
 "Check node logs")
-sudo journalctl -fu story-testnet-geth.service -o cat
+sudo journalctl -fu story-geth.service -o cat
 
 break
 ;;
