@@ -55,11 +55,12 @@ echo -e "              \e[1m\e[32m3. Downloading and building binaries--> \e[0m"
 #INSTALL
 cd $HOME && mkdir -p go/bin/
 mkdir gravity-bin && cd gravity-bin
-wget https://github.com/Gravity-Bridge/Gravity-Bridge/releases/download/v1.11.1/gravity-linux-amd64
+wget -O gravity https://github.com/Gravity-Bridge/Gravity-Bridge/releases/download/v1.12.0/gravity-linux-amd64
 mv gravity-linux-amd64 gravity
-wget https://github.com/Gravity-Bridge/Gravity-Bridge/releases/download/v1.11.1/gbt
+wget https://github.com/Gravity-Bridge/Gravity-Bridge/releases/download/v1.12.0/gbt
 chmod +x *
-sudo mv * /usr/local/bin/
+mv $HOME/gravity /usr/bin/
+mv $HOME/gbt /usr/bin/
 
 
 gravity init $Validator_Name --chain-id $CHAIN_ID
@@ -161,8 +162,15 @@ echo -e "      \e[1m\e[32m SOOOON\e[0m"
 break
 ;;
 "UPDATE")
-echo -e "      \e[1m\e[32m SOOOON\e[0m"
-gravity version
+cd $HOME
+wget -O gravity https://github.com/Gravity-Bridge/Gravity-Bridge/releases/download/v1.12.0/gravity-linux-amd64
+wget https://github.com/Gravity-Bridge/Gravity-Bridge/releases/download/v1.12.0/gbt
+chmod +x gravity
+chmod +x gbt
+mv $HOME/gravity $(which gravity)
+mv $HOME/gbt $(which gbt)
+sudo systemctl restart gravity-node && journalctl -fu gravity-node -ocat
+sudo systemctl restart orchestrator && journalctl -fu orchestrator -ocat
 
 break
 ;;
