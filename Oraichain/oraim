@@ -55,8 +55,8 @@ echo -e "              \e[1m\e[32m3. Downloading and building binaries--> \e[0m"
 #INSTALL
 cd $HOME && mkdir -p go/bin/
 git clone https://github.com/oraichain/orai
-cd orai/orai
-git checkout v0.42.3
+cd orai/
+git checkout v0.42.4
 make install
 
 oraid init $Validator_Name --chain-id $CHAIN_ID
@@ -154,9 +154,9 @@ sudo systemctl restart oraid && sudo journalctl -fu oraid -o cat
 break
 ;;
 "UPDATE")
-cd $HOME/orai/orai
+cd $HOME/orai/
 git pull
-git checkout v0.42.3
+git checkout v0.42.4
 make install
 sudo systemctl restart oraid && sudo journalctl -fu oraid -o cat
 
@@ -164,7 +164,7 @@ sudo systemctl restart oraid && sudo journalctl -fu oraid -o cat
 break
 ;;
 "Check node logs")
-sudo journalctl -u oraid -f -o cat
+sudo journalctl -fu oraid -ocat
 
 break
 ;;
