@@ -173,7 +173,7 @@ apt install lz4
 sudo systemctl stop aurad
 cp $HOME/.aura/data/priv_validator_state.json $HOME/.aura/priv_validator_state.json.backup
 rm -rf $HOME/.aura/data
-curl -o - -L https://aura.snapshot.stavr.tech/aura-snap.tar.lz4 | lz4 -c -d - | tar -x -C $HOME/.aura --strip-components 2
+curl -o - -L https://aura.snapshot.stavr.tech/aura-snap.tar.lz4 | lz4 -c -d - | tar -x -C $HOME/.aura
 curl -o - -L https://aura.wasm.stavr.tech/wasm-aura.tar.lz4 | lz4 -c -d - | tar -x -C $HOME/.aura --strip-components 2
 mv $HOME/.aura/priv_validator_state.json.backup $HOME/.aura/data/priv_validator_state.json
 wget -O $HOME/.aura/config/addrbook.json "https://raw.githubusercontent.com/111STAVR111/props/main/Aura/addrbook.json"
