@@ -158,13 +158,16 @@ break
 "Synchronization via SnapShot")
 cd $HOME
 snap install lz4
-sudo systemctl stop story
+sudo systemctl stop story story-geth
 cp $HOME/.story/story/data/priv_validator_state.json $HOME/.story/story/priv_validator_state.json.backup
 rm -rf $HOME/.story/story/data
-curl -o - -L https://story.snapshot.stavr.tech/story-snap.tar.lz4 | lz4 -c -d - | tar -x -C $HOME/.story/story/ --strip-components 3
+rm -rf $HOME/.story/geth/iliad/geth/chaindata
+curl -o - -L https://story.snapshot.stavr.tech/story-snap.tar.lz4 | lz4 -c -d - | tar -x -C $HOME/.story/story/
+curl -o - -L https://story.snapshot.stavr.tech/story_geth-snap.tar.lz4 | lz4 -c -d - | tar -x -C $HOME/.story/geth/iliad/geth/
 mv $HOME/.story/story/priv_validator_state.json.backup $HOME/.story/story/data/priv_validator_state.json
 wget -O $HOME/.story/story/config/addrbook.json "https://raw.githubusercontent.com/111STAVR111/props/main/Story/addrbook.json"
-sudo systemctl restart story && sudo journalctl -fu story -o cat
+sudo systemctl restart story-geth
+sudo systemctl restart story && sudo journalctl -fu story -ocat
 
 
 break
