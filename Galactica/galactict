@@ -56,7 +56,7 @@ echo -e "              \e[1m\e[32m3. Downloading and building binaries--> \e[0m"
 cd $HOME && mkdir -p go/bin/
 git clone https://github.com/Galactica-corp/galactica
 cd galactica
-git checkout v0.1.2
+git checkout v0.2.4
 make install
 
 galacticad init $Validator_Name --chain-id $CHAIN_ID
@@ -153,8 +153,11 @@ systemctl restart galacticad && journalctl -fu galacticad -o cat
 break
 ;;
 "UPDATE")
-echo -e "      \e[1m\e[32m SOOOON\e[0m"
-galacticad version
+cd $HOME/galactica
+git fetch --all
+git checkout v0.2.4
+make install
+sudo systemctl restart galacticad && sudo journalctl -fu galacticad -o cat
 
 break
 ;;
