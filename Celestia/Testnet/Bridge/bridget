@@ -54,9 +54,9 @@ echo -e "              \e[1m\e[32m3. Downloading and building binaries--> \e[0m"
 cd $HOME && mkdir -p go/bin/
 git clone https://github.com/celestiaorg/celestia-node.git
 cd celestia-node/
-git checkout tags/v0.16.0 
-make build 
-sudo make install 
+git checkout tags/v0.16.2-mocha
+make build
+sudo make install
 make cel-key
 mv $HOME/celestia-node/cel-key /usr/local/bin/
 
@@ -112,8 +112,15 @@ cel-key list --node.type bridge --keyring-backend test --p2p.network mocha
 break
 ;;
 "UPDATE")
-echo -e "      \e[1m\e[32m SOOOON\e[0m"
-celestia version
+cd $HOME/celestia-node/
+git pull
+git checkout tags/v0.16.2-mocha
+make build
+make install
+make cel-key
+sudo systemctl stop celestia-bridge
+celestia bridge config-update --p2p.network mocha
+sudo systemctl restart celestia-bridge && sudo journalctl -fu celestia-bridge -ocat
 
 break
 ;;
