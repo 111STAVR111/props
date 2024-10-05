@@ -22,6 +22,7 @@ options=(
 "Create wallet"
 "Check wallet info"
 "Check wallet balance"
+"Update Fresh Peers"
 "Check Version"
 "Synchronization via SnapShot (Pruned)"
 "Synchronization via SnapShot (Archive)"
@@ -289,6 +290,20 @@ while true; do
     sleep 5
 done
 
+break
+;;
+"Update Fresh Peers")
+PEERS_URL="https://story-archive.snapshot.stavr.tech/peers-scan.txt"
+update_peers() {
+PEERS=$(curl -s $PEERS_URL | sed -n 's/^PEERS="\([^"]*\)"$/\1/p')
+if [ -n "$PEERS" ]; then
+sed -i -e "/^\[p2p\]/,/^\[/{s/^[[:space:]]*persistent_peers *=.*/persistent_peers = \"$PEERS\"/}" $HOME/.story/story/config/config.toml
+echo -e "${MAGNETA}🔥Peers updated successfully 🔥${RESET}"
+else
+echo "Failed to get peer data. Check the URL or try again later."
+fi
+}
+update_peers
 
 
 break
