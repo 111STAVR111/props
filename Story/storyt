@@ -93,7 +93,7 @@ rm -rf geth-linux-amd64-0.9.3-b224fdf.tar.gz
 mv ~/geth-linux-amd64-0.9.3-b224fdf/geth ~/go/bin/
 git clone https://github.com/piplabs/story
 cd $HOME/story
-git checkout v0.11.0
+git checkout v0.10.1
 go build -o story ./client
 sudo mv $HOME/story/story $HOME/go/bin/
 mkdir -p ~/.story/story
