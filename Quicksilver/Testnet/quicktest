@@ -32,7 +32,7 @@ echo "_|-_|-_|-_|-_|-_|-_|"
 read Validator_Name
 echo "_|-_|-_|-_|-_|-_|-_|"
 echo export Validator_Name=${Validator_Name} >> $HOME/.bash_profile
-echo export CHAIN_ID="rhye-2" >> $HOME/.bash_profile
+echo export CHAIN_ID="rhye-3" >> $HOME/.bash_profile
 source ~/.bash_profile
 
 echo -e "\e[1m\e[32m1. Updating packages and dependencies--> \e[0m" && sleep 1
@@ -54,9 +54,10 @@ go version
 echo -e "              \e[1m\e[32m3. Downloading and building binaries--> \e[0m" && sleep 1
 #INSTALL
 cd $HOME && mkdir -p go/bin/
-wget -O quicksilverd https://github.com/quicksilver-zone/quicksilver/releases/download/v1.6.2/quicksilverd-v1.6.2-amd64
-chmod +x quicksilverd
-mv $HOME/quicksilverd $HOME/go/bin/quicksilverd
+git clone https://github.com/ingenuity-build/quicksilver
+cd quicksilver
+git checkout v1.6.3
+make install
 
 quicksilverd init $Validator_Name --chain-id $CHAIN_ID
 quicksilverd config chain-id $CHAIN_ID
@@ -152,16 +153,15 @@ systemctl restart quicksilverd && sudo journalctl -fu quicksilverd -o cat
 break
 ;;
 "UPDATE")
-cd $HOME
-wget -O quicksilverd https://github.com/quicksilver-zone/quicksilver/releases/download/v1.6.2/quicksilverd-v1.6.2-amd64
-chmod +x quicksilverd
-mv $HOME/quicksilverd $(which quicksilverd)
+cd $HOME/quicksilver
+git pull
+git checkout v1.6.3
 sudo systemctl restart quicksilverd && sudo journalctl -fu quicksilverd -o cat
 
 break
 ;;
 "Check node logs")
-sudo journalctl -u quicksilverd -f -o cat
+sudo journalctl -fu quicksilverd -ocat
 
 break
 ;;
