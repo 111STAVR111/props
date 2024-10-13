@@ -1,3 +1,4 @@
+![Diagramm](https://github.com/111STAVR111/props/blob/main/Story/Decentralization/1/README.md)
 | Data Center | IP Count | Percentage | Freq |
 |:------------:|:--------:|:-----------:|:-----:|
 | Contabo | 5 | 45.45% | 🔴 |
