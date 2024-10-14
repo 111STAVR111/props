@@ -189,7 +189,7 @@ echo -e "Block Height: ${YELLOW}$BLOCK_HEIGHT${NO_COLOR}"
 echo -e "Creation Time: ${GREEN}$CREATION_TIME${NO_COLOR}"
 echo -e "File Size (Story): ${PINK}$FILE_SIZE_STORY${NO_COLOR}"
 echo -e "File Size (Geth): ${BLUE}$FILE_SIZE_GETH${NO_COLOR}"
-read -p "Do you want to continue with synchronization via snapshot? (yes/no): " USER_CHOICE
+read -p "Do you want to continue with synchronization via Archive snapshot? (yes/no): " USER_CHOICE
 USER_CHOICE=$(echo "$USER_CHOICE" | tr '[:upper:]' '[:lower:]')
 if [[ "$USER_CHOICE" == "yes" || "$USER_CHOICE" == "y" ]]; then
     echo "Proceeding with synchronization..."
@@ -250,7 +250,7 @@ echo -e "Block Height: ${YELLOW}$BLOCK_HEIGHT${NO_COLOR}"
 echo -e "Creation Time: ${GREEN}$CREATION_TIME${NO_COLOR}"
 echo -e "File Size (Story): ${PINK}$FILE_SIZE_STORY${NO_COLOR}"
 echo -e "File Size (Geth): ${BLUE}$FILE_SIZE_GETH${NO_COLOR}"
-read -p "Do you want to continue with synchronization via snapshot? (yes/no): " USER_CHOICE
+read -p "Do you want to continue with synchronization via Pruned snapshot? (yes/no): " USER_CHOICE
 USER_CHOICE=$(echo "$USER_CHOICE" | tr '[:upper:]' '[:lower:]')
 if [[ "$USER_CHOICE" == "yes" || "$USER_CHOICE" == "y" ]]; then
     echo "Proceeding with synchronization..."
