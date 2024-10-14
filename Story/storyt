@@ -195,7 +195,6 @@ sudo systemctl restart story && sudo journalctl -fu story -ocat
 break
 ;;
 "UPDATE")
-echo -e "      \e[1m\e[32m SOOOON\e[0m"
 cd $HOME
 rm -rf story
 git clone https://github.com/piplabs/story
