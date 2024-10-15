@@ -90,11 +90,16 @@ sleep 1
 prysmd init $Validator_Name --chain-id $CHAIN_ID
 
 if [ "$change_ports" == "y" ]; then
+    echo "Changing proxy_app port..."
     sed -i "s/tcp:\/\/127\.0\.0\.1:26658/tcp:\/\/127.0.0.1:${proxy_app_prefix}658/" $HOME/.prysm/config/config.toml
+    echo "Changing rpc port..."
     sed -i "s/tcp:\/\/127\.0\.0\.1:26657/tcp:\/\/127.0.0.1:${rpc_prefix}657/" $HOME/.prysm/config/config.toml
+    echo "Changing p2p port..."
     sed -i "s/tcp:\/\/0\.0\.0\.0:26656/tcp:\/\/0.0.0.0:${p2p_prefix}656/" $HOME/.prysm/config/config.toml
-	sed -i "s/pprof_laddr = \"localhost:6060\"/pprof_laddr = \"localhost:${pprof_prefix}60\"/" $HOME/.prysm/config/config.toml
-	sed -i "s/address = \"localhost:9090\"/address = \"localhost:${grpc_prefix}90\"/" $HOME/.prysm/config/app.toml
+    echo "Changing pprof port..."
+    sed -i "s/pprof_laddr = \"localhost:6060\"/pprof_laddr = \"localhost:${pprof_prefix}60\"/" $HOME/.prysm/config/config.toml
+    echo "Changing grpc port..."
+    sed -i "s/address = \"localhost:9090\"/address = \"localhost:${grpc_prefix}90\"/" $HOME/.prysm/config/app.toml
     echo "Ports have been updated to ${proxy_app_prefix}658, ${rpc_prefix}657, ${p2p_prefix}656, ${pprof_prefix}60 and ${grpc_prefix}90."
 fi
 
