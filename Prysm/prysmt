@@ -87,7 +87,7 @@ git checkout v0.1.0-devnet
 make install
 echo "${MAGNETA}🔥Binaries installed successfully 🔥${RESET}"
 sleep 1
-prysmd init --network $CHAIN_ID --moniker $Validator_Name
+prysmd init $Validator_Name --chain-id $CHAIN_ID
 
 if [ "$change_ports" == "y" ]; then
     sed -i "s/tcp:\/\/127\.0\.0\.1:26658/tcp:\/\/127.0.0.1:${proxy_app_prefix}658/" $HOME/.prysm/config/config.toml
