@@ -32,7 +32,7 @@ echo "_|-_|-_|-_|-_|-_|-_|"
 read Validator_Name
 echo "_|-_|-_|-_|-_|-_|-_|"
 echo export Validator_Name=${Validator_Name} >> $HOME/.bash_profile
-echo export CHAIN_ID="mantrachain-testnet-1" >> $HOME/.bash_profile
+echo export CHAIN_ID="mantrachain-dukong-1" >> $HOME/.bash_profile
 source ~/.bash_profile
 
 echo -e "\e[1m\e[32m1. Updating packages and dependencies--> \e[0m" && sleep 1
@@ -54,11 +54,10 @@ go version
 echo -e "              \e[1m\e[32m3. Downloading and building binaries--> \e[0m" && sleep 1
 #INSTALL
 cd $HOME && mkdir -p go/bin/
-wget https://github.com/MANTRA-Finance/public/releases/download/v3.0.0/mantrachaind-3.0.0-linux-amd64.tar.gz
-tar -xvzf mantrachaind-3.0.0-linux-amd64.tar.gz
-chmod +x mantrachaind
-rm -rf mantrachaind-3.0.0-linux-amd64.tar.gz
-mv mantrachaind $HOME/go/bin
+git clone https://github.com/MANTRA-Chain/mantrachain
+cd mantrachain
+git checkout v1.0.0-rc2
+make install
 
 mantrachaind init $Validator_Name --chain-id $CHAIN_ID
 
@@ -155,19 +154,13 @@ sudo systemctl restart mantrachaind && journalctl -fu mantrachaind -o cat
 break
 ;;
 "UPDATE")
-cd $HOME
-wget https://github.com/MANTRA-Finance/public/releases/download/v3.0.0/mantrachaind-3.0.0-linux-amd64.tar.gz
-tar -xvzf mantrachaind-3.0.0-linux-amd64.tar.gz
-chmod +x mantrachaind
-rm -rf mantrachaind-3.0.0-linux-amd64.tar.gz
-mv mantrachaind $(which mantrachaind)
-sudo systemctl restart mantrachaind && sudo journalctl -fu mantrachaind -o cat
+mantrachaind version
 
 
 break
 ;;
 "Check node logs")
-sudo journalctl -u mantrachaind -f -o cat
+sudo journalctl -fu mantrachaind -o cat
 
 break
 ;;
