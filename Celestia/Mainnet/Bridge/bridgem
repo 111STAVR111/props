@@ -153,7 +153,7 @@ if [[ "$USER_CHOICE" == "yes" || "$USER_CHOICE" == "y" ]]; then
     snap list | grep -q lz4 || snap install lz4
 	sudo systemctl stop celestia-bridge
 	rm -rf $HOME/.celestia-bridge/{blocks,data,index,inverted_index,transients,.lock}
-	curl -o - -L https://celestia.bridge-archive.snap-m.stavr.tech/bridge-m-snap.tar.lz4 | lz4 -c -d - | tar -x -C $HOME/.celestia-bridge/ --strip-components 2
+	curl -o - -L https://celestia.bridge-archive.snap-m.stavr.tech/bridge-m-snap.tar.lz4 | lz4 -c -d - | tar -x -C $HOME/.celestia-bridge/
 	sudo systemctl restart celestia-bridge && sudo journalctl -fu celestia-bridge -ocat
 else
     echo "Operation cancelled. Returning to menu..."
