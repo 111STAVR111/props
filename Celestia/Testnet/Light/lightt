@@ -184,6 +184,7 @@ cd $HOME
 rm -rf .celestia-light-mocha-4
 rm -rf .celestia-app
 rm -rf celestia-node
+rm -rf /usr/local/bin/cel-key
 rm -rf $(which celestia)
 
     echo "Node has been successfully deleted."
