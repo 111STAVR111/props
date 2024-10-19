@@ -229,6 +229,7 @@ USER_CHOICE=$(echo "$USER_CHOICE" | tr '[:upper:]' '[:lower:]')
 if [[ "$USER_CHOICE" == "yes" || "$USER_CHOICE" == "y" ]]; then
     echo "Proceeding with synchronization..."
     snap list | grep -q lz4 || snap install lz4
+	sudo systemctl stop celestia-appd
 	cp $HOME/.celestia-app/data/priv_validator_state.json $HOME/.celestia-app/priv_validator_state.json.backup
 	rm -rf $HOME/.celestia-app/data
 	curl -o - -L https://celestia-m.snapshot.stavr.tech/celestia-m-snap.tar.lz4 | lz4 -c -d - | tar -x -C $HOME/.celestia-app
