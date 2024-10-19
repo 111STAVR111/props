@@ -1,4 +1,6 @@
 #!/bin/bash
+MAGNETA=$(tput setaf 5)
+RESET=$(tput sgr0)
 
 while true
 do
@@ -15,7 +17,7 @@ options=(
 "Check wallet"
 "Check node logs"
 "Check node status"
-"Synchronization via SnapShot"
+"Synchronization via SnapShot (Archive)"
 "UPDATE"
 "Delete Node"
 "Exit")
@@ -37,6 +39,8 @@ echo -e "\e[1m\e[32m1. Updating packages and dependencies--> \e[0m" && sleep 1
 #UPDATE APT
 sudo apt update && sudo apt upgrade -y
 sudo apt install curl tar wget clang pkg-config libssl-dev libleveldb-dev jq build-essential bsdmainutils git make ncdu htop screen unzip bc fail2ban htop -y
+echo "${MAGNETA}🔥Dependencies updated 🔥${RESET}"
+sleep 1
 
 echo -e "        \e[1m\e[32m2. Installing GO--> \e[0m" && sleep 1
 #INSTALL GO
@@ -48,15 +52,17 @@ rm "go$ver.linux-amd64.tar.gz"
 echo "export PATH=$PATH:/usr/local/go/bin:$HOME/go/bin" >> $HOME/.bash_profile
 source $HOME/.bash_profile
 go version
+echo "${MAGNETA}🔥GO is installed 🔥${RESET}"
+sleep 1
 
 echo -e "              \e[1m\e[32m3. Downloading and building binaries--> \e[0m" && sleep 1
 #INSTALL
 cd $HOME && mkdir -p go/bin/
 git clone https://github.com/celestiaorg/celestia-node.git
 cd celestia-node/
-git checkout tags/v0.16.2-mocha
-make build
-sudo make install
+git checkout tags/v0.16.0 
+make build 
+sudo make install 
 make cel-key
 mv $HOME/celestia-node/cel-key /usr/local/bin/
 
@@ -79,7 +85,6 @@ After=network-online.target
 
 [Service]
 User=$USER
-Environment=GODEBUG="asynctimerchan=1"
 ExecStart=$(which celestia) bridge start \
 --p2p.network mocha \
 --metrics.tls=true --metrics --metrics.endpoint otel.celestia-mocha.com \
@@ -97,6 +102,7 @@ EOF
 sudo systemctl daemon-reload
 sudo systemctl enable celestia-bridge
 sudo systemctl restart celestia-bridge
+echo "${MAGNETA}🔥Service files are installed and running 🔥${RESET}"
 
 echo '=============== SETUP FINISHED ==================='
 echo -e 'Congratulations:        \e[1m\e[32mSUCCESSFUL NODE INSTALLATION\e[0m'
@@ -112,15 +118,8 @@ cel-key list --node.type bridge --keyring-backend test --p2p.network mocha
 break
 ;;
 "UPDATE")
-cd $HOME/celestia-node/
-git pull
-git checkout tags/v0.16.2-mocha
-make build
-make install
-make cel-key
-sudo systemctl stop celestia-bridge
-celestia bridge config-update --p2p.network mocha
-sudo systemctl restart celestia-bridge && sudo journalctl -fu celestia-bridge -ocat
+echo -e "      \e[1m\e[32m SOOOON\e[0m"
+celestia version
 
 break
 ;;
@@ -134,25 +133,58 @@ celestia header sync-state --node.store ~/.celestia-bridge-mocha-4/
 
 break
 ;;
-"Synchronization via SnapShot")
+"Synchronization via SnapShot (Archive)")
 cd $HOME
-snap install lz4
-sudo systemctl stop celestia-bridge
-rm -rf $HOME/.celestia-bridge-mocha-4/{blocks,data,index,inverted_index,transients,.lock}
-curl -o - -L https://celestia.bridge-archive.snap-t.stavr.tech/bridge-t-snap.tar.lz4 | lz4 -c -d - | tar -x -C $HOME/.celestia-bridge-mocha-4/ --strip-components 2
-sudo systemctl restart celestia-bridge && sudo journalctl -fu celestia-bridge -ocat
+YELLOW='\033[1;33m'
+GREEN='\033[1;32m'
+PINK='\033[1;35m'
+BLUE='\033[1;34m'
+NO_COLOR='\033[0m'
+SNAPSHOT_INFO_URL="https://bridge-data-t.stavr.tech/snapshot-info"
+SNAPSHOT_INFO=$(curl -s $SNAPSHOT_INFO_URL)
+BLOCK_HEIGHT=$(echo $SNAPSHOT_INFO | jq -r '.block_height')
+CREATION_TIME=$(echo $SNAPSHOT_INFO | jq -r '.creation_time')
+FILE_SIZE=$(echo $SNAPSHOT_INFO | jq -r '.file_size')
+echo -e "Block Height: ${YELLOW}$BLOCK_HEIGHT${NO_COLOR}"
+echo -e "Creation Time: ${GREEN}$CREATION_TIME${NO_COLOR}"
+echo -e "File Size (Archive): ${BLUE}$FILE_SIZE${NO_COLOR}"
+read -p "Do you want to continue with synchronization via Archive snapshot? (yes/no): " USER_CHOICE
+USER_CHOICE=$(echo "$USER_CHOICE" | tr '[:upper:]' '[:lower:]')
+if [[ "$USER_CHOICE" == "yes" || "$USER_CHOICE" == "y" ]]; then
+    echo "Proceeding with synchronization..."
+    snap list | grep -q lz4 || snap install lz4
+	sudo systemctl stop celestia-bridge
+	rm -rf $HOME/.celestia-bridge-mocha-4/{blocks,data,index,inverted_index,transients,.lock}
+	curl -o - -L https://celestia.bridge-archive.snap-t.stavr.tech/bridge-t-snap.tar.lz4 | lz4 -c -d - | tar -x -C $HOME/.celestia-bridge-mocha-4/
+	sudo systemctl restart celestia-bridge && sudo journalctl -fu celestia-bridge -ocat
+else
+    echo "Operation cancelled. Returning to menu..."
+fi
+
 
 break
 ;;
 "Delete Node")
+echo -e "\e[31mAre you sure you want to delete the node? (Yes/No):\e[0m"
+read confirmation
+
+if [ "$confirmation" == "Yes" ]; then
+	echo -e "\e[32m$confirmation\e[0m - Starting deletion process."
+
 systemctl stop celestia-bridge
 systemctl disable celestia-bridge
 rm /etc/systemd/system/celestia-bridge.service
 systemctl daemon-reload
 cd $HOME
 rm -rf .celestia-bridge-mocha-4
+rm -rf .celestia-app
 rm -rf celestia-node
+rm -rf /usr/local/bin/cel-key
 rm -rf $(which celestia)
+    echo "Node has been successfully deleted."
+else
+    echo "Node deletion cancelled."
+fi
 
 break
 ;;
