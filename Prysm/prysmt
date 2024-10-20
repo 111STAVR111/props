@@ -20,6 +20,7 @@ options=(
 "Check validator info"
 "Create wallet"
 "Check Version"
+"Synchronization via Statesync"
 "Synchronization via SnapShot (Pruned)"
 "UPDATE"
 "Delete Node"
@@ -169,29 +170,67 @@ sudo journalctl -fu prysmd -ocat
 
 break
 ;;
+"Synchronization via Statesync")
+SNAP_RPC=https://prysm.rpc.t.stavr.tech:443
+LATEST_HEIGHT=$(curl -s $SNAP_RPC/block | jq -r .result.block.header.height); \
+BLOCK_HEIGHT=$((LATEST_HEIGHT - 1000)); \
+TRUST_HASH=$(curl -s "$SNAP_RPC/block?height=$BLOCK_HEIGHT" | jq -r .result.block_id.hash)
+sed -i.bak -E "s|^(enable[[:space:]]+=[[:space:]]+).*$|\1true| ; \
+s|^(rpc_servers[[:space:]]+=[[:space:]]+).*$|\1\"$SNAP_RPC,$SNAP_RPC\"| ; \
+s|^(trust_height[[:space:]]+=[[:space:]]+).*$|\1$BLOCK_HEIGHT| ; \
+s|^(trust_hash[[:space:]]+=[[:space:]]+).*$|\1\"$TRUST_HASH\"| ; \
+s|^(seeds[[:space:]]+=[[:space:]]+).*$|\1\"\"|" $HOME/.prysm/config/config.toml
+prysmd tendermint unsafe-reset-all --home /root/.prysm
+wget -O $HOME/.prysm/config/addrbook.json "https://prysm-t.wasm.stavr.tech/addrbook.json"
+curl -o - -L https://prysm-t.wasm.stavr.tech/wasm-prysm.tar.lz4 | lz4 -c -d - | tar -x -C $HOME/.prysm/
+sudo systemctl restart prysmd && journalctl -fu prysmd -o cat
+
+break
+;;
 "Synchronization via SnapShot (Pruned)")
 cd $HOME
 YELLOW='\033[1;33m'
 GREEN='\033[1;32m'
 PINK='\033[1;35m'
-BLUE='\033[1;34m'
 NO_COLOR='\033[0m'
-SNAPSHOT_INFO_URL="https://soon-data.stavr.tech/snapshot-info"
+SNAPSHOT_INFO_URL="https://prysm-t.snapshot.stavr.tech/snapshot-info.txt"
 SNAPSHOT_INFO=$(curl -s $SNAPSHOT_INFO_URL)
-BLOCK_HEIGHT=$(echo $SNAPSHOT_INFO | jq -r '.block_height')
-CREATION_TIME=$(echo $SNAPSHOT_INFO | jq -r '.creation_time')
-FILE_SIZE_GETH=$(echo $SNAPSHOT_INFO | jq -r '.file_size_geth')
-FILE_SIZE_STORY=$(echo $SNAPSHOT_INFO | jq -r '.file_size_story')
+
+BLOCK_HEIGHT=$(echo "$SNAPSHOT_INFO" | grep "Block height" | awk '{print $3}')
+CREATION_TIME_RAW=$(echo "$SNAPSHOT_INFO" | grep "Creation time" | cut -d ' ' -f3-)
+
+CREATION_TIME_EPOCH=$(date -d "$CREATION_TIME_RAW" +%s)
+CURRENT_TIME_EPOCH=$(date +%s)
+TIME_DIFF=$((CURRENT_TIME_EPOCH - CREATION_TIME_EPOCH))
+
+if ((TIME_DIFF < 60)); then
+    TIME_AGO="${TIME_DIFF} sec ago"
+elif ((TIME_DIFF < 3600)); then
+    TIME_AGO="$((TIME_DIFF / 60)) min ago"
+elif ((TIME_DIFF < 86400)); then
+    TIME_AGO="$((TIME_DIFF / 3600)) h ago"
+else
+    TIME_AGO="$((TIME_DIFF / 86400)) d ago"
+fi
+
+FILE_SIZE=$(echo "$SNAPSHOT_INFO" | grep "Pruned size" | awk '{print $3}')
+
 echo -e "Block Height: ${YELLOW}$BLOCK_HEIGHT${NO_COLOR}"
-echo -e "Creation Time: ${GREEN}$CREATION_TIME${NO_COLOR}"
-echo -e "File Size (Story): ${PINK}$FILE_SIZE_STORY${NO_COLOR}"
-echo -e "File Size (Geth): ${BLUE}$FILE_SIZE_GETH${NO_COLOR}"
+echo -e "Creation Time: ${GREEN}$CREATION_TIME_RAW${NO_COLOR}"
+echo -e "File Size (Pruned): ${PINK}$FILE_SIZE${NO_COLOR} (${TIME_AGO})"
 read -p "Do you want to continue with synchronization via Pruned snapshot? (yes/no): " USER_CHOICE
 USER_CHOICE=$(echo "$USER_CHOICE" | tr '[:upper:]' '[:lower:]')
 if [[ "$USER_CHOICE" == "yes" || "$USER_CHOICE" == "y" ]]; then
     echo "Proceeding with synchronization..."
     snap list | grep -q lz4 || snap install lz4
-  SOON
+    sudo systemctl stop prysmd
+    cp $HOME/.prysm/data/priv_validator_state.json $HOME/.prysm/priv_validator_state.json.backup
+    rm -rf $HOME/.prysm/data
+    curl -o - -L https://prysm-t.snapshot.stavr.tech/prysm-snap.tar.lz4 | lz4 -c -d - | tar -x -C $HOME/.prysm/
+    curl -o - -L https://prysm-t.wasm.stavr.tech/wasm-prysm.tar.lz4 | lz4 -c -d - | tar -x -C $HOME/.prysm/
+    mv $HOME/.prysm/priv_validator_state.json.backup $HOME/.prysm/data/priv_validator_state.json
+    wget -O $HOME/.prysm/config/addrbook.json "https://prysm-t.wasm.stavr.tech/addrbook.json"
+    sudo systemctl restart prysmd && journalctl -fu prysmd -o cat
 else
     echo "Operation cancelled. Returning to menu..."
 fi
