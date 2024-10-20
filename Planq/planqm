@@ -56,7 +56,7 @@ echo -e "              \e[1m\e[32m3. Downloading and building binaries--> \e[0m"
 cd $HOME && mkdir -p go/bin/
 git clone https://github.com/planq-network/planq.git
 cd planq
-git checkout v1.1.0
+git checkout v2.0.4
 make install
 
 planqd init $Validator_Name --chain-id $CHAIN_ID
@@ -156,8 +156,12 @@ sudo systemctl restart planqd && journalctl -fu planqd -o cat
 break
 ;;
 "UPDATE")
-echo -e "      \e[1m\e[32m SOOOON\e[0m"
-planqd version
+cd $HOME
+wget https://github.com/planq-network/planq/releases/download/v2.0.4/planq_2.0.4_linux_amd64.tar.gz
+tar -xvzf planq_2.0.4_linux_amd64.tar.gz
+rm -rf planq_2.0.4_linux_amd64.tar.gz
+mv $HOME/bin/planqd $(which planqd)
+sudo systemctl restart planqd && sudo journalctl -fu planqd -o cat
 
 break
 ;;
