@@ -217,13 +217,27 @@ SNAPSHOT_INFO_URL="https://celestia-m.snapshot.stavr.tech/snapshot-info.txt"
 SNAPSHOT_INFO=$(curl -s $SNAPSHOT_INFO_URL)
 
 BLOCK_HEIGHT=$(echo "$SNAPSHOT_INFO" | grep "Block height" | awk '{print $3}')
-CREATION_TIME=$(echo "$SNAPSHOT_INFO" | grep "Creation time" | cut -d ' ' -f3-)
+CREATION_TIME_RAW=$(echo "$SNAPSHOT_INFO" | grep "Creation time" | cut -d ' ' -f3-)
+
+CREATION_TIME_EPOCH=$(date -d "$CREATION_TIME_RAW" +%s)
+CURRENT_TIME_EPOCH=$(date +%s)
+TIME_DIFF=$((CURRENT_TIME_EPOCH - CREATION_TIME_EPOCH))
+
+if ((TIME_DIFF < 60)); then
+    TIME_AGO="${TIME_DIFF} sec ago"
+elif ((TIME_DIFF < 3600)); then
+    TIME_AGO="$((TIME_DIFF / 60)) min ago"
+elif ((TIME_DIFF < 86400)); then
+    TIME_AGO="$((TIME_DIFF / 3600)) h ago"
+else
+    TIME_AGO="$((TIME_DIFF / 86400)) d ago"
+fi
+
 FILE_SIZE=$(echo "$SNAPSHOT_INFO" | grep "Pruned size" | awk '{print $3}')
 
 echo -e "Block Height: ${YELLOW}$BLOCK_HEIGHT${NO_COLOR}"
-echo -e "Creation Time: ${GREEN}$CREATION_TIME${NO_COLOR}"
-echo -e "File Size (Pruned): ${PINK}$FILE_SIZE${NO_COLOR}"
-
+echo -e "Creation Time: ${GREEN}$CREATION_TIME_RAW${NO_COLOR}"
+echo -e "File Size (Pruned): ${PINK}$FILE_SIZE${NO_COLOR} (${TIME_AGO})"
 read -p "Do you want to continue with synchronization via Pruned snapshot? (yes/no): " USER_CHOICE
 USER_CHOICE=$(echo "$USER_CHOICE" | tr '[:upper:]' '[:lower:]')
 if [[ "$USER_CHOICE" == "yes" || "$USER_CHOICE" == "y" ]]; then
