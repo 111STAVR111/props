@@ -54,9 +54,10 @@ go version
 echo -e "              \e[1m\e[32m3. Downloading and building binaries--> \e[0m" && sleep 1
 #INSTALL
 cd $HOME && mkdir -p go/bin/
-wget https://github.com/airchains-network/junction/releases/download/v0.1.0/junctiond
-chmod +x junctiond
-mv junctiond $HOME/go/bin/
+git clone https://github.com/airchains-network/junction/
+git checkout v0.2.0
+make build
+mv $HOME/junction/build/junction-jip-2 $HOME/go/bin/junctiond
 
 junctiond init $Validator_Name --chain-id $CHAIN_ID
 
@@ -150,8 +151,12 @@ sudo systemctl restart junctiond && journalctl -fu junctiond -o cat
 break
 ;;
 "UPDATE")
-echo -e "      \e[1m\e[32m SOOOON\e[0m"
-junctiond version
+git clone https://github.com/airchains-network/junction/
+cd $HOME/junction
+git checkout v0.2.0
+make build
+mv /root/junction/build/junction-jip-2 $(which junctiond)
+systemctl restart junctiond && journalctl -fu junctiond -o cat
 
 break
 ;;
