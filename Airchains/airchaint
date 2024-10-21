@@ -55,6 +55,7 @@ echo -e "              \e[1m\e[32m3. Downloading and building binaries--> \e[0m"
 #INSTALL
 cd $HOME && mkdir -p go/bin/
 git clone https://github.com/airchains-network/junction/
+cd $HOME/junction
 git checkout v0.2.0
 make build
 mv $HOME/junction/build/junction-jip-2 $HOME/go/bin/junctiond
