@@ -68,7 +68,7 @@ wget -O $HOME/.warden/config/addrbook.json "https://raw.githubusercontent.com/11
 
 echo -e "                     \e[1m\e[32m4. Node optimization and improvement--> \e[0m" && sleep 1
 
-sed -i.bak -e "s/^minimum-gas-prices *=.*/minimum-gas-prices = \"0.0025uward\"/;" ~/.warden/config/app.toml
+sed -i.bak -e "s/^minimum-gas-prices *=.*/minimum-gas-prices = \"25000000award\"/;" ~/.warden/config/app.toml
 external_address=$(wget -qO- eth0.me) 
 sed -i.bak -e "s/^external_address *=.*/external_address = \"$external_address:26656\"/" $HOME/.warden/config/config.toml
 peers="8fa48bbd20d316382f339bd00f31d3a2678682d2@144.76.29.90:26656,2581489669e7a297fcd9e9d2c050a177b8d82010@85.10.201.125:56656"
