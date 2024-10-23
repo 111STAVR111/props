@@ -199,7 +199,7 @@ sudo systemctl restart celestia-appd && sudo journalctl -fu celestia-appd -o cat
 break
 ;;
 "UPDATE")
-cd celestia-app
+cd $HOME/celestia-app
 git pull
 git checkout tags/v2.3.0-mocha -b v2.3.0-mocha
 make install
