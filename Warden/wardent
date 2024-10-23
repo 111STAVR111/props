@@ -54,7 +54,7 @@ go version
 echo -e "              \e[1m\e[32m3. Downloading and building binaries--> \e[0m" && sleep 1
 #INSTALL
 cd $HOME && mkdir -p go/bin/
-wget https://github.com/warden-protocol/wardenprotocol/releases/download/v0.4.2/wardend_Linux_x86_64.zip
+wget https://github.com/warden-protocol/wardenprotocol/releases/download/v0.5.2/wardend_Linux_x86_64.zip
 unzip wardend_Linux_x86_64.zip
 rm -rf wardend_Linux_x86_64.zip
 chmod +x wardend
@@ -63,7 +63,7 @@ mv wardend $HOME/go/bin/wardend
 wardend init $Validator_Name --chain-id $CHAIN_ID
 wardend config chain-id $CHAIN_ID
 
-wget -O $HOME/.warden/config/genesis.json http://135.181.210.171:29/genesis.json
+wget -O $HOME/.warden/config/genesis.json https://raw.githubusercontent.com/111STAVR111/props/refs/heads/main/Warden/genesis.json
 wget -O $HOME/.warden/config/addrbook.json "https://raw.githubusercontent.com/111STAVR111/props/main/Warden/addrbook.json"
 
 echo -e "                     \e[1m\e[32m4. Node optimization and improvement--> \e[0m" && sleep 1
@@ -151,7 +151,7 @@ break
 ;;
 "UPDATE")
 cd $HOME
-wget https://github.com/warden-protocol/wardenprotocol/releases/download/v0.4.2/wardend_Linux_x86_64.zip
+wget https://github.com/warden-protocol/wardenprotocol/releases/download/v0.5.2/wardend_Linux_x86_64.zip
 unzip wardend_Linux_x86_64.zip
 rm -rf wardend_Linux_x86_64.zip
 chmod +x wardend
@@ -161,7 +161,7 @@ sudo systemctl restart wardend && sudo journalctl -u wardend -f -o cat
 break
 ;;
 "Check node logs")
-sudo journalctl -u wardend -f -o cat
+sudo journalctl -fu wardend -o cat
 
 break
 ;;
