@@ -315,7 +315,7 @@ while true; do
     network_height=$(curl -s https://story.rpc-archive.t.stavr.tech/status | jq -r '.result.sync_info.latest_block_height')
     blocks_left=$((network_height - local_height))
     
-    estimated_time=$(echo "$blocks_left * 2.80" | bc)
+    estimated_time=$(echo "$blocks_left * 3.01" | bc)
     
     hours=$(echo "$estimated_time / 3600" | bc)
     minutes=$(echo "($estimated_time % 3600) / 60" | bc)
