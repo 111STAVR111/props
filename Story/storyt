@@ -42,7 +42,7 @@ echo "_|-_|-_|-_|-_|-_|-_|"
 read Validator_Name
 echo "_|-_|-_|-_|-_|-_|-_|"
 echo export Validator_Name=${Validator_Name} >> $HOME/.bash_profile
-echo export CHAIN_ID="iliad" >> $HOME/.bash_profile
+echo export CHAIN_ID="odyssey" >> $HOME/.bash_profile
 source ~/.bash_profile
 echo -e "\e[1m\e[32m	DO YOU WANT TO CHANGE THE DEFAULT PORTS? (yes/no):\e[0m"
 read change_ports
@@ -83,12 +83,12 @@ sleep 1
 echo -e "              \e[1m\e[32m3. Downloading and building binaries--> \e[0m" && sleep 1
 # INSTALL
 cd $HOME && mkdir -p go/bin/
-wget -O geth https://github.com/piplabs/story-geth/releases/download/v0.9.4/geth-linux-amd64
+wget -O geth https://github.com/piplabs/story-geth/releases/download/v0.10.0/geth-linux-amd64
 chmod +x geth
 mv ~/geth ~/go/bin/geth
 git clone https://github.com/piplabs/story
 cd $HOME/story
-git checkout v0.11.0
+git checkout v0.12.0
 go build -o story ./client
 sudo mv $HOME/story/story $HOME/go/bin/
 mkdir -p ~/.story/story
@@ -96,6 +96,8 @@ mkdir -p ~/.story/geth
 echo "${MAGNETA}🔥Binaries installed successfully 🔥${RESET}"
 sleep 1
 story init --network $CHAIN_ID --moniker $Validator_Name
+
+wget -O $HOME/.story/story/config/genesis.json https://raw.githubusercontent.com/111STAVR111/props/refs/heads/main/Story/genesis.json
 
 if [ "$change_ports" == "y" ]; then
     sed -i "s/tcp:\/\/127\.0\.0\.1:26658/tcp:\/\/127.0.0.1:${proxy_app_prefix}658/" $HOME/.story/story/config/config.toml
@@ -105,7 +107,7 @@ if [ "$change_ports" == "y" ]; then
 fi
 
 wget -O $HOME/.story/story/config/addrbook.json "https://raw.githubusercontent.com/111STAVR111/props/main/Story/addrbook.json"
-PEERS="27e144520559066334215c661a999e35ca8a3c40@160.25.233.228:26656,8876a2351818d73c73d97dcf53333e6b7a58c114@3.225.157.207:26656,8c1b516805e0c4631306032a0108e51339ab7cfd@78.46.60.145:26656,065107237cbe9aef0644cf1312902e157ecac71c@14.180.187.186:11156,f1e8a864dd243b89e58b4722af0d46bc3f9782a0@65.108.40.171:26656,f16c644a6d19798e482edcfe5bd5728a22aa5e0d@65.108.103.184:26656,4fe74768c4dabc66b3b75bace62e0446307cac7e@story-testnet.rpc.kjnodes.com:26656,aac5871efa351872789eef15c2da7a55a68abdad@88.218.226.79:26656,d0adad9344de86d8cde2ba65d07dbab0680d56dd@story-testnet-cosmos-rpc.crouton.digital:29856,800bd9a3bb37a07d5c57c42a5de72d7ab370cfd1@157.173.121.44:26656,bf023f368a0db72cae3931ff33a9a1b6c78db3fb@65.108.107.50:25656,c80927677db61cba41154a1341b133c1b7442ed4@49.12.120.113:25356,c82d2b5fe79e3159768a77f25eee4f22e3841f56@3.209.222.59:26656,1cceccb08bae25a0f91fe85b0ca562fa791f47aa@184.169.154.204:26656,1e8c2d47630cbeb16b3311888aac643598a00ace@65.108.129.170:24056,15c7e2b630c04ee11b2c3cfbfb1ede0379df9407@52.74.117.64:26656,359e4420e63db005d8e39c490ad1c1c329a68df3@3.222.216.118:26656,07ab4164e1d0ee17c565542856ac58981537156f@37.27.124.51:42656,0b512c9a4421c0259813aaa05c865f82365fa7c0@3.1.137.11:26656,5d7507dbb0e04150f800297eaba39c5161c034fe@135.125.188.77:26656"
+PEERS=""
 sed -i -e "/^\[p2p\]/,/^\[/{s/^[[:space:]]*persistent_peers *=.*/persistent_peers = \"$PEERS\"/}" $HOME/.story/story/config/config.toml
 echo "${MAGNETA}🔥Ports and peers updated 🔥${RESET}"
 sleep 1
@@ -117,7 +119,7 @@ After=network.target
 
 [Service]
 User=$USER
-ExecStart=$HOME/go/bin/geth --iliad --syncmode full --http --http.api eth,net,web3,engine --http.vhosts '*' --http.addr 127.0.0.1 --http.port 8545 --ws --ws.api eth,web3,net,txpool --ws.addr 127.0.0.1 --ws.port 8546
+ExecStart=$HOME/go/bin/geth --odyssey --syncmode full --http --http.api eth,net,web3,engine --http.vhosts '*' --http.addr 127.0.0.1 --http.port 8545 --ws --ws.api eth,web3,net,txpool --ws.addr 127.0.0.1 --ws.port 8546
 Restart=on-failure
 RestartSec=3
 LimitNOFILE=4096
@@ -145,10 +147,8 @@ EOF
 
 # Start and enable services
 sudo systemctl daemon-reload
-sudo systemctl enable story-geth
-sudo systemctl enable story
-sudo systemctl restart story-geth
-sudo systemctl restart story
+sudo systemctl enable story-geth story
+sudo systemctl restart story-geth story
 echo "${MAGNETA}🔥Service files are installed and running 🔥${RESET}"
 
 echo '=============== SETUP FINISHED ==================='
@@ -166,7 +166,7 @@ echo "_|-_|-_|-_|-_|-_|-_|"
 read Wallet
 echo export Wallet=${Wallet} >> $HOME/.bash_profile
 source ~/.bash_profile
-story validator export --export-evm-key
+story validator export
 echo -e "      \e[1m\e[32m!!!!!!!!!SAVE!!!!!!!!!!!!!!!!SAVE YOUR PRICATE KEY!!!!!!!!!SAVE!!!!!!!!!!!!!!!!\e[0m'"
 
 break
@@ -196,9 +196,9 @@ if [[ "$USER_CHOICE" == "yes" || "$USER_CHOICE" == "y" ]]; then
     sudo systemctl stop story story-geth
     cp $HOME/.story/story/data/priv_validator_state.json $HOME/.story/story/priv_validator_state.json.backup
     rm -rf $HOME/.story/story/data
-    rm -rf $HOME/.story/geth/iliad/geth/chaindata
+    rm -rf $HOME/.story/geth/odyssey/geth/chaindata
     curl -o - -L https://story-archive.snapshot.stavr.tech/story-snap.tar.lz4 | lz4 -c -d - | tar -x -C $HOME/.story/story/
-	curl -o - -L https://story-archive.snapshot.stavr.tech/story_geth-snap.tar.lz4 | lz4 -c -d - | tar -x -C $HOME/.story/geth/iliad/geth/
+	curl -o - -L https://story-archive.snapshot.stavr.tech/story_geth-snap.tar.lz4 | lz4 -c -d - | tar -x -C $HOME/.story/geth/odyssey/geth/
     mv $HOME/.story/story/priv_validator_state.json.backup $HOME/.story/story/data/priv_validator_state.json
     wget -O $HOME/.story/story/config/addrbook.json "https://raw.githubusercontent.com/111STAVR111/props/main/Story/addrbook.json"
     sudo systemctl restart story-geth
@@ -212,7 +212,7 @@ break
 ;;
 "UPDATE")
 cd $HOME
-wget -O geth https://github.com/piplabs/story-geth/releases/download/v0.9.4/geth-linux-amd64
+wget -O geth https://github.com/piplabs/story-geth/releases/download/v0.10.0/geth-linux-amd64
 chmod +x geth
 mv ~/geth $(which geth)
 sudo systemctl restart story-geth && sudo journalctl -fu story-geth -o cat
@@ -254,9 +254,9 @@ if [[ "$USER_CHOICE" == "yes" || "$USER_CHOICE" == "y" ]]; then
     sudo systemctl stop story story-geth
     cp $HOME/.story/story/data/priv_validator_state.json $HOME/.story/story/priv_validator_state.json.backup
     rm -rf $HOME/.story/story/data
-    rm -rf $HOME/.story/geth/iliad/geth/chaindata
+    rm -rf $HOME/.story/geth/odyssey/geth/chaindata
     curl -o - -L https://story.snapshot.stavr.tech/story-snap.tar.lz4 | lz4 -c -d - | tar -x -C $HOME/.story/story/
-    curl -o - -L https://story.snapshot.stavr.tech/story_geth-snap.tar.lz4 | lz4 -c -d - | tar -x -C $HOME/.story/geth/iliad/geth/
+    curl -o - -L https://story.snapshot.stavr.tech/story_geth-snap.tar.lz4 | lz4 -c -d - | tar -x -C $HOME/.story/geth/odyssey/geth/
     mv $HOME/.story/story/priv_validator_state.json.backup $HOME/.story/story/data/priv_validator_state.json
     wget -O $HOME/.story/story/config/addrbook.json "https://raw.githubusercontent.com/111STAVR111/props/main/Story/addrbook.json"
     sudo systemctl restart story-geth
@@ -294,7 +294,7 @@ echo -e "      \e[1m\e[35m Enter your EVM Address:\e[0m"
 echo "_|-_|-_|-_|-_|-_|-_|"
 read EVMADDRESS
 
-BALANCE=$(geth --exec "eth.getBalance('$EVMADDRESS')" attach ~/.story/geth/iliad/geth.ipc 2>/dev/null)
+BALANCE=$(geth --exec "eth.getBalance('$EVMADDRESS')" attach ~/.story/geth/odyssey/geth.ipc 2>/dev/null)
 BALANCE_ETH=$(awk "BEGIN {printf \"%.18f\", $BALANCE/1000000000000000000}")
 
 echo "Balance: $BALANCE_ETH IP"
@@ -348,17 +348,13 @@ read confirmation
 if [ "$confirmation" == "Yes" ]; then
     echo -e "\e[32m$confirmation\e[0m - Starting deletion process."
 
-    sudo systemctl stop story-geth
-    sudo systemctl disable story-geth
-    sudo systemctl stop story
-    sudo systemctl disable story
-    sudo rm /etc/systemd/system/story-geth.service
-    sudo rm /etc/systemd/system/story.service
+    sudo systemctl stop story-geth story
+    sudo systemctl disable story-geth story
+    sudo rm /etc/systemd/system/story-geth.service /etc/systemd/system/story.service
     sudo systemctl daemon-reload
     cd $HOME
     rm -rf .story
     rm -rf story
-    rm -rf geth-linux-amd64-0.9.3-b224fdf
     rm -rf $(which story)
     rm -rf $(which geth)
 
