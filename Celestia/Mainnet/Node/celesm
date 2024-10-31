@@ -83,10 +83,10 @@ sleep 1
 echo -e "              \e[1m\e[32m3. Downloading and building binaries--> \e[0m" && sleep 1
 #INSTALL
 cd $HOME && mkdir -p go/bin/
-wget https://github.com/celestiaorg/celestia-app/releases/download/v2.1.2/celestia-app_Linux_x86_64.tar.gz
-tar -xvzf celestia-app_Linux_x86_64.tar.gz
-chmod +x celestia-appd && mv celestia-appd /root/go/bin/
-rm -rf celestia-app_Linux_x86_64.tar.gz
+git clone https://github.com/celestiaorg/celestia-app/
+cd $HOME/celestia-app
+git checkout v2.3.1
+make install
 echo "${MAGNETA}🔥Binaries installed successfully 🔥${RESET}"
 sleep 1
 
@@ -197,8 +197,12 @@ sudo systemctl restart celestia-appd && sudo journalctl -fu celestia-appd -o cat
 break
 ;;
 "UPDATE")
-echo -e "      \e[1m\e[32m SOOOON\e[0m"
-celestia-appd version
+rm -rf $HOME/celestia-app
+git clone https://github.com/celestiaorg/celestia-app/
+cd $HOME/celestia-app
+git checkout v2.3.1
+make install
+sudo systemctl restart celestia-appd && sudo journalctl -fu celestia-appd -o cat
 
 break
 ;;
