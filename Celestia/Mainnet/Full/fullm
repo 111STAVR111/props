@@ -60,7 +60,7 @@ echo -e "              \e[1m\e[32m3. Downloading and building binaries--> \e[0m"
 cd $HOME && mkdir -p go/bin/
 git clone https://github.com/celestiaorg/celestia-node.git
 cd celestia-node/
-git checkout tags/v0.16.0 
+git checkout tags/v0.17.2
 make build 
 sudo make install 
 make cel-key
@@ -119,8 +119,15 @@ cel-key list --node.type full --keyring-backend test
 break
 ;;
 "UPDATE")
-echo -e "      \e[1m\e[32m SOOOON\e[0m"
-celestia version
+cd $HOME/celestia-node/
+git pull
+git checkout tags/v0.17.2
+make build 
+make install 
+make cel-key
+sudo systemctl stop celestia-full
+celestia full config-update
+sudo systemctl restart celestia-full && sudo journalctl -fu celestia-full -ocat
 
 break
 ;;
