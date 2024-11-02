@@ -211,11 +211,13 @@ fi
 break
 ;;
 "UPDATE")
-cd $HOME
-wget -O geth https://github.com/piplabs/story-geth/releases/download/v0.10.0/geth-linux-amd64
-chmod +x geth
-mv ~/geth $(which geth)
-sudo systemctl restart story-geth && sudo journalctl -fu story-geth -o cat
+rm -rf $HOME/story
+git clone https://github.com/piplabs/story
+cd $HOME/story
+git checkout v0.12.1
+go build -o story ./client
+sudo mv $HOME/story/story $(which story)
+sudo systemctl restart story && sudo journalctl -fu story -ocat
 
 break
 ;;
