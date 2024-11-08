@@ -56,7 +56,7 @@ echo -e "              \e[1m\e[32m3. Downloading and building binaries--> \e[0m"
 cd $HOME && mkdir -p go/bin/
 git clone https://github.com/MANTRA-Chain/mantrachain
 cd mantrachain
-git checkout v1.0.0-rc2
+git checkout v1.0.1
 make install
 
 mantrachaind init $Validator_Name --chain-id $CHAIN_ID
@@ -154,8 +154,11 @@ sudo systemctl restart mantrachaind && journalctl -fu mantrachaind -o cat
 break
 ;;
 "UPDATE")
-mantrachaind version
-
+cd $HOME
+wget -O mantrachaind https://github.com/MANTRA-Chain/mantrachain/releases/download/v1.0.1/mantrachaind-1.0.1-linux-amd64
+chmod +x mantrachaind
+mv mantrachaind $(which mantrachaind)
+sudo systemctl restart mantrachaind && sudo journalctl -fu mantrachaind -o cat
 
 break
 ;;
