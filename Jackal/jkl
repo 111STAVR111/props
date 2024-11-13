@@ -55,7 +55,7 @@ echo -e "              \e[1m\e[32m3. Downloading and building binaries--> \e[0m"
 #INSTALL
 cd $HOME && mkdir $HOME/go/bin/
 git clone https://github.com/JackalLabs/canine-chain && cd canine-chain
-git checkout v4.2.0
+git checkout v4.2.1
 make install
 
 canined init $Validator_Name --chain-id $CHAIN_ID
@@ -153,7 +153,7 @@ break
 "UPDATE")
 cd $HOME/canine-chain
 git fetch --all
-git checkout v4.2.0
+git checkout v4.2.1
 make install
 systemctl restart canined && journalctl -fu canined -o cat
 
@@ -161,7 +161,7 @@ systemctl restart canined && journalctl -fu canined -o cat
 break
 ;;
 "Check node logs")
-sudo journalctl -u canined -f -o cat
+sudo journalctl -fu canined -o cat
 
 break
 ;;
