@@ -153,6 +153,7 @@ break
 ;;
 "UPDATE")
 cd $HOME/elys
+git fetch
 git checkout fix/v0.50.0-patch-1
 git pull origin fix/v0.50.0-patch-1
 git tag -f v0.50.0
