@@ -54,9 +54,9 @@ go version
 echo -e "              \e[1m\e[32m3. Downloading and building binaries--> \e[0m" && sleep 1
 #INSTALL
 cd $HOME && mkdir -p go/bin/
-git clone https://github.com/oraichain/orai
-cd orai/
-git checkout v0.50.0
+git clone https://github.com/oraichain/wasmd/
+cd wasmd
+git checkout v0.50.1-rc0
 make install
 
 oraid init $Validator_Name --chain-id $CHAIN_ID
@@ -156,7 +156,7 @@ break
 "UPDATE")
 git clone https://github.com/oraichain/wasmd/
 cd $HOME/wasmd
-git checkout v0.50.0
+git checkout v0.50.1-rc0
 make install
 sudo systemctl restart oraid && sudo journalctl -fu oraid -o cat
 
