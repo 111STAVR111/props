@@ -83,7 +83,7 @@ sleep 1
 echo -e "              \e[1m\e[32m3. Downloading and building binaries--> \e[0m" && sleep 1
 # INSTALL
 cd $HOME && mkdir -p go/bin/
-wget -O geth https://github.com/piplabs/story-geth/releases/download/v0.10.0/geth-linux-amd64
+wget -O geth https://github.com/piplabs/story-geth/releases/download/v0.10.1/geth-linux-amd64
 chmod +x geth
 mv ~/geth ~/go/bin/geth
 git clone https://github.com/piplabs/story
@@ -211,13 +211,16 @@ fi
 break
 ;;
 "UPDATE")
-rm -rf $HOME/story
+cd $HOME && rm -r story
 git clone https://github.com/piplabs/story
 cd $HOME/story
-git checkout v0.12.1
+git checkout v0.13.0
 go build -o story ./client
 sudo mv $HOME/story/story $(which story)
-sudo systemctl restart story && sudo journalctl -fu story -ocat
+wget -O geth https://github.com/piplabs/story-geth/releases/download/v0.10.1/geth-linux-amd64
+chmod +x geth
+mv ~/geth $(which geth)
+sudo systemctl restart story story-geth && journalctl -fu story -o cat
 
 break
 ;;
