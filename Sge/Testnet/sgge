@@ -162,12 +162,21 @@ sudo systemctl restart sged && journalctl -u sged -f -o cat
 break
 ;;
 "Check node logs")
-sudo journalctl -u sged -f -o cat
+sudo journalctl -fu sged -o cat
 
 break
 ;;
 "Synchronization via SnapShot")
-echo -e "      \e[1m\e[32m SOOOON\e[0m"
+cd $HOME
+apt install lz4
+sudo systemctl stop sged
+cp $HOME/.sge/data/priv_validator_state.json $HOME/.sge/priv_validator_state.json.backup
+rm -rf $HOME/.sge/data
+curl -o - -L https://sge-t.snapshot.stavr.tech/sget-snap.tar.lz4 | lz4 -c -d - | tar -x -C $HOME/.sge --strip-components 2
+curl -o - -L https://sge-t.snapshot.stavr.tech/wasm-sget.tar.lz4 | lz4 -c -d - | tar -x -C $HOME/.sge
+mv $HOME/.sge/priv_validator_state.json.backup $HOME/.sge/data/priv_validator_state.json
+wget -O $HOME/.sge/config/addrbook.json "https://raw.githubusercontent.com/111STAVR111/props/main/Sge/Testnet/addrbook.json"
+systemctl restart sged && journalctl -fu sged -o cat
 
 break
 ;;
