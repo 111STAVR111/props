@@ -149,6 +149,7 @@ s|^(trust_hash[[:space:]]+=[[:space:]]+).*$|\1\"$TRUST_HASH\"| ; \
 s|^(seeds[[:space:]]+=[[:space:]]+).*$|\1\"\"|" $HOME/.sge/config/config.toml
 sged tendermint unsafe-reset-all --home /root/.sge
 wget -O $HOME/.sge/config/addrbook.json "https://raw.githubusercontent.com/111STAVR111/props/main/Sge/addrbook.json"
+curl -o - -L https://sge.wasm.stavr.tech/wasm-sge.tar.lz4 | lz4 -c -d - | tar -x -C $HOME/.sge
 systemctl restart sged && journalctl -fu sged -o cat
 
 
@@ -173,6 +174,7 @@ apt install lz4
 sudo systemctl stop sged
 cp $HOME/.sge/data/priv_validator_state.json $HOME/.sge/priv_validator_state.json.backup
 rm -rf $HOME/.sge/data
+curl -o - -L https://sge.wasm.stavr.tech/wasm-sge.tar.lz4 | lz4 -c -d - | tar -x -C $HOME/.sge
 curl -o - -L https://sge.snapshot.stavr.tech/sge-snap.tar.lz4 | lz4 -c -d - | tar -x -C $HOME/.sge --strip-components 2
 mv $HOME/.sge/priv_validator_state.json.backup $HOME/.sge/data/priv_validator_state.json
 wget -O $HOME/.sge/config/addrbook.json "https://raw.githubusercontent.com/111STAVR111/props/main/Sge/addrbook.json"
