@@ -88,7 +88,7 @@ chmod +x geth
 mv ~/geth ~/go/bin/geth
 git clone https://github.com/piplabs/story
 cd $HOME/story
-git checkout v0.12.1
+git checkout v0.13.0
 go build -o story ./client
 sudo mv $HOME/story/story $HOME/go/bin/
 mkdir -p ~/.story/story
