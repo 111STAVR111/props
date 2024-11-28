@@ -65,7 +65,7 @@ wget -O $HOME/.bitsongd/config/addrbook.json "https://raw.githubusercontent.com/
 
 echo -e "                     \e[1m\e[32m4. Node optimization and improvement--> \e[0m" && sleep 1
 
-sed -i.bak -e "s/^minimum-gas-prices *=.*/minimum-gas-prices = \"0ubld\"/;" ~/.bitsongd/config/app.toml
+sed -i.bak -e "s/^minimum-gas-prices *=.*/minimum-gas-prices = \"0.01ubtsg\"/;" ~/.bitsongd/config/app.toml
 external_address=$(wget -qO- eth0.me) 
 sed -i.bak -e "s/^external_address *=.*/external_address = \"$external_address:26656\"/" $HOME/.bitsongd/config/config.toml
 peers=""
@@ -138,6 +138,7 @@ cd $HOME/go-bitsong
 git fetch --all
 git checkout v0.18.0
 make install
+sed -i.bak -e "s/^minimum-gas-prices *=.*/minimum-gas-prices = \"0.01ubtsg\"/;" ~/.bitsongd/config/app.toml
 sudo systemctl restart bitsongd && journalctl -fu bitsongd -o cat
 
 
