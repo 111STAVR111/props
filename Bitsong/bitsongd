@@ -55,7 +55,7 @@ echo -e "              \e[1m\e[32m3. Downloading and building binaries--> \e[0m"
 cd $HOME && mkdir $HOME/go/bin/
 git clone https://github.com/bitsongofficial/go-bitsong/
 cd go-bitsong
-git checkout v0.18.0
+git checkout v0.18.1
 make install
 
 bitsongd init $Validator_Name --chain-id $CHAIN_ID
@@ -136,7 +136,7 @@ break
 "UPDATE")
 cd $HOME/go-bitsong
 git fetch --all
-git checkout v0.18.0
+git checkout v0.18.1
 make install
 sed -i.bak -e "s/^minimum-gas-prices *=.*/minimum-gas-prices = \"0.01ubtsg\"/;" ~/.bitsongd/config/app.toml
 sudo systemctl restart bitsongd && journalctl -fu bitsongd -o cat
