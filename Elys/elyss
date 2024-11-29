@@ -57,7 +57,7 @@ cd $HOME && mkdir -p go/bin/
 git clone https://github.com/elys-network/elys.git
 cd elys
 git fetch
-git checkout v0.52.0
+git checkout v0.53.0
 make install
 
 elysd init $Validator_Name --chain-id $CHAIN_ID
@@ -154,7 +154,7 @@ break
 cd $HOME && rm -rf elys
 git clone https://github.com/elys-network/elys.git
 cd elys
-git checkout v0.52.0
+git checkout v0.53.0
 make install
 sudo systemctl restart elysd && sudo journalctl -fu elysd -o cat
 
