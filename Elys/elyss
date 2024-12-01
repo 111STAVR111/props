@@ -57,8 +57,8 @@ cd $HOME && mkdir -p go/bin/
 git clone https://github.com/elys-network/elys.git
 cd elys
 git fetch
-git checkout fix/v0.53.0-patch-1
-git pull origin fix/v0.53.0-patch-1
+git checkout fix/v0.53.0-patch-2
+git pull origin fix/v0.53.0-patch-2
 git tag -f v0.53.0
 make install
 
@@ -156,8 +156,8 @@ break
 cd $HOME && rm -rf elys
 git clone https://github.com/elys-network/elys.git
 cd elys
-git checkout fix/v0.53.0-patch-1
-git pull origin fix/v0.53.0-patch-1
+git checkout fix/v0.53.0-patch-2
+git pull origin fix/v0.53.0-patch-2
 git tag -f v0.53.0
 make install
 sudo systemctl restart elysd && sudo journalctl -fu elysd -o cat
