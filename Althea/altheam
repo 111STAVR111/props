@@ -54,9 +54,9 @@ if [[ "$change_ports" == "yes" || "$change_ports" == "y" ]]; then
     read pprof_prefix
     echo -e "\e[1m\e[32m	Enter the new first two digits for the grpc port (9090):\e[0m"
     read grpc_prefix
-    echo -e "\e[1m\e[32m	Enter the new first two digits for the grpc-web port (9091):\e[0m"
-    read grpc-web_prefix
-    if ! [[ "$proxy_app_prefix" =~ ^[0-9]{2}$ ]] || ! [[ "$rpc_prefix" =~ ^[0-9]{2}$ ]] || ! [[ "$grpc_prefix" =~ ^[0-9]{2}$ ]] || ! [[ "$p2p_prefix" =~ ^[0-9]{2}$ ]]; then
+    echo -e "\e[1m\e[32m	Enter the new first two digits for the grpc_web port (9091):\e[0m"
+    read grpc_web_prefix
+    if ! [[ "$proxy_app_prefix" =~ ^[0-9]{2}$ ]] || ! [[ "$rpc_prefix" =~ ^[0-9]{2}$ ]] || ! [[ "$p2p_prefix" =~ ^[0-9]{2}$ ]]; then
         echo "Invalid input. Ports will not be changed."
         change_ports="n"
     fi
@@ -105,8 +105,8 @@ if [ "$change_ports" == "y" ]; then
     echo "Changing grpc port..."
     sed -i "s/address:\/\/0\.0\.0\.0:9090/address:\/\/0.0.0.0:${grpc_prefix}90/" $HOME/.althea/config/app.toml
     echo "Changing grpc port..."
-    sed -i "s/address:\/\/0\.0\.0\.0:9091/address:\/\/0.0.0.0:${grpc-web_prefix}91/" $HOME/.althea/config/app.toml
-    echo "Ports have been updated to ${proxy_app_prefix}658, ${rpc_prefix}657, ${p2p_prefix}656, ${pprof_prefix}60, ${grpc_prefix}90 and ${grpc-web_prefix}91."
+    sed -i "s/address:\/\/0\.0\.0\.0:9091/address:\/\/0.0.0.0:${grpc_web_prefix}91/" $HOME/.althea/config/app.toml
+    echo "Ports have been updated to ${proxy_app_prefix}658, ${rpc_prefix}657, ${p2p_prefix}656, ${pprof_prefix}60, ${grpc_prefix}90 and ${grpc_web_prefix}91."
 fi
 
 wget -O $HOME/.althea/config/addrbook.json "https://server-1.stavr.tech/Mainnet/Althea/addrbook.json"
