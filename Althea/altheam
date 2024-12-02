@@ -54,9 +54,9 @@ if [[ "$change_ports" == "yes" || "$change_ports" == "y" ]]; then
     read pprof_prefix
     echo -e "\e[1m\e[32m	Enter the new first two digits for the grpc port (9090):\e[0m"
     read grpc_prefix
-    echo -e "\e[1m\e[32m	Enter the new first two digits for the grpc port (9091):\e[0m"
+    echo -e "\e[1m\e[32m	Enter the new first two digits for the grpc-web port (9091):\e[0m"
     read grpc-web_prefix
-    if ! [[ "$proxy_app_prefix" =~ ^[0-9]{2}$ ]] || ! [[ "$rpc_prefix" =~ ^[0-9]{2}$ ]] || ! [[ "$p2p_prefix" =~ ^[0-9]{2}$ ]]; then
+    if ! [[ "$proxy_app_prefix" =~ ^[0-9]{2}$ ]] || ! [[ "$rpc_prefix" =~ ^[0-9]{2}$ ]] || ! [[ "$grpc_prefix" =~ ^[0-9]{2}$ ]] || ! [[ "$p2p_prefix" =~ ^[0-9]{2}$ ]]; then
         echo "Invalid input. Ports will not be changed."
         change_ports="n"
     fi
