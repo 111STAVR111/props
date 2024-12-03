@@ -109,6 +109,7 @@ if [ "$change_ports" == "y" ]; then
     echo "Ports have been updated to ${proxy_app_prefix}658, ${rpc_prefix}657, ${p2p_prefix}656, ${pprof_prefix}60, ${grpc_prefix}90 and ${grpc_web_prefix}91."
 fi
 
+
 wget -O $HOME/.althea/config/addrbook.json "https://server-1.stavr.tech/Mainnet/Althea/addrbook.json"
 wget -O $HOME/.althea/config/genesis.json "https://raw.githubusercontent.com/AltheaFoundation/althea-L1-docs/main/althea-l1-mainnet-genesis.json"
 sed -i.bak -e "s/^minimum-gas-prices *=.*/minimum-gas-prices = \"0.0aalthea\"/;" ~/.althea/config/app.toml
@@ -191,6 +192,7 @@ s|^(seeds[[:space:]]+=[[:space:]]+).*$|\1\"\"|" $HOME/.althea/config/config.toml
 althea tendermint unsafe-reset-all --home /root/.althea
 sudo systemctl restart althea && journalctl -fu althea -o cat
 
+
 break
 ;;
 "Synchronization via SnapShot (Pruned)")
@@ -268,6 +270,7 @@ for i in "${!SNAPSHOT_BLOCK_HEIGHT[@]}"; do
     echo -e "File Size (Pruned): ${PINK}${SNAPSHOT_FILE_SIZE[i]}${NO_COLOR}"
     echo ""
 done
+
 
 AVAILABLE_SNAPSHOTS=0
 for height in "${SNAPSHOT_BLOCK_HEIGHT[@]}"; do
