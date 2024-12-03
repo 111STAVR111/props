@@ -215,62 +215,57 @@ GREEN='\033[1;32m'
 PINK='\033[1;35m'
 NO_COLOR='\033[0m'
 
+declare -a SNAPSHOT_BLOCK_HEIGHT
+declare -a SNAPSHOT_CREATION_TIME
+declare -a SNAPSHOT_FILE_SIZE
+
 for i in "${!SNAPSHOT_INFO_URLS[@]}"; do
     INFO_URL=${SNAPSHOT_INFO_URLS[i]}
     
     if curl --output /dev/null --silent --head --fail "$INFO_URL"; then
         INFO=$(curl -s "$INFO_URL")
-
-        SNAPSHOT_INFO+=("$INFO")
-        SNAPSHOT_BLOCK_HEIGHT+=($(echo "$INFO" | grep "Block height" | awk '{print $3}'))
+        BLOCK_HEIGHT=$(echo "$INFO" | grep "Block height" | awk '{print $3}')
         CREATION_TIME_RAW=$(echo "$INFO" | grep "Creation time" | cut -d ':' -f2- | xargs)
         CREATION_TIME_FORMATTED=$(date -d "$CREATION_TIME_RAW" +"%Y-%m-%d %H:%M:%S" 2>/dev/null)
         if [ $? -ne 0 ]; then
             CREATION_TIME_FORMATTED="Invalid date format"
         fi
         
-        SNAPSHOT_CREATION_TIME+=("$CREATION_TIME_FORMATTED")
         FILE_SIZE=$(echo "$INFO" | grep "Pruned size" | awk '{print $3}')
-        SNAPSHOT_FILE_SIZE+=("$FILE_SIZE")
-        CREATION_TIME_EPOCH=$(date -d "$CREATION_TIME_FORMATTED" +%s 2>/dev/null)
-        CURRENT_TIME_EPOCH=$(date +%s)
-        TIME_DIFF=$((CURRENT_TIME_EPOCH - CREATION_TIME_EPOCH))
-
-        if [[ "$TIME_DIFF" =~ ^[0-9]+$ ]]; then
-            if ((TIME_DIFF < 60)); then
-                TIME_AGO="${TIME_DIFF} sec ago"
-            elif ((TIME_DIFF < 3600)); then
-                TIME_AGO="$((TIME_DIFF / 60)) min ago"
-            elif ((TIME_DIFF < 86400)); then
-                TIME_AGO="$((TIME_DIFF / 3600)) h ago"
-            else
-                TIME_AGO="$((TIME_DIFF / 86400)) d ago"
-            fi
-        else
-            TIME_AGO="N/A"
-        fi
-
-        echo -e "${RED}Snapshot $((i + 1))${NO_COLOR}"
-        echo -e "Block Height: ${YELLOW}${SNAPSHOT_BLOCK_HEIGHT[i]}${NO_COLOR}"
-        echo -e "Creation Time: ${GREEN}${SNAPSHOT_CREATION_TIME[i]}${NO_COLOR}"
-        echo -e "File Size (Pruned): ${PINK}${SNAPSHOT_FILE_SIZE[i]}${NO_COLOR} (${TIME_AGO})"
-        echo ""
+        SNAPSHOT_BLOCK_HEIGHT+=("${BLOCK_HEIGHT:-N/A}")
+        SNAPSHOT_CREATION_TIME+=("${CREATION_TIME_FORMATTED:-N/A}")
+        SNAPSHOT_FILE_SIZE+=("${FILE_SIZE:-N/A}")
+    else
+        SNAPSHOT_BLOCK_HEIGHT+=("N/A")
+        SNAPSHOT_CREATION_TIME+=("N/A")
+        SNAPSHOT_FILE_SIZE+=("N/A")
     fi
 done
 
+for i in "${!SNAPSHOT_BLOCK_HEIGHT[@]}"; do
+    echo -e "${RED}Snapshot $((i + 1))${NO_COLOR}"
+    echo -e "Block Height: ${YELLOW}${SNAPSHOT_BLOCK_HEIGHT[i]}${NO_COLOR}"
+    echo -e "Creation Time: ${GREEN}${SNAPSHOT_CREATION_TIME[i]}${NO_COLOR}"
+    echo -e "File Size (Pruned): ${PINK}${SNAPSHOT_FILE_SIZE[i]}${NO_COLOR}"
+    echo ""
+done
 
-if [ ${#SNAPSHOT_INFO[@]} -gt 0 ]; then
-    read -p "Please choose a snapshot number (1-${#SNAPSHOT_INFO[@]}): " SNAPSHOT_CHOICE
-    if [[ "$SNAPSHOT_CHOICE" =~ ^[1-9][0-9]*$ ]] && [ "$SNAPSHOT_CHOICE" -le "${#SNAPSHOT_INFO[@]}" ]; then
-        CHOSEN_SNAPSHOT=${SNAPSHOT_INFO[$((SNAPSHOT_CHOICE-1))]}
-        
-        echo "You chose snapshot: Snapshot $SNAPSHOT_CHOICE"
-        
-        BLOCK_HEIGHT=${SNAPSHOT_BLOCK_HEIGHT[$((SNAPSHOT_CHOICE-1))]}
+AVAILABLE_SNAPSHOTS=0
+for height in "${SNAPSHOT_BLOCK_HEIGHT[@]}"; do
+    if [[ "$height" != "N/A" ]]; then
+        ((AVAILABLE_SNAPSHOTS++))
+    fi
+done
+
+if [[ $AVAILABLE_SNAPSHOTS -gt 0 ]]; then
+    read -p "Please choose a snapshot number (1-${#SNAPSHOT_BLOCK_HEIGHT[@]}): " SNAPSHOT_CHOICE
+    if [[ "$SNAPSHOT_CHOICE" =~ ^[1-9][0-9]*$ ]] && [ "$SNAPSHOT_CHOICE" -le "${#SNAPSHOT_BLOCK_HEIGHT[@]}" ]; then
+        SELECTED_BLOCK_HEIGHT=${SNAPSHOT_BLOCK_HEIGHT[$((SNAPSHOT_CHOICE-1))]}
+        echo "You chose snapshot: Snapshot $SNAPSHOT_CHOICE with Block Height: $SELECTED_BLOCK_HEIGHT"
         
         read -p "Do you want to continue with synchronization via the selected snapshot? (yes/no): " USER_CHOICE
         USER_CHOICE=$(echo "$USER_CHOICE" | tr '[:upper:]' '[:lower:]')
-        
+
         if [[ "$USER_CHOICE" == "yes" || "$USER_CHOICE" == "y" ]]; then
             echo "Proceeding with synchronization..."
             snap list | grep -q lz4 || snap install lz4
@@ -289,9 +284,8 @@ if [ ${#SNAPSHOT_INFO[@]} -gt 0 ]; then
         echo "Invalid selection. Returning to menu..."
     fi
 else
-    echo "No snapshots available. Returning to menu..."
+    echo "No available snapshots to select. Returning to menu..."
 fi
-
 
 break
 ;;
