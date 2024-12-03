@@ -198,6 +198,7 @@ cd $HOME
 YELLOW='\033[1;33m'
 GREEN='\033[1;32m'
 PINK='\033[1;35m'
+BLUE='\033[1;34m'
 NO_COLOR='\033[0m'
 
 SNAPSHOT_INFO_URLS=("https://server-1.stavr.tech/Mainnet/Althea/snapshot-1-info.txt" 
@@ -227,18 +228,35 @@ for i in "${!SNAPSHOT_INFO_URLS[@]}"; do
         BLOCK_HEIGHT=$(echo "$INFO" | grep "Block height" | awk '{print $3}')
         CREATION_TIME_RAW=$(echo "$INFO" | grep "Creation time" | cut -d ':' -f2- | xargs)
         CREATION_TIME_FORMATTED=$(date -d "$CREATION_TIME_RAW" +"%Y-%m-%d %H:%M:%S" 2>/dev/null)
+        
         if [ $? -ne 0 ]; then
             CREATION_TIME_FORMATTED="Invalid date format"
+        else
+            CREATION_TIME_EPOCH=$(date -d "$CREATION_TIME_RAW" +%s)
+            CURRENT_TIME_EPOCH=$(date +%s)
+            TIME_DIFF=$((CURRENT_TIME_EPOCH - CREATION_TIME_EPOCH))
+
+            if ((TIME_DIFF < 60)); then
+                TIME_AGO="${TIME_DIFF} sec ago"
+            elif ((TIME_DIFF < 3600)); then
+                TIME_AGO="$((TIME_DIFF / 60)) min ago"
+            elif ((TIME_DIFF < 86400)); then
+                TIME_AGO="$((TIME_DIFF / 3600)) h ago"
+            else
+                TIME_AGO="$((TIME_DIFF / 86400)) d ago"
+            fi
         fi
         
         FILE_SIZE=$(echo "$INFO" | grep "Pruned size" | awk '{print $3}')
         SNAPSHOT_BLOCK_HEIGHT+=("${BLOCK_HEIGHT:-N/A}")
         SNAPSHOT_CREATION_TIME+=("${CREATION_TIME_FORMATTED:-N/A}")
         SNAPSHOT_FILE_SIZE+=("${FILE_SIZE:-N/A}")
+        SNAPSHOT_TIME_AGO+=("${TIME_AGO:-N/A}")
     else
         SNAPSHOT_BLOCK_HEIGHT+=("N/A")
         SNAPSHOT_CREATION_TIME+=("N/A")
         SNAPSHOT_FILE_SIZE+=("N/A")
+        SNAPSHOT_TIME_AGO+=("N/A")
     fi
 done
 
@@ -246,6 +264,7 @@ for i in "${!SNAPSHOT_BLOCK_HEIGHT[@]}"; do
     echo -e "${RED}Snapshot $((i + 1))${NO_COLOR}"
     echo -e "Block Height: ${YELLOW}${SNAPSHOT_BLOCK_HEIGHT[i]}${NO_COLOR}"
     echo -e "Creation Time: ${GREEN}${SNAPSHOT_CREATION_TIME[i]}${NO_COLOR}"
+    echo -e "Time Ago: ${BLUE}${SNAPSHOT_TIME_AGO[i]}${NO_COLOR}"  # Вывод времени
     echo -e "File Size (Pruned): ${PINK}${SNAPSHOT_FILE_SIZE[i]}${NO_COLOR}"
     echo ""
 done
@@ -286,6 +305,7 @@ if [[ $AVAILABLE_SNAPSHOTS -gt 0 ]]; then
 else
     echo "No available snapshots to select. Returning to menu..."
 fi
+
 
 break
 ;;
