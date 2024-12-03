@@ -313,7 +313,7 @@ curl -s http://localhost:$RPC_PORT/status | jq .result.sync_info
 break
 ;;
 "Sync status")
-RPC_PORT=$(sed -n '90{s/.*://; s/"//g; p}' $HOME/.althea/config/config.toml)
+RPC_PORT=$(sed -n '91{s/.*://; s/"//g; p}' $HOME/.althea/config/config.toml)
 
 while true; do
     local_height=$(curl -s localhost:$RPC_PORT/status | jq -r '.result.sync_info.latest_block_height')
