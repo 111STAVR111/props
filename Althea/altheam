@@ -330,8 +330,7 @@ curl -s http://localhost:$RPC_PORT/status | jq .result.sync_info
 break
 ;;
 "Sync status")
-RPC_PORT=$(sed -n '91{s/.*://; s/"//g; p}' $HOME/.althea/config/config.toml)
-
+RPC_PORT=$(grep '^laddr' $HOME/.althea/config/config.toml | head -n 1 | awk -F':' '{print $NF}' | tr -d '"')
 while true; do
     local_height=$(curl -s localhost:$RPC_PORT/status | jq -r '.result.sync_info.latest_block_height')
     network_height=$(curl -s https://althea.rpc.m.stavr.tech/status | jq -r '.result.sync_info.latest_block_height')
