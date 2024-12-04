@@ -318,7 +318,7 @@ curl localhost:$(sed -n '/\[rpc\]/,/laddr/ { /laddr/ {s/.*://; s/".*//; p} }' $H
 break
 ;;
 "Check Version")
-althea_output=$(prysmd version --long | grep -e version -e commit 2>&1)
+althea_output=$(althea version --long | grep -e version -e commit 2>&1)
 echo -e "\e[32m${althea_output}\e[0m"
 
 break
