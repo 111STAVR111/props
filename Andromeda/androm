@@ -191,6 +191,7 @@ s|^(trust_height[[:space:]]+=[[:space:]]+).*$|\1$BLOCK_HEIGHT| ; \
 s|^(trust_hash[[:space:]]+=[[:space:]]+).*$|\1\"$TRUST_HASH\"| ; \
 s|^(seeds[[:space:]]+=[[:space:]]+).*$|\1\"\"|" $HOME/.andromeda/config/config.toml
 andromedad tendermint unsafe-reset-all --home /root/.andromeda
+wget -O $HOME/.andromeda/config/addrbook.json "https://server-1.stavr.tech/Mainnet/Andromeda/addrbook.json"
 sudo systemctl restart andromedad && journalctl -fu andromedad -o cat
 
 
