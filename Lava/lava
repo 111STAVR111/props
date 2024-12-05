@@ -56,7 +56,7 @@ echo -e "              \e[1m\e[32m3. Downloading and building binaries--> \e[0m"
 cd $HOME && mkdir $HOME/go/bin/
 git clone https://github.com/lavanet/lava/
 cd lava
-git checkout v4.1.0
+git checkout v4.2.0
 make install-all
 
 lavad init $Validator_Name --chain-id $CHAIN_ID
@@ -163,7 +163,7 @@ break
 "UPDATE")
 cd $HOME/lava
 git fetch --all
-git checkout v4.1.0
+git checkout v4.2.0
 make install-all
 sudo systemctl restart lavad && sudo journalctl -fu lavad -o cat
 
