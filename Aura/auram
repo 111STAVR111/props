@@ -301,6 +301,7 @@ if [[ $AVAILABLE_SNAPSHOTS -gt 0 ]]; then
             curl -o - -L "https://server-1.stavr.tech/Mainnet/Aura/aura-snap-$SNAPSHOT_NUMBER.tar.lz4" | lz4 -c -d - | tar -x -C $HOME/.aura
             mv $HOME/.aura/priv_validator_state.json.backup $HOME/.aura/data/priv_validator_state.json
             wget -O $HOME/.aura/config/addrbook.json "https://server-1.stavr.tech/Mainnet/Aura/addrbook.json"
+            curl -o - -L https://aura.wasm.stavr.tech/wasm-aura.tar.lz4 | lz4 -c -d - | tar -x -C $HOME/.aura
             sudo systemctl restart aurad && journalctl -fu aurad -o cat
         else
             echo "Operation cancelled. Returning to menu..."
