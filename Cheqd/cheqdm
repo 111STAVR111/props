@@ -87,7 +87,7 @@ echo -e "              \e[1m\e[32m3. Downloading and building binaries--> \e[0m"
 cd $HOME && mkdir -p go/bin/
 git clone https://github.com/cheqd/cheqd-node
 cd cheqd-node
-git checkout v2.0.2
+git checkout v3.0.1
 make install
 echo "${MAGNETA}🔥Binaries installed successfully 🔥${RESET}"
 sleep 1
@@ -168,8 +168,12 @@ echo -e "      \e[1m\e[32m!!!!!!!!!SAVE!!!!!!!!!!!!!!!!SAVE YOUR MNEMONIC PHRASE
 break
 ;;
 "UPDATE")
-echo -e "      \e[1m\e[32m SOOOON\e[0m"
-cheqd-noded version
+cd $HOME/cheqd-node
+git pull
+git checkout v3.0.1
+make build
+mv /root/cheqd-node/build/cheqd-noded $(which cheqd-noded)
+sudo systemctl restart cheqd-noded && sudo journalctl -fu cheqd-noded -o cat
 
 break
 ;;
