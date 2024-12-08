@@ -1,3 +1,4 @@
+![Diagramm](https://github.com/111STAVR111/props/blob/main/Celestia/Mainnet/Decentralization/1/README.md)
 | Data Center | IP Count | Percentage | Freq |
 |:------------:|:--------:|:-----------:|:-----:|
 | HETZNER | 51 | 53.12% | 🔴 |
