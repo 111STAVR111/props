@@ -311,7 +311,6 @@ if [[ $AVAILABLE_SNAPSHOTS -gt 0 ]]; then
             curl -o - -L "https://server-1.stavr.tech/Mainnet/Juno/juno-snap-$SNAPSHOT_NUMBER.tar.lz4" | lz4 -c -d - | tar -x -C $HOME/.juno
             mv $HOME/.juno/priv_validator_state.json.backup $HOME/.juno/data/priv_validator_state.json
             wget -O $HOME/.juno/config/addrbook.json "https://server-1.stavr.tech/Mainnet/Juno/addrbook.json"
-			curl -o - -L https://juno.wasm.stavr.tech/wasm-juno.tar.lz4 | lz4 -c -d - | tar -x -C $HOME/.juno/
             sudo systemctl restart junod && journalctl -fu junod -o cat
         else
             echo "Operation cancelled. Returning to menu..."
