@@ -122,14 +122,8 @@ sed -i.bak -e "s/^seeds =.*/seeds = \"$seeds\"/" $HOME/.pointd/config/config.tom
 sed -i 's/max_num_inbound_peers =.*/max_num_inbound_peers = 50/g' $HOME/.pointd/config/config.toml
 sed -i 's/max_num_outbound_peers =.*/max_num_outbound_peers = 50/g' $HOME/.pointd/config/config.toml
 
-pruning="custom"
-pruning_keep_recent="1000"
-pruning_keep_every="0"
-pruning_interval="10"
+pruning="nothing"
 sed -i -e "s/^pruning *=.*/pruning = \"$pruning\"/" $HOME/.pointd/config/app.toml
-sed -i -e "s/^pruning-keep-recent *=.*/pruning-keep-recent = \"$pruning_keep_recent\"/" $HOME/.pointd/config/app.toml
-sed -i -e "s/^pruning-keep-every *=.*/pruning-keep-every = \"$pruning_keep_every\"/" $HOME/.pointd/config/app.toml
-sed -i -e "s/^pruning-interval *=.*/pruning-interval = \"$pruning_interval\"/" $HOME/.pointd/config/app.toml
 echo "${MAGNETA}🔥Ports and peers updated 🔥${RESET}"
 sleep 1
 # Setup systemd services
