@@ -103,9 +103,9 @@ if [ "$change_ports" == "y" ]; then
     echo "Changing pprof port..."
     sed -i "s/pprof_laddr = \"localhost:6060\"/pprof_laddr = \"localhost:${pprof_prefix}60\"/" $HOME/.fiamma/config/config.toml
     echo "Changing grpc port..."
-    sed -i "s/address = \"0\.0\.0\.0:9090\"/address = \"0.0.0.0:${grpc_prefix}90\"/" $HOME/.fiamma/config/app.toml
+    sed -i "s/address = \"localhost:9090\"/address = \"localhost:${grpc_prefix}90\"/" $HOME/.fiamma/config/app.toml
     echo "Changing grpc-web port..."
-    sed -i "s/address = \"0\.0\.0\.0:9091\"/address = \"0.0.0.0:${grpc_web_prefix}91\"/" $HOME/.fiamma/config/app.toml
+    sed -i "s/address = \"localhost:9091\"/address = \"localhost:${grpc_web_prefix}91\"/" $HOME/.fiamma/config/app.toml
     echo "Ports have been updated to ${proxy_app_prefix}658, ${rpc_prefix}657, ${p2p_prefix}656, ${pprof_prefix}60, ${grpc_prefix}90 and ${grpc_web_prefix}91."
 fi
 
