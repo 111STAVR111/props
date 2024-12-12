@@ -201,6 +201,7 @@ s|^(trust_hash[[:space:]]+=[[:space:]]+).*$|\1\"$TRUST_HASH\"| ; \
 s|^(seeds[[:space:]]+=[[:space:]]+).*$|\1\"\"|" $HOME/.sge/config/config.toml
 sged tendermint unsafe-reset-all --home /root/.sge
 wget -O $HOME/.sge/config/addrbook.json "https://server-1.stavr.tech/Testnet/Sge/addrbook.json"
+curl -o - -L https://server-3.stavr.tech/Testnet/Sge/wasm-sget.tar.lz4 | lz4 -c -d - | tar -x -C $HOME/.sge
 sudo systemctl restart sged && journalctl -fu sged -o cat
 
 
@@ -307,6 +308,7 @@ if [[ $AVAILABLE_SNAPSHOTS -gt 0 ]]; then
             rm -rf $HOME/.sge/data
             SNAPSHOT_NUMBER=$((SNAPSHOT_CHOICE))
             curl -o - -L "https://server-1.stavr.tech/Testnet/Sge/sge-snap-$SNAPSHOT_NUMBER.tar.lz4" | lz4 -c -d - | tar -x -C $HOME/.sge
+            curl -o - -L https://server-3.stavr.tech/Testnet/Sge/wasm-sget.tar.lz4 | lz4 -c -d - | tar -x -C $HOME/.sge
             mv $HOME/.sge/priv_validator_state.json.backup $HOME/.sge/data/priv_validator_state.json
             wget -O $HOME/.sge/config/addrbook.json "https://server-1.stavr.tech/Testnet/Sge/addrbook.json"
             sudo systemctl restart sged && journalctl -fu sged -o cat
