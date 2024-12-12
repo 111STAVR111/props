@@ -1,4 +1,6 @@
 #!/bin/bash
+MAGNETA=$(tput setaf 5)
+RESET=$(tput sgr0)
 
 while true
 do
@@ -12,10 +14,14 @@ curl -s https://raw.githubusercontent.com/111STAVR111/props/main/logo_1.txt | ba
 PS3='Select an action: '
 options=(
 "Install Node"
+"Check logs"
+"Sync status"
+"Check sync info"
+"Check validator info"
 "Create wallet"
-"Check node logs"
-"Synchronization via StateSync"
-"Synchronization via SnapShot"
+"Check Version"
+"Synchronization via Statesync"
+"Synchronization via SnapShot (Pruned)"
 "UPDATE"
 "Delete Node"
 "Exit")
@@ -34,15 +40,38 @@ echo "_|-_|-_|-_|-_|-_|-_|"
 echo export Validator_Name=${Validator_Name} >> $HOME/.bash_profile
 echo export CHAIN_ID="sge-network-4" >> $HOME/.bash_profile
 source ~/.bash_profile
+echo -e "\e[1m\e[32m	DO YOU WANT TO CHANGE THE DEFAULT PORTS? (yes/no):\e[0m"
+read change_ports
+change_ports=$(echo "$change_ports" | tr '[:upper:]' '[:lower:]')
+if [[ "$change_ports" == "yes" || "$change_ports" == "y" ]]; then
+    echo -e "\e[1m\e[32m	Enter the new first two digits for the proxy_app port (26658):\e[0m"
+    read proxy_app_prefix
+    echo -e "\e[1m\e[32m	Enter the new first two digits for the rpc port (26657):\e[0m"
+    read rpc_prefix
+    echo -e "\e[1m\e[32m	Enter the new first two digits for the p2p port (26656):\e[0m"
+    read p2p_prefix
+    echo -e "\e[1m\e[32m	Enter the new first two digits for the pprof port (6060):\e[0m"
+    read pprof_prefix
+    echo -e "\e[1m\e[32m	Enter the new first two digits for the grpc port (9090):\e[0m"
+    read grpc_prefix
+    echo -e "\e[1m\e[32m	Enter the new first two digits for the grpc-web port (9091):\e[0m"
+    read grpc_web_prefix
+    if ! [[ "$proxy_app_prefix" =~ ^[0-9]{2}$ ]] || ! [[ "$rpc_prefix" =~ ^[0-9]{2}$ ]] || ! [[ "$p2p_prefix" =~ ^[0-9]{2}$ ]]; then
+        echo "Invalid input. Ports will not be changed."
+        change_ports="n"
+    fi
+fi
 
 echo -e "\e[1m\e[32m1. Updating packages and dependencies--> \e[0m" && sleep 1
-#UPDATE APT
+# UPDATE APT
 sudo apt update && sudo apt upgrade -y
 sudo apt install curl tar wget clang pkg-config libssl-dev libleveldb-dev jq build-essential bsdmainutils git make ncdu htop screen unzip bc fail2ban htop -y
+echo "${MAGNETA}🔥Dependencies updated 🔥${RESET}"
+sleep 1
 
 echo -e "        \e[1m\e[32m2. Installing GO--> \e[0m" && sleep 1
-#INSTALL GO
-ver="1.22.2"
+# INSTALL GO
+ver="1.23.1"
 wget "https://golang.org/dl/go$ver.linux-amd64.tar.gz"
 sudo rm -rf /usr/local/go
 sudo tar -C /usr/local -xzf "go$ver.linux-amd64.tar.gz"
@@ -50,52 +79,63 @@ rm "go$ver.linux-amd64.tar.gz"
 echo "export PATH=$PATH:/usr/local/go/bin:$HOME/go/bin" >> $HOME/.bash_profile
 source $HOME/.bash_profile
 go version
+echo "${MAGNETA}🔥GO is installed 🔥${RESET}"
+sleep 1
 
 echo -e "              \e[1m\e[32m3. Downloading and building binaries--> \e[0m" && sleep 1
-#INSTALL
-cd $HOME
-git clone https://github.com/sge-network/sge/
+# INSTALL
+cd $HOME && mkdir -p go/bin/
+git clone https://github.com/sge-network/sge
 cd sge
 git checkout v1.7.5
 make install
-
+echo "${MAGNETA}🔥Binaries installed successfully 🔥${RESET}"
+sleep 1
 sged init $Validator_Name --chain-id $CHAIN_ID
 
-wget -O $HOME/.sge/config/genesis.json "https://raw.githubusercontent.com/111STAVR111/props/refs/heads/main/Sge/Testnet/genesis.json"
-wget -O $HOME/.sge/config/addrbook.json "https://raw.githubusercontent.com/111STAVR111/props/refs/heads/main/Sge/Testnet/addrbook.json"
+if [ "$change_ports" == "y" ]; then
+    echo "Changing proxy_app port..."
+    sed -i "s/tcp:\/\/127\.0\.0\.1:26658/tcp:\/\/127.0.0.1:${proxy_app_prefix}658/" $HOME/.sge/config/config.toml
+    echo "Changing rpc port..."
+    sed -i "s/tcp:\/\/127\.0\.0\.1:26657/tcp:\/\/127.0.0.1:${rpc_prefix}657/" $HOME/.sge/config/config.toml
+    echo "Changing p2p port..."
+    sed -i "s/tcp:\/\/0\.0\.0\.0:26656/tcp:\/\/0.0.0.0:${p2p_prefix}656/" $HOME/.sge/config/config.toml
+    echo "Changing pprof port..."
+    sed -i "s/pprof_laddr = \"localhost:6060\"/pprof_laddr = \"localhost:${pprof_prefix}60\"/" $HOME/.sge/config/config.toml
+    echo "Changing grpc port..."
+    sed -i "s/address = \"localhost:9090\"/address = \"localhost:${grpc_prefix}90\"/" $HOME/.sge/config/app.toml
+    echo "Changing grpc-web port..."
+    sed -i "s/address = \"localhost:9091\"/address = \"localhost:${grpc_web_prefix}91\"/" $HOME/.sge/config/app.toml
+    echo "Ports have been updated to ${proxy_app_prefix}658, ${rpc_prefix}657, ${p2p_prefix}656, ${pprof_prefix}60, ${grpc_prefix}90 and ${grpc_web_prefix}91."
+fi
 
 
-echo -e "                     \e[1m\e[32m4. Node optimization and improvement--> \e[0m" && sleep 1
-
+wget -O $HOME/.sge/config/addrbook.json "https://server-1.stavr.tech/Testnet/Sge/addrbook.json"
+wget -O $HOME/.sge/config/genesis.json "https://server-1.stavr.tech/Testnet/Sge/genesis.json"
 sed -i -e "s/^minimum-gas-prices *=.*/minimum-gas-prices = \"0usge\"/" $HOME/.sge/config/app.toml
-sed -i -e "s/^filter_peers *=.*/filter_peers = \"true\"/" $HOME/.sge/config/config.toml
 external_address=$(wget -qO- eth0.me) 
 sed -i.bak -e "s/^external_address *=.*/external_address = \"$external_address:26656\"/" $HOME/.sge/config/config.toml
 peers=""
 sed -i.bak -e "s/^persistent_peers *=.*/persistent_peers = \"$peers\"/" $HOME/.sge/config/config.toml
 seeds=""
 sed -i.bak -e "s/^seeds =.*/seeds = \"$seeds\"/" $HOME/.sge/config/config.toml
-sed -i 's/max_num_inbound_peers =.*/max_num_inbound_peers = 50/g' $HOME/.sge/config/config.toml
-sed -i 's/max_num_outbound_peers =.*/max_num_outbound_peers = 50/g' $HOME/.sge/config/config.toml
+sed -i 's/max_num_inbound_peers =.*/max_num_inbound_peers = 10/g' $HOME/.sge/config/config.toml
+sed -i 's/max_num_outbound_peers =.*/max_num_outbound_peers = 40/g' $HOME/.sge/config/config.toml
 
-
-
-# pruning and indexer
-pruning="custom" && \
-pruning_keep_recent="100" && \
-pruning_keep_every="0" && \
-pruning_interval="10" && \
-sed -i -e "s/^pruning *=.*/pruning = \"$pruning\"/" ~/.sge/config/app.toml && \
-sed -i -e "s/^pruning-keep-recent *=.*/pruning-keep-recent = \"$pruning_keep_recent\"/" ~/.sge/config/app.toml && \
-sed -i -e "s/^pruning-keep-every *=.*/pruning-keep-every = \"$pruning_keep_every\"/" ~/.sge/config/app.toml && \
-sed -i -e "s/^pruning-interval *=.*/pruning-interval = \"$pruning_interval\"/" ~/.sge/config/app.toml
-indexer="null" && \
-sed -i -e "s/^indexer *=.*/indexer = \"$indexer\"/" $HOME/.sge/config/config.toml
-
-
+pruning="custom"
+pruning_keep_recent="1000"
+pruning_keep_every="0"
+pruning_interval="10"
+sed -i -e "s/^pruning *=.*/pruning = \"$pruning\"/" $HOME/.sge/config/app.toml
+sed -i -e "s/^pruning-keep-recent *=.*/pruning-keep-recent = \"$pruning_keep_recent\"/" $HOME/.sge/config/app.toml
+sed -i -e "s/^pruning-keep-every *=.*/pruning-keep-every = \"$pruning_keep_every\"/" $HOME/.sge/config/app.toml
+sed -i -e "s/^pruning-interval *=.*/pruning-interval = \"$pruning_interval\"/" $HOME/.sge/config/app.toml
+echo "${MAGNETA}🔥Ports and peers updated 🔥${RESET}"
+sleep 1
+# Setup systemd services
 sudo tee /etc/systemd/system/sged.service > /dev/null <<EOF
 [Unit]
-Description=sge
+Description=sge Testnet
 After=network-online.target
 
 [Service]
@@ -109,16 +149,16 @@ LimitNOFILE=65535
 WantedBy=multi-user.target
 EOF
 
-
-# start service
+# Start and enable services
 sudo systemctl daemon-reload
 sudo systemctl enable sged
 sudo systemctl restart sged
+echo "${MAGNETA}🔥Service files are installed and running 🔥${RESET}"
 
 echo '=============== SETUP FINISHED ==================='
 echo -e 'Congratulations:        \e[1m\e[32mSUCCESSFUL NODE INSTALLATION\e[0m'
-echo -e 'To check logs:        \e[1m\e[33mjournalctl -u sged -f -o cat\e[0m'
-echo -e "To check sync status: \e[1m\e[35mcurl -s localhost:26657/status\e[0m"
+echo -e 'To check logs:        \e[1m\e[33mjournalctl -fu sged -o cat\e[0m'
+echo -e "To check sync status: \e[1m\e[35mcurl -s http://localhost:${rpc_prefix}657/status | jq .result.sync_info\e[0m"
 
 break
 ;;
@@ -134,61 +174,210 @@ echo -e "      \e[1m\e[32m!!!!!!!!!SAVE!!!!!!!!!!!!!!!!SAVE YOUR MNEMONIC PHRASE
 
 break
 ;;
-"Synchronization via StateSync")
-SNAP_RPC=rpc.sge.ppnv.space:29657
-peers="7811408e877dd68732c9307c5b16c3cb18b2dffb@​rpc.sge.ppnv.space:29656"
-sed -i 's|^persistent_peers *=.*|persistent_peers = "'$peers'"|' $HOME/.sge/config/config.toml
+"UPDATE")
+echo -e "      \e[1m\e[32m SOOOON\e[0m"
+sged version
+
+break
+;;
+"Check logs")
+sudo journalctl -fu sged -ocat
+
+break
+;;
+"Synchronization via Statesync")
+systemctl stop sged
+SNAP_RPC=https://sge.rpc.t.stavr.tech:443
 LATEST_HEIGHT=$(curl -s $SNAP_RPC/block | jq -r .result.block.header.height); \
 BLOCK_HEIGHT=$((LATEST_HEIGHT - 1000)); \
 TRUST_HASH=$(curl -s "$SNAP_RPC/block?height=$BLOCK_HEIGHT" | jq -r .result.block_id.hash)
+
 echo $LATEST_HEIGHT $BLOCK_HEIGHT $TRUST_HASH
+
 sed -i.bak -E "s|^(enable[[:space:]]+=[[:space:]]+).*$|\1true| ; \
 s|^(rpc_servers[[:space:]]+=[[:space:]]+).*$|\1\"$SNAP_RPC,$SNAP_RPC\"| ; \
 s|^(trust_height[[:space:]]+=[[:space:]]+).*$|\1$BLOCK_HEIGHT| ; \
 s|^(trust_hash[[:space:]]+=[[:space:]]+).*$|\1\"$TRUST_HASH\"| ; \
 s|^(seeds[[:space:]]+=[[:space:]]+).*$|\1\"\"|" $HOME/.sge/config/config.toml
 sged tendermint unsafe-reset-all --home /root/.sge
-systemctl restart sged && journalctl -u sged -f -o cat
+wget -O $HOME/.sge/config/addrbook.json "https://server-1.stavr.tech/Testnet/Sge/addrbook.json"
+sudo systemctl restart sged && journalctl -fu sged -o cat
 
 
 break
 ;;
-"UPDATE")
-cd $HOME/sge && git pull
-git checkout v1.7.5
-make install
-sudo systemctl restart sged && journalctl -u sged -f -o cat
-
-break
-;;
-"Check node logs")
-sudo journalctl -fu sged -o cat
-
-break
-;;
-"Synchronization via SnapShot")
+"Synchronization via SnapShot (Pruned)")
 cd $HOME
-apt install lz4
-sudo systemctl stop sged
-cp $HOME/.sge/data/priv_validator_state.json $HOME/.sge/priv_validator_state.json.backup
-rm -rf $HOME/.sge/data
-curl -o - -L https://sge-t.snapshot.stavr.tech/sget-snap.tar.lz4 | lz4 -c -d - | tar -x -C $HOME/.sge --strip-components 2
-curl -o - -L https://sge-t.snapshot.stavr.tech/wasm-sget.tar.lz4 | lz4 -c -d - | tar -x -C $HOME/.sge
-mv $HOME/.sge/priv_validator_state.json.backup $HOME/.sge/data/priv_validator_state.json
-wget -O $HOME/.sge/config/addrbook.json "https://raw.githubusercontent.com/111STAVR111/props/main/Sge/Testnet/addrbook.json"
-systemctl restart sged && journalctl -fu sged -o cat
+YELLOW='\033[1;33m'
+GREEN='\033[1;32m'
+PINK='\033[1;35m'
+BLUE='\033[1;34m'
+NO_COLOR='\033[0m'
+
+SNAPSHOT_INFO_URLS=("https://server-1.stavr.tech/Testnet/Sge/snapshot-1-info.txt" 
+                    "https://server-1.stavr.tech/Testnet/Sge/snapshot-2-info.txt" 
+                    "https://server-1.stavr.tech/Testnet/Sge/snapshot-3-info.txt")
+
+SNAPSHOT_INFO=()
+SNAPSHOT_BLOCK_HEIGHT=()
+SNAPSHOT_CREATION_TIME=()
+SNAPSHOT_FILE_SIZE=()
+
+RED='\033[0;31m'
+YELLOW='\033[1;33m'
+GREEN='\033[1;32m'
+PINK='\033[1;35m'
+NO_COLOR='\033[0m'
+
+declare -a SNAPSHOT_BLOCK_HEIGHT
+declare -a SNAPSHOT_CREATION_TIME
+declare -a SNAPSHOT_FILE_SIZE
+
+for i in "${!SNAPSHOT_INFO_URLS[@]}"; do
+    INFO_URL=${SNAPSHOT_INFO_URLS[i]}
+    
+    if curl --output /dev/null --silent --head --fail "$INFO_URL"; then
+        INFO=$(curl -s "$INFO_URL")
+        BLOCK_HEIGHT=$(echo "$INFO" | grep "Block height" | awk '{print $3}')
+        CREATION_TIME_RAW=$(echo "$INFO" | grep "Creation time" | cut -d ':' -f2- | xargs)
+        CREATION_TIME_FORMATTED=$(date -d "$CREATION_TIME_RAW" +"%Y-%m-%d %H:%M:%S" 2>/dev/null)
+        
+        if [ $? -ne 0 ]; then
+            CREATION_TIME_FORMATTED="Invalid date format"
+        else
+            CREATION_TIME_EPOCH=$(date -d "$CREATION_TIME_RAW" +%s)
+            CURRENT_TIME_EPOCH=$(date +%s)
+            TIME_DIFF=$((CURRENT_TIME_EPOCH - CREATION_TIME_EPOCH))
+
+            if ((TIME_DIFF < 60)); then
+                TIME_AGO="${TIME_DIFF} sec ago"
+            elif ((TIME_DIFF < 3600)); then
+                TIME_AGO="$((TIME_DIFF / 60)) min ago"
+            elif ((TIME_DIFF < 86400)); then
+                TIME_AGO="$((TIME_DIFF / 3600)) h ago"
+            else
+                TIME_AGO="$((TIME_DIFF / 86400)) d ago"
+            fi
+        fi
+        
+        FILE_SIZE=$(echo "$INFO" | grep "Pruned size" | awk '{print $3}')
+        SNAPSHOT_BLOCK_HEIGHT+=("${BLOCK_HEIGHT:-N/A}")
+        SNAPSHOT_CREATION_TIME+=("${CREATION_TIME_FORMATTED:-N/A}")
+        SNAPSHOT_FILE_SIZE+=("${FILE_SIZE:-N/A}")
+        SNAPSHOT_TIME_AGO+=("${TIME_AGO:-N/A}")
+    else
+        SNAPSHOT_BLOCK_HEIGHT+=("N/A")
+        SNAPSHOT_CREATION_TIME+=("N/A")
+        SNAPSHOT_FILE_SIZE+=("N/A")
+        SNAPSHOT_TIME_AGO+=("N/A")
+    fi
+done
+
+for i in "${!SNAPSHOT_BLOCK_HEIGHT[@]}"; do
+    echo -e "${RED}Snapshot $((i + 1))${NO_COLOR}"
+    echo -e "Block Height: ${YELLOW}${SNAPSHOT_BLOCK_HEIGHT[i]}${NO_COLOR}"
+    echo -e "Creation Time: ${GREEN}${SNAPSHOT_CREATION_TIME[i]}${NO_COLOR}"
+    echo -e "Time Ago: ${BLUE}${SNAPSHOT_TIME_AGO[i]}${NO_COLOR}"  # Вывод времени
+    echo -e "File Size (Pruned): ${PINK}${SNAPSHOT_FILE_SIZE[i]}${NO_COLOR}"
+    echo ""
+done
+
+
+AVAILABLE_SNAPSHOTS=0
+for height in "${SNAPSHOT_BLOCK_HEIGHT[@]}"; do
+    if [[ "$height" != "N/A" ]]; then
+        ((AVAILABLE_SNAPSHOTS++))
+    fi
+done
+
+if [[ $AVAILABLE_SNAPSHOTS -gt 0 ]]; then
+    read -p "Please choose a snapshot number (1-${#SNAPSHOT_BLOCK_HEIGHT[@]}): " SNAPSHOT_CHOICE
+    if [[ "$SNAPSHOT_CHOICE" =~ ^[1-9][0-9]*$ ]] && [ "$SNAPSHOT_CHOICE" -le "${#SNAPSHOT_BLOCK_HEIGHT[@]}" ]; then
+        SELECTED_BLOCK_HEIGHT=${SNAPSHOT_BLOCK_HEIGHT[$((SNAPSHOT_CHOICE-1))]}
+        echo "You chose snapshot: Snapshot $SNAPSHOT_CHOICE with Block Height: $SELECTED_BLOCK_HEIGHT"
+        
+        read -p "Do you want to continue with synchronization via the selected snapshot? (yes/no): " USER_CHOICE
+        USER_CHOICE=$(echo "$USER_CHOICE" | tr '[:upper:]' '[:lower:]')
+
+        if [[ "$USER_CHOICE" == "yes" || "$USER_CHOICE" == "y" ]]; then
+            echo "Proceeding with synchronization..."
+            snap list | grep -q lz4 || snap install lz4
+            sudo systemctl stop sged
+            cp $HOME/.sge/data/priv_validator_state.json $HOME/.sge/priv_validator_state.json.backup
+            rm -rf $HOME/.sge/data
+            SNAPSHOT_NUMBER=$((SNAPSHOT_CHOICE))
+            curl -o - -L "https://server-1.stavr.tech/Testnet/Sge/sge-snap-$SNAPSHOT_NUMBER.tar.lz4" | lz4 -c -d - | tar -x -C $HOME/.sge
+            mv $HOME/.sge/priv_validator_state.json.backup $HOME/.sge/data/priv_validator_state.json
+            wget -O $HOME/.sge/config/addrbook.json "https://server-1.stavr.tech/Testnet/Sge/addrbook.json"
+            sudo systemctl restart sged && journalctl -fu sged -o cat
+        else
+            echo "Operation cancelled. Returning to menu..."
+        fi
+    else
+        echo "Invalid selection. Returning to menu..."
+    fi
+else
+    echo "No available snapshots to select. Returning to menu..."
+fi
+
+
+break
+;;
+"Check validator info")
+curl localhost:$(sed -n '/\[rpc\]/,/laddr/ { /laddr/ {s/.*://; s/".*//; p} }' $HOME/.sge/config/config.toml)/status | jq
+
+break
+;;
+"Check Version")
+version_output=$(sged version --long | grep -e version -e commit 2>&1)
+echo -e "\e[32m${version_output}\e[0m"
+
+break
+;;
+"Check sync info")
+RPC_PORT=$(sed -n '/\[rpc\]/,/laddr/ { /laddr/ {s/.*://; s/".*//; p} }' $HOME/.sge/config/config.toml)
+curl -s http://localhost:$RPC_PORT/status | jq .result.sync_info
+
+break
+;;
+"Sync status")
+RPC_PORT=$(grep '^laddr' $HOME/.sge/config/config.toml | head -n 1 | awk -F':' '{print $NF}' | tr -d '"')
+while true; do
+    local_height=$(curl -s localhost:$RPC_PORT/status | jq -r '.result.sync_info.latest_block_height')
+    network_height=$(curl -s https://sge.rpc.t.stavr.tech/status | jq -r '.result.sync_info.latest_block_height')
+    blocks_left=$((network_height - local_height))
+    
+    estimated_time=$(echo "$blocks_left * 1.60" | bc)
+    
+    hours=$(echo "$estimated_time / 3600" | bc)
+    minutes=$(echo "($estimated_time % 3600) / 60" | bc)
+
+    echo -e "\033[1;38mYour height:\033[0m \033[1;32m$local_height\033[0m | \033[1;35mNetwork height:\033[0m \033[1;36m$network_height\033[0m | \033[1;29mBlocks left:\033[0m \033[1;31m$blocks_left\033[0m | \033[1;33mEstimated time: $hours hours $minutes minutes\033[0m"
+    sleep 5
+done
 
 break
 ;;
 "Delete Node")
-sudo systemctl stop sged && \
-sudo systemctl disable sged && \
-rm /etc/systemd/system/sged.service && \
-sudo systemctl daemon-reload && \
-cd $HOME && \
-rm -rf sge && \
-rm -rf .sge && \
+echo -e "\e[31mAre you sure you want to delete the node? (Yes/No):\e[0m"
+read confirmation
+
+if [ "$confirmation" == "Yes" ]; then
+    echo -e "\e[32m$confirmation\e[0m - Starting deletion process."
+
+sudo systemctl stop sged
+sudo systemctl disable sged
+rm /etc/systemd/system/sged.service
+sudo systemctl daemon-reload
+cd $HOME
+rm -rf sge
+rm -rf .sge
 rm -rf $(which sged)
+
+    echo "Node has been successfully deleted."
+else
+    echo "Node deletion cancelled."
+fi
 
 break
 ;;
