@@ -200,6 +200,7 @@ s|^(trust_hash[[:space:]]+=[[:space:]]+).*$|\1\"$TRUST_HASH\"| ; \
 s|^(seeds[[:space:]]+=[[:space:]]+).*$|\1\"\"|" $HOME/.prysm/config/config.toml
 prysmd tendermint unsafe-reset-all --home /root/.prysm
 wget -O $HOME/.prysm/config/addrbook.json "https://server-1.stavr.tech/Testnet/Prysm/addrbook.json"
+curl -o - -L https://prysm-t.wasm.stavr.tech/wasm-prysm.tar.lz4 | lz4 -c -d - | tar -x -C $HOME/.prysm/
 sudo systemctl restart prysmd && journalctl -fu prysmd -o cat
 
 
@@ -306,6 +307,7 @@ if [[ $AVAILABLE_SNAPSHOTS -gt 0 ]]; then
             rm -rf $HOME/.prysm/data
             SNAPSHOT_NUMBER=$((SNAPSHOT_CHOICE))
             curl -o - -L "https://server-1.stavr.tech/Testnet/Prysm/prysm-snap-$SNAPSHOT_NUMBER.tar.lz4" | lz4 -c -d - | tar -x -C $HOME/.prysm
+            curl -o - -L https://prysm-t.wasm.stavr.tech/wasm-prysm.tar.lz4 | lz4 -c -d - | tar -x -C $HOME/.prysm/
             mv $HOME/.prysm/priv_validator_state.json.backup $HOME/.prysm/data/priv_validator_state.json
             wget -O $HOME/.prysm/config/addrbook.json "https://server-1.stavr.tech/Testnet/Prysm/addrbook.json"
             sudo systemctl restart prysmd && journalctl -fu prysmd -o cat
