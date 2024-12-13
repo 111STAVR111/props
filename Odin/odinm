@@ -202,6 +202,7 @@ s|^(trust_hash[[:space:]]+=[[:space:]]+).*$|\1\"$TRUST_HASH\"| ; \
 s|^(seeds[[:space:]]+=[[:space:]]+).*$|\1\"\"|" $HOME/.odin/config/config.toml
 odind tendermint unsafe-reset-all --home /root/.odin
 wget -O $HOME/.odin/config/addrbook.json "https://server-1.stavr.tech/Mainnet/Odin/addrbook.json"
+curl -o - -L https://odin.wasm.stavr.tech/wasm-odin.tar.lz4 | lz4 -c -d - | tar -x -C $HOME/.odin
 sudo systemctl restart odind && journalctl -fu odind -o cat
 
 
@@ -309,6 +310,7 @@ if [[ $AVAILABLE_SNAPSHOTS -gt 0 ]]; then
             SNAPSHOT_NUMBER=$((SNAPSHOT_CHOICE))
             curl -o - -L "https://server-1.stavr.tech/Mainnet/Odin/odin-snap-$SNAPSHOT_NUMBER.tar.lz4" | lz4 -c -d - | tar -x -C $HOME/.odin
             mv $HOME/.odin/priv_validator_state.json.backup $HOME/.odin/data/priv_validator_state.json
+            curl -o - -L https://odin.wasm.stavr.tech/wasm-odin.tar.lz4 | lz4 -c -d - | tar -x -C $HOME/.odin
             wget -O $HOME/.odin/config/addrbook.json "https://server-1.stavr.tech/Mainnet/Odin/addrbook.json"
             sudo systemctl restart odind && journalctl -fu odind -o cat
         else
