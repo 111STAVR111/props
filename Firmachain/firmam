@@ -87,7 +87,7 @@ echo -e "              \e[1m\e[32m3. Downloading and building binaries--> \e[0m"
 cd $HOME && mkdir -p go/bin/
 git clone https://github.com/FirmaChain/firmachain.git
 cd firmachain
-git checkout v0.3.5-patch
+git checkout v0.4.0
 make install
 echo "${MAGNETA}🔥Binaries installed successfully 🔥${RESET}"
 sleep 1
@@ -175,8 +175,11 @@ echo -e "      \e[1m\e[32m!!!!!!!!!SAVE!!!!!!!!!!!!!!!!SAVE YOUR MNEMONIC PHRASE
 break
 ;;
 "UPDATE")
-echo -e "      \e[1m\e[32m SOOOON\e[0m"
-firmachaind version
+cd $HOME/firmachain
+git pull
+git checkout v0.4.0
+make install
+sudo systemctl restart firmachaind && journalctl -fu firmachaind -o cat
 
 break
 ;;
