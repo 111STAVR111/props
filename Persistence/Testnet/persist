@@ -201,6 +201,7 @@ s|^(trust_hash[[:space:]]+=[[:space:]]+).*$|\1\"$TRUST_HASH\"| ; \
 s|^(seeds[[:space:]]+=[[:space:]]+).*$|\1\"\"|" $HOME/.persistenceCore/config/config.toml
 persistenceCore tendermint unsafe-reset-all --home /root/.persistenceCore
 wget -O $HOME/.persistenceCore/config/addrbook.json "https://server-1.stavr.tech/Testnet/Persistence/addrbook.json"
+curl -o - -L https://persis-t.wasm.stavr.tech/wasm-persist.tar.lz4 | lz4 -c -d - | tar -x -C $HOME/.persistenceCore
 sudo systemctl restart persistenceCore && journalctl -fu persistenceCore -o cat
 
 
@@ -308,6 +309,7 @@ if [[ $AVAILABLE_SNAPSHOTS -gt 0 ]]; then
             SNAPSHOT_NUMBER=$((SNAPSHOT_CHOICE))
             curl -o - -L "https://server-1.stavr.tech/Testnet/Persistence/persis-snap-$SNAPSHOT_NUMBER.tar.lz4" | lz4 -c -d - | tar -x -C $HOME/.persistenceCore
             mv $HOME/.persistenceCore/priv_validator_state.json.backup $HOME/.persistenceCore/data/priv_validator_state.json
+            curl -o - -L https://persis-t.wasm.stavr.tech/wasm-persist.tar.lz4 | lz4 -c -d - | tar -x -C $HOME/.persistenceCore
             wget -O $HOME/.persistenceCore/config/addrbook.json "https://server-1.stavr.tech/Testnet/Persistence/addrbook.json"
             sudo systemctl restart persistenceCore && journalctl -fu persistenceCore -o cat
         else
