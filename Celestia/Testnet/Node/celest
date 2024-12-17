@@ -203,7 +203,6 @@ cd $HOME/celestia-app
 git pull
 git checkout tags/v3.1.1-mocha -b v3.1.1-mocha
 make install
-make configure-v3
 sudo systemctl restart celestia-appd && sudo journalctl -fu celestia-appd -o cat
 
 break
