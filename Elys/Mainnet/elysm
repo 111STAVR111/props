@@ -87,7 +87,9 @@ echo -e "              \e[1m\e[32m3. Downloading and building binaries--> \e[0m"
 cd $HOME && mkdir -p go/bin/
 git clone https://github.com/elys-network/elys.git
 cd elys
-git checkout v1.3.0
+git checkout fix/v1.3.0-patch-2
+git pull origin fix/v1.3.0-patch-2
+git tag -f v1.3.0
 make install
 echo "${MAGNETA}🔥Binaries installed successfully 🔥${RESET}"
 sleep 1
@@ -179,7 +181,9 @@ break
 cd $HOME/ && rm -rf elys
 git clone https://github.com/elys-network/elys.git
 cd elys
-git checkout v1.3.0
+git checkout fix/v1.3.0-patch-2
+git pull origin fix/v1.3.0-patch-2
+git tag -f v1.3.0
 make install
 sudo systemctl restart elysd && sudo journalctl -fu elysd -o cat
 
