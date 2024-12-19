@@ -85,7 +85,7 @@ echo -e "              \e[1m\e[32m3. Downloading and building binaries--> \e[0m"
 cd $HOME && mkdir -p go/bin/
 git clone https://github.com/celestiaorg/celestia-app.git 
 cd celestia-app/ 
-git checkout tags/v3.1.1-mocha -b v3.1.1-mocha
+git checkout tags/v3.2.0-mocha -b v3.2.0-mocha
 make install
 echo "${MAGNETA}🔥Binaries installed successfully 🔥${RESET}"
 sleep 1
@@ -201,7 +201,7 @@ break
 "UPDATE")
 cd $HOME/celestia-app
 git pull
-git checkout tags/v3.1.1-mocha -b v3.1.1-mocha
+git checkout tags/v3.2.0-mocha -b v3.2.0-mocha
 make install
 sudo systemctl restart celestia-appd && sudo journalctl -fu celestia-appd -o cat
 
