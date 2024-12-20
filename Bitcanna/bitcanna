@@ -87,7 +87,7 @@ echo -e "              \e[1m\e[32m3. Downloading and building binaries--> \e[0m"
 cd $HOME && mkdir $HOME/go/bin/
 git clone https://github.com/BitCannaGlobal/bcna
 cd bcna
-git checkout v4.0.2
+git checkout v4.0.3
 make install
 echo "${MAGNETA}🔥Binaries installed successfully 🔥${RESET}"
 sleep 1
@@ -169,7 +169,7 @@ break
 "UPDATE")
 cd $HOME/bcna
 git fetch --all
-git checkout v4.0.2
+git checkout v4.0.3
 make install
 sudo systemctl restart bcnad && sudo journalctl -fu bcnad -o cat
 
