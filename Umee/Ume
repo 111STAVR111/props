@@ -87,7 +87,7 @@ echo -e "              \e[1m\e[32m3. Downloading and building binaries--> \e[0m"
 cd $HOME && mkdir -p go/bin/
 git clone https://github.com/umee-network/umee.git
 cd umee
-git checkout v6.7.0
+git checkout v6.7.2
 make install
 echo "${MAGNETA}🔥Binaries installed successfully 🔥${RESET}"
 sleep 1
@@ -166,8 +166,11 @@ echo -e "      \e[1m\e[32m!!!!!!!!!SAVE!!!!!!!!!!!!!!!!SAVE YOUR MNEMONIC PHRASE
 break
 ;;
 "UPDATE")
-echo -e "      \e[1m\e[32m SOOOON\e[0m"
-umeed version
+cd $HOME/umee
+git fetch --all
+git checkout v6.7.2
+make install
+sudo systemctl restart umeed && journalctl -fu umeed -o cat
 
 break
 ;;
