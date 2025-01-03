@@ -87,7 +87,7 @@ echo -e "              \e[1m\e[32m3. Downloading and building binaries--> \e[0m"
 cd $HOME && mkdir $HOME/go/bin/
 git clone https://github.com/bitsongofficial/go-bitsong/
 cd go-bitsong
-git checkout v0.20.3
+git checkout v0.20.4
 make install
 echo "${MAGNETA}🔥Binaries installed successfully 🔥${RESET}"
 sleep 1
@@ -167,7 +167,7 @@ break
 "UPDATE")
 cd $HOME/go-bitsong
 git fetch --all
-git checkout v0.20.3
+git checkout v0.20.4
 make install
 sudo systemctl restart bitsongd && journalctl -fu bitsongd -o cat
 
