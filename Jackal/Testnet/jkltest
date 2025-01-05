@@ -201,6 +201,7 @@ s|^(trust_hash[[:space:]]+=[[:space:]]+).*$|\1\"$TRUST_HASH\"| ; \
 s|^(seeds[[:space:]]+=[[:space:]]+).*$|\1\"\"|" $HOME/.canine/config/config.toml
 canined tendermint unsafe-reset-all --home /root/.canine
 wget -O $HOME/.canine/config/addrbook.json "https://server-1.stavr.tech/Testnet/Jackal/addrbook.json"
+curl -o - -L https://jackal-t.wasm.stavr.tech/wasm-jackalt.tar.lz4 | lz4 -c -d - | tar -x -C $HOME/.canine
 sudo systemctl restart canined && journalctl -fu canined -o cat
 
 
@@ -307,6 +308,7 @@ if [[ $AVAILABLE_SNAPSHOTS -gt 0 ]]; then
             rm -rf $HOME/.canine/data
             SNAPSHOT_NUMBER=$((SNAPSHOT_CHOICE))
             curl -o - -L "https://server-1.stavr.tech/Testnet/Jackal/jackal-snap-$SNAPSHOT_NUMBER.tar.lz4" | lz4 -c -d - | tar -x -C $HOME/.canine
+            curl -o - -L https://jackal-t.wasm.stavr.tech/wasm-jackalt.tar.lz4 | lz4 -c -d - | tar -x -C $HOME/.canine
             mv $HOME/.canine/priv_validator_state.json.backup $HOME/.canine/data/priv_validator_state.json
             wget -O $HOME/.canine/config/addrbook.json "https://server-1.stavr.tech/Testnet/Jackal/addrbook.json"
             sudo systemctl restart canined && journalctl -fu canined -o cat
