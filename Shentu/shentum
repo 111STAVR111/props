@@ -87,7 +87,7 @@ echo -e "              \e[1m\e[32m3. Downloading and building binaries--> \e[0m"
 cd $HOME && mkdir -p go/bin/
 git clone https://github.com/shentufoundation/shentu
 cd shentu
-git checkout v2.13.0
+git checkout v2.13.2
 make install
 echo "${MAGNETA}🔥Binaries installed successfully 🔥${RESET}"
 sleep 1
@@ -166,8 +166,10 @@ echo -e "      \e[1m\e[32m!!!!!!!!!SAVE!!!!!!!!!!!!!!!!SAVE YOUR MNEMONIC PHRASE
 break
 ;;
 "UPDATE")
-echo -e "      \e[1m\e[32m SOOOON\e[0m"
-shentud version
+cd $HOME/shentu && git pull
+git checkout v2.13.2
+make install
+sudo systemctl restart shentud && sudo journalctl -fu shentud -o cat
 
 break
 ;;
