@@ -65,7 +65,7 @@ cd $HOME && mkdir $HOME/go/bin/
 git clone https://github.com/Agoric/agoric-sdk
 cd $HOME/agoric-sdk
 git fetch --all
-git checkout agoric-upgrade-17
+git checkout agoric-upgrade-18
 git clean -xdf && git submodule foreach --recursive git clean -xdf
 ./bin/agd build
 
@@ -163,7 +163,7 @@ break
 "UPDATE")
 cd $HOME/agoric-sdk
 git fetch --all
-git checkout agoric-upgrade-17
+git checkout agoric-upgrade-18
 git clean -xdf && git submodule foreach --recursive git clean -xdf
 ./bin/agd build
 systemctl restart agoricd.service && journalctl -fu agoricd.service -ocat
