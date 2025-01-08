@@ -84,7 +84,7 @@ After=network-online.target
 User=$USER
 ExecStart=$(which celestia) bridge start \
 --p2p.network mocha \
---metrics.tls=true --metrics --metrics.endpoint otel.celestia-mocha.com \
+--metrics.tls=true --metrics --metrics.endpoint otel.mocha.celestia.observer \
 --keyring.keyname my_celes_key
 Restart=on-failure
 RestartSec=3
