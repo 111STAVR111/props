@@ -91,7 +91,7 @@ ExecStart=$(which celestia) full start \
 --core.grpc.port $gRPC_PORT \
 --p2p.network mocha \
 --keyring.keyname $Wallet \
---metrics.tls=true --metrics --metrics.endpoint otel.celestia-mocha.com
+--metrics.tls=true --metrics --metrics.endpoint otel.mocha.celestia.observer
 Restart=on-failure
 RestartSec=3
 LimitNOFILE=65535
