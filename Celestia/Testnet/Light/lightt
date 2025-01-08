@@ -92,7 +92,7 @@ ExecStart=$(which celestia) light start \
 --keyring.keyname $Wallet \
 --p2p.network mocha \
 --metrics.tls=true \
---metrics --metrics.endpoint otel.celestia-mocha.com
+--metrics --metrics.endpoint otel.mocha.celestia.observer
 Restart=on-failure
 RestartSec=3
 LimitNOFILE=65535
