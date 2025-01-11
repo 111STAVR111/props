@@ -121,6 +121,8 @@ seeds=""
 sed -i.bak -e "s/^seeds =.*/seeds = \"$seeds\"/" $HOME/.gonative/config/config.toml
 sed -i 's/max_num_inbound_peers =.*/max_num_inbound_peers = 50/g' $HOME/.gonative/config/config.toml
 sed -i 's/max_num_outbound_peers =.*/max_num_outbound_peers = 50/g' $HOME/.gonative/config/config.toml
+sed -i -e "s/^app-db-backend *=.*/app-db-backend = \"goleveldb\"/;" $HOME/.gonative/config/app.toml
+sed -i -e "s/^db_backend *=.*/db_backend = \"pebbledb\"/" $HOME/.gonative/config/config.toml
 
 pruning="custom"
 pruning_keep_recent="1000"
