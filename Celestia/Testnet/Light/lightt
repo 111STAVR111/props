@@ -128,6 +128,8 @@ git checkout tags/v0.21.3-mocha
 make build 
 make install 
 make cel-key
+systemctl stop celestia-light
+celestia light config-update --p2p.network mocha
 sudo systemctl restart celestia-light && sudo journalctl -fu celestia-light -ocat
 
 break
