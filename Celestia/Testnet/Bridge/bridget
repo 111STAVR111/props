@@ -121,6 +121,8 @@ git checkout tags/v0.21.3-mocha
 make build
 make install
 make cel-key
+systemctl stop celestia-bridge
+celestia bridge config-update --p2p.network mocha
 sudo systemctl restart celestia-bridge && sudo journalctl -fu celestia-bridge -ocat
 
 break
