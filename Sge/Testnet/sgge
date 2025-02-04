@@ -87,7 +87,7 @@ echo -e "              \e[1m\e[32m3. Downloading and building binaries--> \e[0m"
 cd $HOME && mkdir -p go/bin/
 git clone https://github.com/sge-network/sge
 cd sge
-git checkout v1.7.5
+git checkout v1.7.6
 make install
 echo "${MAGNETA}🔥Binaries installed successfully 🔥${RESET}"
 sleep 1
@@ -175,8 +175,10 @@ echo -e "      \e[1m\e[32m!!!!!!!!!SAVE!!!!!!!!!!!!!!!!SAVE YOUR MNEMONIC PHRASE
 break
 ;;
 "UPDATE")
-echo -e "      \e[1m\e[32m SOOOON\e[0m"
-sged version
+cd $HOME/sge && git pull
+git checkout v1.7.6
+make install
+sudo systemctl restart sged && journalctl -fu sged -n100 -o cat
 
 break
 ;;
