@@ -87,7 +87,7 @@ echo -e "              \e[1m\e[32m3. Downloading and building binaries--> \e[0m"
 cd $HOME && mkdir -p go/bin/
 git clone https://github.com/PeggyJV/sommelier
 cd sommelier
-git checkout v9.0.0
+git checkout v9.0.1
 make install
 echo "${MAGNETA}🔥Binaries installed successfully 🔥${RESET}"
 sleep 1
@@ -178,7 +178,7 @@ break
 "UPDATE")
 cd $HOME/sommelier
 git fetch --all
-git checkout v9.0.0
+git checkout v9.0.1
 make install
 sudo systemctl restart sommelier && sudo journalctl -fu sommelier -n1000 -o cat
 
