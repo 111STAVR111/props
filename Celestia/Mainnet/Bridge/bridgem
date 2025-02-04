@@ -68,7 +68,6 @@ mv $HOME/celestia-node/cel-key /usr/local/bin/
 
 #Set up variables
 echo "export IP=\"$IP\"" >> ~/.bash_profile
-echo 'export RPC_PORT="$RPC_PORT"' >> ~/.bash_profile
 echo 'export gRPC_PORT="$gRPC_PORT"' >> ~/.bash_profile
 echo 'export Wallet="$Wallet"' >> ~/.bash_profile
 source ~/.bash_profile
@@ -76,7 +75,7 @@ source ~/.bash_profile
 cel-key add $Wallet --keyring-backend test --node.type bridge
 echo -e "      \e[1m\e[32m!!!!!!!!!SAVE!!!!!!!!!!!!!!!!SAVE YOUR MNEMONIC PHRASE!!!!!!!!!SAVE!!!!!!!!!!!!!!!!\e[0m'"
 
-celestia bridge init --core.ip $IP --core.rpc.port $RPC_PORT --core.grpc.port $gRPC_PORT --keyring.keyname $Wallet
+celestia bridge init --core.ip $IP --core.port $gRPC_PORT --keyring.keyname $Wallet --archival
 
 sudo tee /etc/systemd/system/celestia-bridge.service > /dev/null <<EOF
 [Unit]
