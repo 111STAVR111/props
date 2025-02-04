@@ -68,12 +68,11 @@ mv $HOME/celestia-node/cel-key /usr/local/bin/
 
 #Set up variables
 echo "export IP=\"$IP\"" >> ~/.bash_profile
-echo 'export RPC_PORT="$RPC_PORT"' >> ~/.bash_profile
 echo 'export gRPC_PORT="$gRPC_PORT"' >> ~/.bash_profile
 echo 'export Wallet="$Wallet"' >> ~/.bash_profile
 source ~/.bash_profile
 
-celestia bridge init --core.ip $IP --p2p.network mocha --core.rpc.port $RPC_PORT --core.grpc.port $gRPC_PORT --keyring.keyname my_celes_key
+celestia bridge init --core.ip $IP --p2p.network mocha --core.port $gRPC_PORT --keyring.keyname my_celes_key --archival
 
 sudo tee /etc/systemd/system/celestia-bridge.service > /dev/null <<EOF
 [Unit]
@@ -123,12 +122,12 @@ make install
 make cel-key
 systemctl stop celestia-bridge
 celestia bridge config-update --p2p.network mocha
-sudo systemctl restart celestia-bridge && sudo journalctl -fu celestia-bridge -ocat
+sudo systemctl restart celestia-bridge && sudo journalctl -fu celestia-bridge -n100 -ocat
 
 break
 ;;
 "Check node logs")
-sudo journalctl -fu celestia-bridge -o cat
+sudo journalctl -fu celestia-bridge -n100 -o cat
 
 break
 ;;
