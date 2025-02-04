@@ -87,7 +87,7 @@ echo -e "              \e[1m\e[32m3. Downloading and building binaries--> \e[0m"
 cd $HOME && mkdir -p go/bin/
 git clone https://github.com/atomone-hub/atomone
 cd atomone
-git checkout v1.0.0
+git checkout v1.0.1
 make install
 echo "${MAGNETA}🔥Binaries installed successfully 🔥${RESET}"
 sleep 1
@@ -175,8 +175,10 @@ echo -e "      \e[1m\e[32m!!!!!!!!!SAVE!!!!!!!!!!!!!!!!SAVE YOUR MNEMONIC PHRASE
 break
 ;;
 "UPDATE")
-echo -e "      \e[1m\e[32m SOOOON\e[0m"
-atomoned version
+cd $HOME/atomone && git pull
+git checkout v1.0.1
+make install
+sudo systemctl restart atomoned && journalctl -fu atomoned -n1000 -o cat
 
 break
 ;;
