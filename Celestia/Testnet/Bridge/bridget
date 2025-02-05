@@ -30,7 +30,6 @@ echo "*********************"
 echo -e "\e[1m\e[35m		Lets's begin\e[0m"
 echo "*********************"
 read -p "Enter your IP address RPC Node: " IP
-read -p "Enter your RPC Port from your RPC Node: " RPC_PORT
 read -p "Enter your gRPC Port from your RPC Node: " gRPC_PORT
 read -p "Enter your Wallet name: " Wallet
 
@@ -84,7 +83,7 @@ User=$USER
 ExecStart=$(which celestia) bridge start \
 --p2p.network mocha \
 --metrics.tls=true --metrics --metrics.endpoint otel.mocha.celestia.observer \
---keyring.keyname bridge-wallet
+--keyring.keyname $Wallet
 Restart=on-failure
 RestartSec=3
 LimitNOFILE=65535
