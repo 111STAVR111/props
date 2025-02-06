@@ -71,7 +71,7 @@ echo 'export gRPC_PORT="$gRPC_PORT"' >> ~/.bash_profile
 echo 'export Wallet="$Wallet"' >> ~/.bash_profile
 source ~/.bash_profile
 
-celestia bridge init --core.ip $IP --p2p.network mocha --core.port $gRPC_PORT --keyring.keyname my_celes_key --archival
+celestia bridge init --core.ip $IP --p2p.network mocha --core.port $gRPC_PORT --keyring.keyname $Wallet --archival
 
 sudo tee /etc/systemd/system/celestia-bridge.service > /dev/null <<EOF
 [Unit]
