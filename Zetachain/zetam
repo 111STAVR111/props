@@ -85,7 +85,7 @@ sleep 1
 echo -e "              \e[1m\e[32m3. Downloading and building binaries--> \e[0m" && sleep 1
 # INSTALL
 cd $HOME && mkdir -p go/bin/
-wget -O $HOME/zetacored https://github.com/zeta-chain/node/releases/download/v26.0.0/zetacored-linux-amd64
+wget -O $HOME/zetacored https://github.com/zeta-chain/node/releases/download/v27.0.1/zetacored-linux-amd64
 chmod +x $HOME/zetacored 
 mv $HOME/zetacored $HOME/go/bin
 echo "${MAGNETA}🔥Binaries installed successfully 🔥${RESET}"
@@ -176,7 +176,7 @@ break
 rm -r $HOME/node
 git clone https://github.com/zeta-chain/node/
 cd node
-git checkout v26.0.0
+git checkout v27.0.1
 make install
 systemctl restart zetacored && journalctl -fu zetacored -n100 -o cat
 
