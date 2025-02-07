@@ -87,7 +87,7 @@ echo -e "              \e[1m\e[32m3. Downloading and building binaries--> \e[0m"
 cd $HOME && mkdir $HOME/go/bin/
 git clone https://github.com/CosmosContracts/juno juno
 cd juno
-git checkout v26.0.0
+git checkout v27.0.0
 make install
 echo "${MAGNETA}🔥Binaries installed successfully 🔥${RESET}"
 sleep 1
@@ -177,7 +177,7 @@ break
 ;;
 "UPDATE")
 cd $HOME/juno
-git fetch --tags && git checkout v26.0.0
+git fetch --tags && git checkout v27.0.0
 make install
 sudo systemctl restart junod && sudo journalctl -fu junod -o cat
 
