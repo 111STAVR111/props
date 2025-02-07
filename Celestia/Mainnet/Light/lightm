@@ -30,7 +30,6 @@ echo "*********************"
 echo -e "\e[1m\e[35m		Lets's begin\e[0m"
 echo "*********************"
 read -p "Enter your IP address RPC Node: " IP
-read -p "Enter your RPC Port from your RPC Node: " RPC_PORT
 read -p "Enter your gRPC Port from your RPC Node: " gRPC_PORT
 read -p "Enter your Wallet name: " Wallet
 
@@ -60,7 +59,7 @@ echo -e "              \e[1m\e[32m3. Downloading and building binaries--> \e[0m"
 cd $HOME && mkdir -p go/bin/
 git clone https://github.com/celestiaorg/celestia-node.git
 cd celestia-node/
-git checkout tags/v0.20.4
+git checkout tags/v0.21.5
 make build 
 sudo make install 
 make cel-key
@@ -68,7 +67,6 @@ mv $HOME/celestia-node/cel-key /usr/local/bin/
 
 #Set up variables
 echo "export IP=\"$IP\"" >> ~/.bash_profile
-echo 'export RPC_PORT="$RPC_PORT"' >> ~/.bash_profile
 echo 'export gRPC_PORT="$gRPC_PORT"' >> ~/.bash_profile
 echo 'export Wallet="$Wallet"' >> ~/.bash_profile
 source ~/.bash_profile
@@ -87,7 +85,6 @@ After=network-online.target
 User=$USER
 ExecStart=$(which celestia) light start \
 --core.ip $IP \
---core.rpc.port $RPC_PORT \
 --core.grpc.port $gRPC_PORT \
 --keyring.keyname $Wallet \
 --metrics.tls=true \
@@ -123,10 +120,12 @@ break
 "UPDATE")
 cd $HOME/celestia-node/
 git pull
-git checkout tags/v0.20.4
+git checkout tags/v0.21.5
 make build 
 make install 
 make cel-key
+sudo systemctl stop celestia-light
+celestia light config-update
 sudo systemctl restart celestia-light && sudo journalctl -fu celestia-light -ocat
 
 break
