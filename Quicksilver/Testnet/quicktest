@@ -87,7 +87,7 @@ echo -e "              \e[1m\e[32m3. Downloading and building binaries--> \e[0m"
 cd $HOME && mkdir -p go/bin/
 git clone https://github.com/ingenuity-build/quicksilver
 cd quicksilver
-git checkout v1.7.6-testnet
+git checkout v1.7.6-testnet2
 make install
 echo "${MAGNETA}🔥Binaries installed successfully 🔥${RESET}"
 sleep 1
@@ -175,11 +175,11 @@ echo -e "      \e[1m\e[32m!!!!!!!!!SAVE!!!!!!!!!!!!!!!!SAVE YOUR MNEMONIC PHRASE
 break
 ;;
 "UPDATE")
-cd $HOME
-wget -O quicksilverd https://github.com/quicksilver-zone/quicksilver/releases/download/v1.7.6-testnet/quicksilverd-v1.7.6-testnet-amd64
-chmod +x quicksilverd
-mv $HOME/quicksilverd $(which quicksilverd)
-sudo systemctl restart quicksilverd && sudo journalctl -fu quicksilverd -o cat
+cd $HOME/quicksilver
+git pull
+git checkout v1.7.6-testnet2
+make install
+sudo systemctl restart quicksilverd && sudo journalctl -fu quicksilverd -n100 -o cat
 
 break
 ;;
