@@ -71,14 +71,16 @@ sleep 1
 
 echo -e "        \e[1m\e[32m2. Installing GO--> \e[0m" && sleep 1
 # INSTALL GO
-ver="1.22.2"
-wget "https://golang.org/dl/go$ver.linux-amd64.tar.gz"
+cd $HOME
+VER="1.23.1"
+wget "https://golang.org/dl/go$VER.linux-amd64.tar.gz"
 sudo rm -rf /usr/local/go
-sudo tar -C /usr/local -xzf "go$ver.linux-amd64.tar.gz"
-rm "go$ver.linux-amd64.tar.gz"
-echo "export PATH=$PATH:/usr/local/go/bin:$HOME/go/bin" >> $HOME/.bash_profile
+sudo tar -C /usr/local -xzf "go$VER.linux-amd64.tar.gz"
+rm "go$VER.linux-amd64.tar.gz"
+[ ! -f ~/.bash_profile ] && touch ~/.bash_profile
+echo "export PATH=$PATH:/usr/local/go/bin:~/go/bin" >> ~/.bash_profile
 source $HOME/.bash_profile
-go version
+[ ! -d ~/go/bin ] && mkdir -p ~/go/bin
 echo "${MAGNETA}🔥GO is installed 🔥${RESET}"
 sleep 1
 
@@ -87,7 +89,7 @@ echo -e "              \e[1m\e[32m3. Downloading and building binaries--> \e[0m"
 cd $HOME && mkdir $HOME/go/bin/
 git clone https://github.com/bitsongofficial/go-bitsong/
 cd go-bitsong
-git checkout v0.20.4
+git checkout v0.21.0
 make install
 echo "${MAGNETA}🔥Binaries installed successfully 🔥${RESET}"
 sleep 1
@@ -167,7 +169,7 @@ break
 "UPDATE")
 cd $HOME/go-bitsong
 git fetch --all
-git checkout v0.20.4
+git checkout v0.21.0
 make install
 sudo systemctl restart bitsongd && journalctl -fu bitsongd -o cat
 
