@@ -32,7 +32,7 @@ echo "_|-_|-_|-_|-_|-_|-_|"
 read Validator_Name
 echo "_|-_|-_|-_|-_|-_|-_|"
 echo export Validator_Name=${Validator_Name} >> $HOME/.bash_profile
-echo export CHAIN_ID="layertest-1" >> $HOME/.bash_profile
+echo export CHAIN_ID="layertest-3" >> $HOME/.bash_profile
 source ~/.bash_profile
 
 echo -e "\e[1m\e[32m1. Updating packages and dependencies--> \e[0m" && sleep 1
@@ -56,7 +56,7 @@ echo -e "              \e[1m\e[32m3. Downloading and building binaries--> \e[0m"
 cd $HOME && mkdir -p go/bin/
 git clone https://github.com/tellor-io/layer
 cd layer
-git checkout v0.7.1-fix
+git checkout v3.0.3
 make install
 
 layerd init $Validator_Name --chain-id $CHAIN_ID
@@ -67,7 +67,7 @@ wget -O $HOME/.layer/config/addrbook.json "https://raw.githubusercontent.com/111
 
 echo -e "                     \e[1m\e[32m4. Node optimization and improvement--> \e[0m" && sleep 1
 
-sed -i.bak -e "s/^minimum-gas-prices *=.*/minimum-gas-prices = \"1loya\"/;" ~/.layer/config/app.toml
+sed -i.bak -e "s/^minimum-gas-prices *=.*/minimum-gas-prices = \"0.000025loya\"/;" ~/.layer/config/app.toml
 external_address=$(wget -qO- eth0.me) 
 sed -i.bak -e "s/^external_address *=.*/external_address = \"$external_address:26656\"/" $HOME/.layer/config/config.toml
 peers=""
@@ -96,7 +96,7 @@ After=network-online.target
 
 [Service]
 User=$USER
-ExecStart=$(which layerd) start
+ExecStart=$(which layerd) start --home /root/.layer --key-name <name_wallet>
 Restart=on-failure
 RestartSec=3
 LimitNOFILE=65535
@@ -137,11 +137,7 @@ echo -e "      \e[1m\e[32m SOOOON\e[0m"
 break
 ;;
 "UPDATE")
-cd $HOME/layer
-git pull
-git checkout v0.7.1-fix
-make install
-sudo systemctl restart layerd && sudo journalctl -fu layerd -o cat
+echo -e "      \e[1m\e[32m SOOOON\e[0m"
 
 break
 ;;
