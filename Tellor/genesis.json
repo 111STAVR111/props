@@ -1,10 +1,30 @@
 {
-  "app_name": "layer",
-  "app_version": "",
-  "genesis_time": "2024-09-07T09:06:28.31621986Z",
-  "chain_id": "layertest-1",
-  "initial_height": 1,
-  "app_hash": null,
+  "genesis_time": "2025-02-04T14:21:06.291505Z",
+  "chain_id": "layertest-3",
+  "initial_height": "1",
+  "consensus_params": {
+    "block": {
+      "max_bytes": "22020096",
+      "max_gas": "-1"
+    },
+    "evidence": {
+      "max_age_num_blocks": "100000",
+      "max_age_duration": "172800000000000",
+      "max_bytes": "1048576"
+    },
+    "validator": {
+      "pub_key_types": [
+        "ed25519"
+      ]
+    },
+    "version": {
+      "app": "0"
+    },
+    "abci": {
+      "vote_extensions_enable_height": "1"
+    }
+  },
+  "app_hash": "",
   "app_state": {
     "07-tendermint": null,
     "auth": {
@@ -15,7 +35,64 @@
         "sig_verify_cost_ed25519": "590",
         "sig_verify_cost_secp256k1": "1000"
       },
-      "accounts": []
+      "accounts": [
+        {
+          "@type": "/cosmos.auth.v1beta1.BaseAccount",
+          "address": "tellor1hwez285ve3z52mx95dnh5ad0yup453vf34zs0j",
+          "pub_key": null,
+          "account_number": "0",
+          "sequence": "0"
+        },
+        {
+          "@type": "/cosmos.auth.v1beta1.BaseAccount",
+          "address": "tellor1q8m9lqc7ajmgg3kl60n0jrqejvv4yaslqymxe4",
+          "pub_key": null,
+          "account_number": "1",
+          "sequence": "0"
+        },
+        {
+          "@type": "/cosmos.auth.v1beta1.BaseAccount",
+          "address": "tellor1m4alwkkhqpd96h8a8p8vqxmq68f6t0vyvj5fsw",
+          "pub_key": null,
+          "account_number": "2",
+          "sequence": "0"
+        },
+        {
+          "@type": "/cosmos.auth.v1beta1.BaseAccount",
+          "address": "tellor1t6llaazgletpqal2l37emag8x2z053mvxlzskq",
+          "pub_key": null,
+          "account_number": "3",
+          "sequence": "0"
+        },
+        {
+          "@type": "/cosmos.auth.v1beta1.BaseAccount",
+          "address": "tellor1zldjml93erklsehcv4nsuh6a0rf02nvyvxvp88",
+          "pub_key": null,
+          "account_number": "4",
+          "sequence": "0"
+        },
+        {
+          "@type": "/cosmos.auth.v1beta1.BaseAccount",
+          "address": "tellor18e3ct9zrakk2w4zvz0qg3228s6dwr0kqmayy3u",
+          "pub_key": null,
+          "account_number": "5",
+          "sequence": "0"
+        },
+        {
+          "@type": "/cosmos.auth.v1beta1.BaseAccount",
+          "address": "tellor19d90wqftqx34khmln36zjdswm9p2aqawq2t3vp",
+          "pub_key": null,
+          "account_number": "6",
+          "sequence": "0"
+        },
+        {
+          "@type": "/cosmos.auth.v1beta1.BaseAccount",
+          "address": "tellor18wjwgr0j8pv4ektdaxvzsykpntdylftwz8ml97",
+          "pub_key": null,
+          "account_number": "7",
+          "sequence": "0"
+        }
+      ]
     },
     "authz": {
       "authorization": []
@@ -25,8 +102,77 @@
         "send_enabled": [],
         "default_send_enabled": true
       },
-      "balances": [],
-      "supply": [],
+      "balances": [
+        {
+          "address": "tellor1q8m9lqc7ajmgg3kl60n0jrqejvv4yaslqymxe4",
+          "coins": [
+            {
+              "denom": "loya",
+              "amount": "200000000000"
+            }
+          ]
+        },
+        {
+          "address": "tellor1zldjml93erklsehcv4nsuh6a0rf02nvyvxvp88",
+          "coins": [
+            {
+              "denom": "loya",
+              "amount": "200000000000"
+            }
+          ]
+        },
+        {
+          "address": "tellor19d90wqftqx34khmln36zjdswm9p2aqawq2t3vp",
+          "coins": [
+            {
+              "denom": "loya",
+              "amount": "1000000000000"
+            }
+          ]
+        },
+        {
+          "address": "tellor18e3ct9zrakk2w4zvz0qg3228s6dwr0kqmayy3u",
+          "coins": [
+            {
+              "denom": "loya",
+              "amount": "200000000000"
+            }
+          ]
+        },
+        {
+          "address": "tellor1t6llaazgletpqal2l37emag8x2z053mvxlzskq",
+          "coins": [
+            {
+              "denom": "loya",
+              "amount": "200000000000"
+            }
+          ]
+        },
+        {
+          "address": "tellor1hwez285ve3z52mx95dnh5ad0yup453vf34zs0j",
+          "coins": [
+            {
+              "denom": "loya",
+              "amount": "200000000000"
+            }
+          ]
+        },
+        {
+          "address": "tellor1m4alwkkhqpd96h8a8p8vqxmq68f6t0vyvj5fsw",
+          "coins": [
+            {
+              "denom": "loya",
+              "amount": "200000000000"
+            }
+          ]
+        }
+      ],
+      "supply": [
+        {
+          "denom": "loya",
+          "amount": "2200000000000"
+        }
+      ],
       "denom_metadata": [
         {
           "description": "The native token of the Tellor Layer.",
@@ -53,7 +199,8 @@
       "send_enabled": []
     },
     "bridge": {
-      "params": {}
+      "params": {},
+      "snapshot_limit": "1000"
     },
     "capability": {
       "index": "1",
@@ -62,7 +209,7 @@
     "consensus": null,
     "dispute": {
       "params": {
-        "team_address": "+mmRVs069FJdX1vYIwz0VOW05BA="
+        "team_address": "O6TkDfI4WVzZbemYKBLBmtpPpW4="
       }
     },
     "distribution": {
@@ -91,14 +238,387 @@
       "allowances": []
     },
     "genutil": {
-      "gen_txs": []
+      "gen_txs": [
+        {
+          "body": {
+            "messages": [
+              {
+                "@type": "/cosmos.staking.v1beta1.MsgCreateValidator",
+                "description": {
+                  "moniker": "darth_vader-moniker",
+                  "identity": "",
+                  "website": "",
+                  "security_contact": "",
+                  "details": ""
+                },
+                "commission": {
+                  "rate": "0.100000000000000000",
+                  "max_rate": "0.200000000000000000",
+                  "max_change_rate": "0.010000000000000000"
+                },
+                "min_self_delegation": "1",
+                "delegator_address": "",
+                "validator_address": "tellorvaloper1t6llaazgletpqal2l37emag8x2z053mvnswz0s",
+                "pubkey": {
+                  "@type": "/cosmos.crypto.ed25519.PubKey",
+                  "key": "WF6kO2kSVGktZRRgbVdu9j0/4s2VJsxzYitWGkSy+JY="
+                },
+                "value": {
+                  "denom": "loya",
+                  "amount": "100000000000"
+                }
+              }
+            ],
+            "memo": "59fd40b86c9b65ca717b29ce37b08fdb82c8e61d@10.0.0.8:26656",
+            "timeout_height": "0",
+            "extension_options": [],
+            "non_critical_extension_options": []
+          },
+          "auth_info": {
+            "signer_infos": [
+              {
+                "public_key": {
+                  "@type": "/cosmos.crypto.secp256k1.PubKey",
+                  "key": "AlNpH9jcmV/nKOj3WHr+MYFnQRoDJbF9jYCdzbl5LHFp"
+                },
+                "mode_info": {
+                  "single": {
+                    "mode": "SIGN_MODE_DIRECT"
+                  }
+                },
+                "sequence": "0"
+              }
+            ],
+            "fee": {
+              "amount": [],
+              "gas_limit": "200000",
+              "payer": "",
+              "granter": ""
+            },
+            "tip": null
+          },
+          "signatures": [
+            "EkWcFHgeTdcYwOD5OlpRljiRTn+c3L4vxzVGfCtlLj5ypMFae6k16x8NGXzpHlu6iQMNKPP3OoSnIP9XM5z9Ng=="
+          ]
+        },
+        {
+          "body": {
+            "messages": [
+              {
+                "@type": "/cosmos.staking.v1beta1.MsgCreateValidator",
+                "description": {
+                  "moniker": "yoda-moniker",
+                  "identity": "",
+                  "website": "",
+                  "security_contact": "",
+                  "details": ""
+                },
+                "commission": {
+                  "rate": "0.100000000000000000",
+                  "max_rate": "0.200000000000000000",
+                  "max_change_rate": "0.010000000000000000"
+                },
+                "min_self_delegation": "1",
+                "delegator_address": "",
+                "validator_address": "tellorvaloper1q8m9lqc7ajmgg3kl60n0jrqejvv4yasl4th5q9",
+                "pubkey": {
+                  "@type": "/cosmos.crypto.ed25519.PubKey",
+                  "key": "GYk2Vc0NclGNfZUa496iL3rA44RT7B4UqChErO8G3QI="
+                },
+                "value": {
+                  "denom": "loya",
+                  "amount": "100000000000"
+                }
+              }
+            ],
+            "memo": "7f2c8cad741c28d7a01d9f1cf2e1a87eb751afa3@10.0.0.8:26656",
+            "timeout_height": "0",
+            "extension_options": [],
+            "non_critical_extension_options": []
+          },
+          "auth_info": {
+            "signer_infos": [
+              {
+                "public_key": {
+                  "@type": "/cosmos.crypto.secp256k1.PubKey",
+                  "key": "AvSEmBVpdxCxIIceAOWvZfCuURv76E9w8EAbTF8I+Sdp"
+                },
+                "mode_info": {
+                  "single": {
+                    "mode": "SIGN_MODE_DIRECT"
+                  }
+                },
+                "sequence": "0"
+              }
+            ],
+            "fee": {
+              "amount": [],
+              "gas_limit": "200000",
+              "payer": "",
+              "granter": ""
+            },
+            "tip": null
+          },
+          "signatures": [
+            "gWWGkNG9WxGFqKp/C9/Pdw7tZMjv5XT/Wgl7JssXadZwIb2c0KRIO9ki4QcJvzv7aG4lfQeAnLRkGjcpnlaTmQ=="
+          ]
+        },
+        {
+          "body": {
+            "messages": [
+              {
+                "@type": "/cosmos.staking.v1beta1.MsgCreateValidator",
+                "description": {
+                  "moniker": "palpatine-moniker",
+                  "identity": "",
+                  "website": "",
+                  "security_contact": "",
+                  "details": ""
+                },
+                "commission": {
+                  "rate": "0.100000000000000000",
+                  "max_rate": "0.200000000000000000",
+                  "max_change_rate": "0.010000000000000000"
+                },
+                "min_self_delegation": "1",
+                "delegator_address": "",
+                "validator_address": "tellorvaloper1zldjml93erklsehcv4nsuh6a0rf02nvyefqn7h",
+                "pubkey": {
+                  "@type": "/cosmos.crypto.ed25519.PubKey",
+                  "key": "43HiZG4If/3w6utmzrpFWsm71BG79RWkbqCMvPBZN4A="
+                },
+                "value": {
+                  "denom": "loya",
+                  "amount": "100000000000"
+                }
+              }
+            ],
+            "memo": "b26e162aaae52c917f03afd0e09889c1a9f1da13@10.0.0.8:26656",
+            "timeout_height": "0",
+            "extension_options": [],
+            "non_critical_extension_options": []
+          },
+          "auth_info": {
+            "signer_infos": [
+              {
+                "public_key": {
+                  "@type": "/cosmos.crypto.secp256k1.PubKey",
+                  "key": "AyKm+5AbeMd2Za+wnmBlGvR62tJdSMbcnUiN8lEsYFSj"
+                },
+                "mode_info": {
+                  "single": {
+                    "mode": "SIGN_MODE_DIRECT"
+                  }
+                },
+                "sequence": "0"
+              }
+            ],
+            "fee": {
+              "amount": [],
+              "gas_limit": "200000",
+              "payer": "",
+              "granter": ""
+            },
+            "tip": null
+          },
+          "signatures": [
+            "N7tucKF5Zwd9J/wo53YxP5wiQycoP4v7HOgks2Se/XoD+Q/WWLaevxl4/JHV/amrUW4RClJPepGfISm7p650Fw=="
+          ]
+        },
+        {
+          "body": {
+            "messages": [
+              {
+                "@type": "/cosmos.staking.v1beta1.MsgCreateValidator",
+                "description": {
+                  "moniker": "luke-moniker",
+                  "identity": "",
+                  "website": "",
+                  "security_contact": "",
+                  "details": ""
+                },
+                "commission": {
+                  "rate": "0.100000000000000000",
+                  "max_rate": "0.200000000000000000",
+                  "max_change_rate": "0.010000000000000000"
+                },
+                "min_self_delegation": "1",
+                "delegator_address": "",
+                "validator_address": "tellorvaloper1hwez285ve3z52mx95dnh5ad0yup453vfy6wzkz",
+                "pubkey": {
+                  "@type": "/cosmos.crypto.ed25519.PubKey",
+                  "key": "iDJ/h+j10yZj0LyuiYFMWox2cSj+fUoGf0MzUE1klTs="
+                },
+                "value": {
+                  "denom": "loya",
+                  "amount": "100000000000"
+                }
+              }
+            ],
+            "memo": "d87d655453277514d150df82e6305b307f138d06@10.0.0.8:26656",
+            "timeout_height": "0",
+            "extension_options": [],
+            "non_critical_extension_options": []
+          },
+          "auth_info": {
+            "signer_infos": [
+              {
+                "public_key": {
+                  "@type": "/cosmos.crypto.secp256k1.PubKey",
+                  "key": "AnHYdMQuFfp6IsBIj6WNjmBeNtyFVFLbw5pwfEaVoyvx"
+                },
+                "mode_info": {
+                  "single": {
+                    "mode": "SIGN_MODE_DIRECT"
+                  }
+                },
+                "sequence": "0"
+              }
+            ],
+            "fee": {
+              "amount": [],
+              "gas_limit": "200000",
+              "payer": "",
+              "granter": ""
+            },
+            "tip": null
+          },
+          "signatures": [
+            "cPHX06cjUWhNc9dyPTg4wjU+L7mZNuVGhGgCfEdm2Q5lR3wVOk5ASMHlZ/t21gc07gpFj+527CcCq7AY61isKQ=="
+          ]
+        },
+        {
+          "body": {
+            "messages": [
+              {
+                "@type": "/cosmos.staking.v1beta1.MsgCreateValidator",
+                "description": {
+                  "moniker": "obi_wan-moniker",
+                  "identity": "",
+                  "website": "",
+                  "security_contact": "",
+                  "details": ""
+                },
+                "commission": {
+                  "rate": "0.100000000000000000",
+                  "max_rate": "0.200000000000000000",
+                  "max_change_rate": "0.010000000000000000"
+                },
+                "min_self_delegation": "1",
+                "delegator_address": "",
+                "validator_address": "tellorvaloper1m4alwkkhqpd96h8a8p8vqxmq68f6t0vyeacmf7",
+                "pubkey": {
+                  "@type": "/cosmos.crypto.ed25519.PubKey",
+                  "key": "rdH+w6wvTzQQynBQE2TvD7q34AqFzOSi4vQY7Ajxs30="
+                },
+                "value": {
+                  "denom": "loya",
+                  "amount": "100000000000"
+                }
+              }
+            ],
+            "memo": "f4786bc2a40172e29784b9f8d69567c474de8a8c@10.0.0.8:26656",
+            "timeout_height": "0",
+            "extension_options": [],
+            "non_critical_extension_options": []
+          },
+          "auth_info": {
+            "signer_infos": [
+              {
+                "public_key": {
+                  "@type": "/cosmos.crypto.secp256k1.PubKey",
+                  "key": "A7grjMIQDMW+aGqiXo1JntUqJFtPaOmQx3MV/psguFuv"
+                },
+                "mode_info": {
+                  "single": {
+                    "mode": "SIGN_MODE_DIRECT"
+                  }
+                },
+                "sequence": "0"
+              }
+            ],
+            "fee": {
+              "amount": [],
+              "gas_limit": "200000",
+              "payer": "",
+              "granter": ""
+            },
+            "tip": null
+          },
+          "signatures": [
+            "49uwSdnDeGCdt4mxZAjUYmuUk1oK/EkLryFX+Xj46+YRFPw7oDrLc4SyzAWtofQeRi+h0TvWs92qs8uZbhOfaw=="
+          ]
+        },
+        {
+          "body": {
+            "messages": [
+              {
+                "@type": "/cosmos.staking.v1beta1.MsgCreateValidator",
+                "description": {
+                  "moniker": "darth_maul-moniker",
+                  "identity": "",
+                  "website": "",
+                  "security_contact": "",
+                  "details": ""
+                },
+                "commission": {
+                  "rate": "0.100000000000000000",
+                  "max_rate": "0.200000000000000000",
+                  "max_change_rate": "0.010000000000000000"
+                },
+                "min_self_delegation": "1",
+                "delegator_address": "",
+                "validator_address": "tellorvaloper18e3ct9zrakk2w4zvz0qg3228s6dwr0kqwjgkgv",
+                "pubkey": {
+                  "@type": "/cosmos.crypto.ed25519.PubKey",
+                  "key": "fZ7lTqrn4GrbMcZ93G4xGDHXv4wU1Q4UeSdOU2Dfg3E="
+                },
+                "value": {
+                  "denom": "loya",
+                  "amount": "100000000000"
+                }
+              }
+            ],
+            "memo": "fc1caebd2550a4172bcdc073d0f18e630c44cc26@10.0.0.8:26656",
+            "timeout_height": "0",
+            "extension_options": [],
+            "non_critical_extension_options": []
+          },
+          "auth_info": {
+            "signer_infos": [
+              {
+                "public_key": {
+                  "@type": "/cosmos.crypto.secp256k1.PubKey",
+                  "key": "A5s7e63b0x+U/htx53MIeT5guNz2dSw1D9tQgF2EiU75"
+                },
+                "mode_info": {
+                  "single": {
+                    "mode": "SIGN_MODE_DIRECT"
+                  }
+                },
+                "sequence": "0"
+              }
+            ],
+            "fee": {
+              "amount": [],
+              "gas_limit": "200000",
+              "payer": "",
+              "granter": ""
+            },
+            "tip": null
+          },
+          "signatures": [
+            "wVDPRyFUN1mVVGa4iIVOXRIRSMqeJc+iIQLAkGTq5749rVXe3WAb2C8IGWDYKHZ8U1WAWp5+rIKw0EUU6kgMFg=="
+          ]
+        }
+      ]
     },
     "globalfee": {
       "params": {
         "minimum_gas_prices": [
           {
             "denom": "loya",
-            "amount": "0.002500000000000000"
+            "amount": "0.000025000000000000"
           }
         ]
       }
@@ -206,53 +726,90 @@
         }
       }
     },
+    "interchainquery": {
+      "host_port": "icqhost",
+      "params": {
+        "host_enabled": true,
+        "allow_queries": [
+          "/layer.oracle.Query/GetCurrentAggregateReport"
+        ]
+      }
+    },
     "mint": {
-      "bond_denom": "loya"
+      "bond_denom": "loya",
+      "initialized": false,
+      "previous_block_time": null
     },
     "oracle": {
       "params": {
-        "minStakeAmount": "1000000"
+        "minStakeAmount": "1000000",
+        "minTipAmount": "10000",
+        "maxTipAmount": "25000000"
       },
       "cyclelist": [
         "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAJU3BvdFByaWNlAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA2V0aAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAN1c2QAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
         "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAJU3BvdFByaWNlAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA2J0YwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAN1c2QAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
         "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAJU3BvdFByaWNlAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA3RyYgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAN1c2QAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=="
-      ]
+      ],
+      "query_data_limit": "524288"
     },
     "registry": {
       "params": {
-        "max_report_buffer_window": "1814400s"
+        "max_report_buffer_window": "700000"
       },
-      "dataspec": {
-        "document_hash": "",
-        "response_value_type": "uint256",
-        "abi_components": [
-          {
-            "name": "asset",
-            "field_type": "string",
-            "nested_component": []
-          },
-          {
-            "name": "currency",
-            "field_type": "string",
-            "nested_component": []
-          }
-        ],
-        "aggregation_method": "weighted-median",
-        "registrar": "genesis",
-        "report_buffer_window": "0s"
-      }
+      "dataspec": [
+        {
+          "document_hash": "",
+          "response_value_type": "uint256",
+          "abi_components": [
+            {
+              "name": "asset",
+              "field_type": "string",
+              "nested_component": []
+            },
+            {
+              "name": "currency",
+              "field_type": "string",
+              "nested_component": []
+            }
+          ],
+          "aggregation_method": "weighted-median",
+          "registrar": "genesis",
+          "report_block_window": "2",
+          "query_type": "spotprice"
+        },
+        {
+          "document_hash": "",
+          "response_value_type": "address, string, uint256",
+          "abi_components": [
+            {
+              "name": "toLayer",
+              "field_type": "bool",
+              "nested_component": []
+            },
+            {
+              "name": "depositId",
+              "field_type": "uint256",
+              "nested_component": []
+            }
+          ],
+          "aggregation_method": "weighted-mode",
+          "registrar": "genesis",
+          "report_block_window": "2000",
+          "query_type": "trbbridge"
+        }
+      ]
     },
     "reporter": {
       "params": {
         "min_commission_rate": "0.000000000000000000",
-        "min_trb": "1000000",
+        "min_loya": "1000000",
         "max_selectors": "100"
       }
     },
     "slashing": {
       "params": {
-        "signed_blocks_window": "100",
+        "signed_blocks_window": "1000",
         "min_signed_per_window": "0.500000000000000000",
         "downtime_jail_duration": "600s",
         "slash_fraction_double_sign": "0.050000000000000000",
@@ -289,29 +846,5 @@
     },
     "upgrade": {},
     "vesting": {}
-  },
-  "consensus": {
-    "params": {
-      "block": {
-        "max_bytes": "22020096",
-        "max_gas": "-1"
-      },
-      "evidence": {
-        "max_age_num_blocks": "100000",
-        "max_age_duration": "172800000000000",
-        "max_bytes": "1048576"
-      },
-      "validator": {
-        "pub_key_types": [
-          "ed25519"
-        ]
-      },
-      "version": {
-        "app": "0"
-      },
-      "abci": {
-        "vote_extensions_enable_height": "0"
-      }
-    }
   }
 }
