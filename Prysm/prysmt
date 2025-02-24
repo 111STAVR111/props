@@ -111,7 +111,7 @@ fi
 
 wget -O $HOME/.prysm/config/addrbook.json "https://server-1.stavr.tech/Testnet/Prysm/addrbook.json"
 wget -O $HOME/.prysm/config/genesis.json "https://server-1.stavr.tech/Testnet/Prysm/genesis.json"
-sed -i.bak -e "s/^minimum-gas-prices *=.*/minimum-gas-prices = \"0.001uprysm\"/;" ~/.prysm/config/app.toml
+sed -i.bak -e "s/^minimum-gas-prices *=.*/minimum-gas-prices = \"0.025uprysm, 0.01ibc/8E27BA2D5493AF5636760E354E46004562C46AB7EC0CC4C1CA14E9E20E2545B5,0.001ibc/25418646C017D377ADF3202FF1E43590D0DAE3346E594E8D78176A139A928F88,0.02ibc/0471F1C4E7AFD3F07702BEF6DC365268D64570F7C1FDC98EA6098DD6DE59817B\"/;" ~/.prysm/config/app.toml
 external_address=$(wget -qO- eth0.me) 
 sed -i.bak -e "s/^external_address *=.*/external_address = \"$external_address:26656\"/" $HOME/.prysm/config/config.toml
 peers=""
