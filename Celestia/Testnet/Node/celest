@@ -312,7 +312,7 @@ if [[ $AVAILABLE_SNAPSHOTS -gt 0 ]]; then
             cp $HOME/.celestia-app/data/priv_validator_state.json $HOME/.celestia-app/priv_validator_state.json.backup
             rm -rf $HOME/.celestia-app/data
             SNAPSHOT_NUMBER=$((SNAPSHOT_CHOICE))
-            curl -o - -L "https://server-1.stavr.tech/Mainnet/Celestia/celestia-snap-$SNAPSHOT_NUMBER.tar.lz4" | lz4 -c -d - | tar -x -C $HOME/.celestia-app
+            curl -o - -L "https://server-1.stavr.tech/Testnet/Celestia/celestia-snap-$SNAPSHOT_NUMBER.tar.lz4" | lz4 -c -d - | tar -x -C $HOME/.celestia-app
             mv $HOME/.celestia-app/priv_validator_state.json.backup $HOME/.celestia-app/data/priv_validator_state.json
             wget -O $HOME/.celestia-app/config/addrbook.json "https://server-1.stavr.tech/Testnet/Celestia/addrbook.json"
             sudo systemctl restart celestia-appd && journalctl -fu celestia-appd -o cat
