@@ -109,8 +109,8 @@ if [ "$change_ports" == "y" ]; then
 fi
 
 
-wget -O $HOME/.celestia-app/config/genesis.json https://celestia-m.genesis.stavr.tech/genesis.json
-wget -O $HOME/.celestia-app/config/addrbook.json "https://raw.githubusercontent.com/111STAVR111/props/refs/heads/main/Celestia/Mainnet/Node/addrbook.json"
+wget -O $HOME/.celestia-app/config/genesis.json "https://server-1.stavr.tech/Mainnet/Celestia/genesis.json"
+wget -O $HOME/.celestia-app/config/addrbook.json "https://server-1.stavr.tech/Mainnet/Celestia/addrbook.json"
 
 
 echo -e "                     \e[1m\e[32m4. Node optimization and improvement--> \e[0m" && sleep 1
