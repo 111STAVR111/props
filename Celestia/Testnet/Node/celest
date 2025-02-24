@@ -108,8 +108,8 @@ if [ "$change_ports" == "y" ]; then
     echo "Ports have been updated to ${proxy_app_prefix}658, ${rpc_prefix}657, ${p2p_prefix}656, ${pprof_prefix}60, ${grpc_prefix}90 and ${grpcw_prefix}91."
 fi
 
-wget -O $HOME/.celestia-app/config/genesis.json https://celestia-t.genesis.stavr.tech/genesis.json
-wget -O $HOME/.celestia-app/config/addrbook.json "https://raw.githubusercontent.com/111STAVR111/props/main/Celestia/Testnet/Node/addrbook.json"
+wget -O $HOME/.celestia-app/config/genesis.json "https://server-1.stavr.tech/Testnet/Celestia/genesis.json"
+wget -O $HOME/.celestia-app/config/addrbook.json "https://server-1.stavr.tech/Testnet/Celestia/addrbook.json"
 
 
 echo -e "                     \e[1m\e[32m4. Node optimization and improvement--> \e[0m" && sleep 1
