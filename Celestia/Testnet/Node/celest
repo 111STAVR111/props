@@ -208,7 +208,7 @@ sudo systemctl restart celestia-appd && sudo journalctl -fu celestia-appd -o cat
 break
 ;;
 "Check node logs")
-sudo journalctl -fu celestia-appd -o cat
+sudo journalctl -fu celestia-appd -n100 -ocat
 
 break
 ;;
@@ -217,46 +217,113 @@ cd $HOME
 YELLOW='\033[1;33m'
 GREEN='\033[1;32m'
 PINK='\033[1;35m'
+BLUE='\033[1;34m'
 NO_COLOR='\033[0m'
-SNAPSHOT_INFO_URL="https://celestia-t.snapshot.stavr.tech/snapshot-info.txt"
-SNAPSHOT_INFO=$(curl -s $SNAPSHOT_INFO_URL)
 
-BLOCK_HEIGHT=$(echo "$SNAPSHOT_INFO" | grep "Block height" | awk '{print $3}')
-CREATION_TIME_RAW=$(echo "$SNAPSHOT_INFO" | grep "Creation time" | cut -d ' ' -f3-)
+SNAPSHOT_INFO_URLS=("https://server-1.stavr.tech/Testnet/Celestia/snapshot-1-info.txt" 
+                    "https://server-1.stavr.tech/Testnet/Celestia/snapshot-2-info.txt" 
+                    "https://server-1.stavr.tech/Testnet/Celestia/snapshot-3-info.txt")
 
-CREATION_TIME_EPOCH=$(date -d "$CREATION_TIME_RAW" +%s)
-CURRENT_TIME_EPOCH=$(date +%s)
-TIME_DIFF=$((CURRENT_TIME_EPOCH - CREATION_TIME_EPOCH))
+SNAPSHOT_INFO=()
+SNAPSHOT_BLOCK_HEIGHT=()
+SNAPSHOT_CREATION_TIME=()
+SNAPSHOT_FILE_SIZE=()
 
-if ((TIME_DIFF < 60)); then
-    TIME_AGO="${TIME_DIFF} sec ago"
-elif ((TIME_DIFF < 3600)); then
-    TIME_AGO="$((TIME_DIFF / 60)) min ago"
-elif ((TIME_DIFF < 86400)); then
-    TIME_AGO="$((TIME_DIFF / 3600)) h ago"
+RED='\033[0;31m'
+YELLOW='\033[1;33m'
+GREEN='\033[1;32m'
+PINK='\033[1;35m'
+NO_COLOR='\033[0m'
+
+declare -a SNAPSHOT_BLOCK_HEIGHT
+declare -a SNAPSHOT_CREATION_TIME
+declare -a SNAPSHOT_FILE_SIZE
+
+for i in "${!SNAPSHOT_INFO_URLS[@]}"; do
+    INFO_URL=${SNAPSHOT_INFO_URLS[i]}
+    
+    if curl --output /dev/null --silent --head --fail "$INFO_URL"; then
+        INFO=$(curl -s "$INFO_URL")
+        BLOCK_HEIGHT=$(echo "$INFO" | grep "Block height" | awk '{print $3}')
+        CREATION_TIME_RAW=$(echo "$INFO" | grep "Creation time" | cut -d ':' -f2- | xargs)
+        CREATION_TIME_FORMATTED=$(date -d "$CREATION_TIME_RAW" +"%Y-%m-%d %H:%M:%S" 2>/dev/null)
+        
+        if [ $? -ne 0 ]; then
+            CREATION_TIME_FORMATTED="Invalid date format"
+        else
+            CREATION_TIME_EPOCH=$(date -d "$CREATION_TIME_RAW" +%s)
+            CURRENT_TIME_EPOCH=$(date +%s)
+            TIME_DIFF=$((CURRENT_TIME_EPOCH - CREATION_TIME_EPOCH))
+
+            if ((TIME_DIFF < 60)); then
+                TIME_AGO="${TIME_DIFF} sec ago"
+            elif ((TIME_DIFF < 3600)); then
+                TIME_AGO="$((TIME_DIFF / 60)) min ago"
+            elif ((TIME_DIFF < 86400)); then
+                TIME_AGO="$((TIME_DIFF / 3600)) h ago"
+            else
+                TIME_AGO="$((TIME_DIFF / 86400)) d ago"
+            fi
+        fi
+        
+        FILE_SIZE=$(echo "$INFO" | grep "Pruned size" | awk '{print $3}')
+        SNAPSHOT_BLOCK_HEIGHT+=("${BLOCK_HEIGHT:-N/A}")
+        SNAPSHOT_CREATION_TIME+=("${CREATION_TIME_FORMATTED:-N/A}")
+        SNAPSHOT_FILE_SIZE+=("${FILE_SIZE:-N/A}")
+        SNAPSHOT_TIME_AGO+=("${TIME_AGO:-N/A}")
+    else
+        SNAPSHOT_BLOCK_HEIGHT+=("N/A")
+        SNAPSHOT_CREATION_TIME+=("N/A")
+        SNAPSHOT_FILE_SIZE+=("N/A")
+        SNAPSHOT_TIME_AGO+=("N/A")
+    fi
+done
+
+for i in "${!SNAPSHOT_BLOCK_HEIGHT[@]}"; do
+    echo -e "${RED}Snapshot $((i + 1))${NO_COLOR}"
+    echo -e "Block Height: ${YELLOW}${SNAPSHOT_BLOCK_HEIGHT[i]}${NO_COLOR}"
+    echo -e "Creation Time: ${GREEN}${SNAPSHOT_CREATION_TIME[i]}${NO_COLOR}"
+    echo -e "Time Ago: ${BLUE}${SNAPSHOT_TIME_AGO[i]}${NO_COLOR}"  # Вывод времени
+    echo -e "File Size (Pruned): ${PINK}${SNAPSHOT_FILE_SIZE[i]}${NO_COLOR}"
+    echo ""
+done
+
+
+AVAILABLE_SNAPSHOTS=0
+for height in "${SNAPSHOT_BLOCK_HEIGHT[@]}"; do
+    if [[ "$height" != "N/A" ]]; then
+        ((AVAILABLE_SNAPSHOTS++))
+    fi
+done
+
+if [[ $AVAILABLE_SNAPSHOTS -gt 0 ]]; then
+    read -p "Please choose a snapshot number (1-${#SNAPSHOT_BLOCK_HEIGHT[@]}): " SNAPSHOT_CHOICE
+    if [[ "$SNAPSHOT_CHOICE" =~ ^[1-9][0-9]*$ ]] && [ "$SNAPSHOT_CHOICE" -le "${#SNAPSHOT_BLOCK_HEIGHT[@]}" ]; then
+        SELECTED_BLOCK_HEIGHT=${SNAPSHOT_BLOCK_HEIGHT[$((SNAPSHOT_CHOICE-1))]}
+        echo "You chose snapshot: Snapshot $SNAPSHOT_CHOICE with Block Height: $SELECTED_BLOCK_HEIGHT"
+        
+        read -p "Do you want to continue with synchronization via the selected snapshot? (yes/no): " USER_CHOICE
+        USER_CHOICE=$(echo "$USER_CHOICE" | tr '[:upper:]' '[:lower:]')
+
+        if [[ "$USER_CHOICE" == "yes" || "$USER_CHOICE" == "y" ]]; then
+            echo "Proceeding with synchronization..."
+            snap list | grep -q lz4 || snap install lz4
+            sudo systemctl stop celestia-appd
+            cp $HOME/.celestia-app/data/priv_validator_state.json $HOME/.celestia-app/priv_validator_state.json.backup
+            rm -rf $HOME/.celestia-app/data
+            SNAPSHOT_NUMBER=$((SNAPSHOT_CHOICE))
+            curl -o - -L "https://server-1.stavr.tech/Mainnet/Celestia/celestia-snap-$SNAPSHOT_NUMBER.tar.lz4" | lz4 -c -d - | tar -x -C $HOME/.celestia-app
+            mv $HOME/.celestia-app/priv_validator_state.json.backup $HOME/.celestia-app/data/priv_validator_state.json
+            wget -O $HOME/.celestia-app/config/addrbook.json "https://server-1.stavr.tech/Testnet/Celestia/addrbook.json"
+            sudo systemctl restart celestia-appd && journalctl -fu celestia-appd -o cat
+        else
+            echo "Operation cancelled. Returning to menu..."
+        fi
+    else
+        echo "Invalid selection. Returning to menu..."
+    fi
 else
-    TIME_AGO="$((TIME_DIFF / 86400)) d ago"
-fi
-
-FILE_SIZE=$(echo "$SNAPSHOT_INFO" | grep "Pruned size" | awk '{print $3}')
-
-echo -e "Block Height: ${YELLOW}$BLOCK_HEIGHT${NO_COLOR}"
-echo -e "Creation Time: ${GREEN}$CREATION_TIME_RAW${NO_COLOR}"
-echo -e "File Size (Pruned): ${PINK}$FILE_SIZE${NO_COLOR} (${TIME_AGO})"
-read -p "Do you want to continue with synchronization via Pruned snapshot? (yes/no): " USER_CHOICE
-USER_CHOICE=$(echo "$USER_CHOICE" | tr '[:upper:]' '[:lower:]')
-if [[ "$USER_CHOICE" == "yes" || "$USER_CHOICE" == "y" ]]; then
-    echo "Proceeding with synchronization..."
-    snap list | grep -q lz4 || snap install lz4
-	sudo systemctl stop celestia-appd
-	cp $HOME/.celestia-app/data/priv_validator_state.json $HOME/.celestia-app/priv_validator_state.json.backup
-	rm -rf $HOME/.celestia-app/data
-	curl -o - -L https://celestia-t.snapshot.stavr.tech/celestia-t-snap.tar.lz4 | lz4 -c -d - | tar -x -C $HOME/.celestia-app
-	mv $HOME/.celestia-app/priv_validator_state.json.backup $HOME/.celestia-app/data/priv_validator_state.json
-	wget -O $HOME/.celestia-app/config/addrbook.json "https://raw.githubusercontent.com/111STAVR111/props/main/Celestia/Testnet/Node/addrbook.json"
-	sudo systemctl restart celestia-appd && journalctl -fu celestia-appd -o cat
-else
-    echo "Operation cancelled. Returning to menu..."
+    echo "No available snapshots to select. Returning to menu..."
 fi
 
 break
