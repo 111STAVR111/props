@@ -87,7 +87,7 @@ echo -e "              \e[1m\e[32m3. Downloading and building binaries--> \e[0m"
 cd $HOME && mkdir -p go/bin/
 git clone https://github.com/persistenceOne/persistenceCore
 cd persistenceCore
-git checkout v11.15.0-rc0
+git checkout v11.19.0-rc0
 make install
 echo "${MAGNETA}🔥Binaries installed successfully 🔥${RESET}"
 sleep 1
@@ -175,8 +175,11 @@ echo -e "      \e[1m\e[32m!!!!!!!!!SAVE!!!!!!!!!!!!!!!!SAVE YOUR MNEMONIC PHRASE
 break
 ;;
 "UPDATE")
-echo -e "      \e[1m\e[32m SOOOON\e[0m"
-persistenceCore version
+cd $HOME/persistenceCore
+git pull
+git checkout v11.19.0-rc0
+make install
+sudo systemctl restart persistenceCore2 && sudo journalctl -u persistenceCore2 -f -o cat
 
 break
 ;;
