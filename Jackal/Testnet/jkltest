@@ -177,7 +177,7 @@ break
 "UPDATE")
 cd $HOME/canine-chain
 git fetch --all
-git checkout  v4.4.0-rc.1
+git checkout v4.5.0-rc.2
 make install
 systemctl restart canined && journalctl -fu canined -o cat
 
