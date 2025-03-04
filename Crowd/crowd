@@ -38,7 +38,7 @@ echo "_|-_|-_|-_|-_|-_|-_|"
 read Validator_Name
 echo "_|-_|-_|-_|-_|-_|-_|"
 echo export Validator_Name=${Validator_Name} >> $HOME/.bash_profile
-echo export CHAIN_ID="cardtestnet-12" >> $HOME/.bash_profile
+echo export CHAIN_ID="cardtestnet-13" >> $HOME/.bash_profile
 source ~/.bash_profile
 echo -e "\e[1m\e[32m	DO YOU WANT TO CHANGE THE DEFAULT PORTS? (yes/no):\e[0m"
 read change_ports
@@ -86,7 +86,7 @@ echo -e "              \e[1m\e[32m3. Downloading and building binaries--> \e[0m"
 # INSTALL
 cd $HOME && mkdir -p go/bin/
 git clone https://github.com/DecentralCardGame/Cardchain
-wget -O Cardchaind https://github.com/DecentralCardGame/Cardchain/releases/download/v0.16.0/cardchaind
+wget -O Cardchaind https://github.com/DecentralCardGame/Cardchain/releases/download/v0.17.0/cardchaind
 chmod +x Cardchaind
 mv $HOME/Cardchaind /usr/local/bin
 echo "${MAGNETA}🔥Binaries installed successfully 🔥${RESET}"
@@ -173,8 +173,16 @@ echo -e "      \e[1m\e[32m!!!!!!!!!SAVE!!!!!!!!!!!!!!!!SAVE YOUR MNEMONIC PHRASE
 break
 ;;
 "UPDATE")
-echo -e "      \e[1m\e[32m SOOOON\e[0m"
-Cardchaind version
+cd $HOME && mkdir -p go/bin/
+sudo systemctl stop Cardchaind
+wget -O Cardchaind https://github.com/DecentralCardGame/Cardchain/releases/download/v0.17.0/cardchaind
+chmod +x Cardchaind
+mv $HOME/Cardchaind $(which Cardchaind)
+Cardchaind tendermint unsafe-reset-all --home /root/.cardchaind
+Cardchaind config chain-id cardtestnet-13
+wget -O $HOME/.cardchaind/config/addrbook.json "https://server-2.stavr.tech/Testnet/Crowd/addrbook.json"
+wget -O $HOME/.cardchaind/config/genesis.json "https://server-2.stavr.tech/Testnet/Crowd/genesis.json"
+sudo systemctl restart Cardchaind && journalctl -fu Cardchaind -n100 -ocat
 
 break
 ;;
