@@ -56,7 +56,7 @@ echo -e "              \e[1m\e[32m3. Downloading and building binaries--> \e[0m"
 cd $HOME && mkdir -p go/bin/
 git clone https://github.com/tellor-io/layer
 cd layer
-git checkout v3.0.3
+git checkout v3.0.4
 make install
 
 layerd init $Validator_Name --chain-id $CHAIN_ID
@@ -137,7 +137,11 @@ echo -e "      \e[1m\e[32m SOOOON\e[0m"
 break
 ;;
 "UPDATE")
-echo -e "      \e[1m\e[32m SOOOON\e[0m"
+cd $HOME/layer
+git pull
+git checkout v3.0.4
+make install
+sudo systemctl restart layerd && sudo journalctl -fu layerd -n1000 -ocat
 
 break
 ;;
