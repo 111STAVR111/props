@@ -87,7 +87,7 @@ echo -e "              \e[1m\e[32m3. Downloading and building binaries--> \e[0m"
 cd $HOME && mkdir -p go/bin/
 git clone https://github.com/MANTRA-Chain/mantrachain/ mantra
 cd mantra
-git checkout v2.0.3
+git checkout v3.0.0
 make install
 echo "${MAGNETA}🔥Binaries installed successfully 🔥${RESET}"
 sleep 1
@@ -176,7 +176,7 @@ break
 ;;
 "UPDATE")
 cd $HOME
-wget -O mantrachaind https://github.com/MANTRA-Chain/mantrachain/releases/download/v2.0.3/mantrachaind-2.0.3-linux-amd64
+wget -O mantrachaind https://github.com/MANTRA-Chain/mantrachain/releases/download/v3.0.0/mantrachaind-3.0.0-linux-amd64
 chmod +x mantrachaind
 mv mantrachaind $(which mantrachaind)
 sudo systemctl restart mantrachaind && sudo journalctl -fu mantrachaind -n100 -ocat
