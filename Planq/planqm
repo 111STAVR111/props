@@ -177,8 +177,8 @@ break
 "UPDATE")
 cd $HOME
 wget https://github.com/planq-network/planq/releases/download/v2.1.2/planq_2.1.2_linux_amd64.tar.gz
-tar -xvzf planq_2.1.0_linux_amd64.tar.gz
-rm -rf planq_2.1.0_linux_amd64.tar.gz
+tar -xvzf planq_2.1.2_linux_amd64.tar.gz
+rm -rf planq_2.1.2_linux_amd64.tar.gz
 mv $HOME/bin/planqd $(which planqd)
 sudo systemctl restart planqd && sudo journalctl -fu planqd -o cat
 
