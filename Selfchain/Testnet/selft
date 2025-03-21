@@ -32,7 +32,7 @@ echo "_|-_|-_|-_|-_|-_|-_|"
 read Validator_Name
 echo "_|-_|-_|-_|-_|-_|-_|"
 echo export Validator_Name=${Validator_Name} >> $HOME/.bash_profile
-echo export CHAIN_ID="self-dev-1" >> $HOME/.bash_profile
+echo export CHAIN_ID="selfchain-testnet" >> $HOME/.bash_profile
 source ~/.bash_profile
 
 echo -e "\e[1m\e[32m1. Updating packages and dependencies--> \e[0m" && sleep 1
@@ -42,34 +42,36 @@ sudo apt install curl tar wget clang pkg-config libssl-dev libleveldb-dev jq bui
 
 echo -e "        \e[1m\e[32m2. Installing GO--> \e[0m" && sleep 1
 #INSTALL GO
-ver="1.20.5"
-wget "https://golang.org/dl/go$ver.linux-amd64.tar.gz"
+cd $HOME
+VER="1.22.4"
+wget "https://golang.org/dl/go$VER.linux-amd64.tar.gz"
 sudo rm -rf /usr/local/go
-sudo tar -C /usr/local -xzf "go$ver.linux-amd64.tar.gz"
-rm "go$ver.linux-amd64.tar.gz"
-echo "export PATH=$PATH:/usr/local/go/bin:$HOME/go/bin" >> $HOME/.bash_profile
+sudo tar -C /usr/local -xzf "go$VER.linux-amd64.tar.gz"
+rm "go$VER.linux-amd64.tar.gz"
+[ ! -f ~/.bash_profile ] && touch ~/.bash_profile
+echo "export PATH=$PATH:/usr/local/go/bin:~/go/bin" >> ~/.bash_profile
 source $HOME/.bash_profile
-go version
+[ ! -d ~/go/bin ] && mkdir -p ~/go/bin
 
 echo -e "              \e[1m\e[32m3. Downloading and building binaries--> \e[0m" && sleep 1
 #INSTALL
 cd $HOME
-wget https://share.utsa.tech/selfchain/selfchaind
+wget https://server-1.stavr.tech/Testnet/Selfchain/selfchaind
 chmod +x selfchaind
 mv selfchaind /root/go/bin
 
 selfchaind init $Validator_Name --chain-id $CHAIN_ID
 
-wget -L -O $HOME/.selfchain/config/genesis.json "https://raw.githubusercontent.com/111STAVR111/props/main/Selfchain/genesis.json"
-wget -O $HOME/.selfchain/config/addrbook.json "https://raw.githubusercontent.com/111STAVR111/props/main/Selfchain/addrbook.json"
+wget -L -O $HOME/.selfchain/config/genesis.json "https://server-1.stavr.tech/Testnet/Selfchain/genesis.json"
+wget -O $HOME/.selfchain/config/addrbook.json "https://server-1.stavr.tech/Testnet/Selfchain/addrbook.json"
 
 
 echo -e "                     \e[1m\e[32m4. Node optimization and improvement--> \e[0m" && sleep 1
 
-sed -i.bak -e "s/^minimum-gas-prices *=.*/minimum-gas-prices = \"0.0uself\"/;" ~/.selfchain/config/app.toml
+sed -i.bak -e "s/^minimum-gas-prices *=.*/minimum-gas-prices = \"0.0uslf\"/;" ~/.selfchain/config/app.toml
 external_address=$(wget -qO- eth0.me) 
 sed -i.bak -e "s/^external_address *=.*/external_address = \"$external_address:26656\"/" $HOME/.selfchain/config/config.toml
-PEERS="$(curl -sS http://157.230.119.165:26657/net_info | jq -r '.result.peers[] | "\(.node_info.id)@\(.remote_ip):\(.node_info.listen_addr)"' | awk -F ':' '{print $1":"$(NF)}' | sed -z 's|\n|,|g;s|.$||')"
+PEERS=""
 sed -i.bak -e "s/^persistent_peers *=.*/persistent_peers = \"$peers\"/" $HOME/.selfchain/config/config.toml
 seeds=""
 sed -i.bak -e "s/^seeds =.*/seeds = \"$seeds\"/" $HOME/.selfchain/config/config.toml
@@ -148,7 +150,16 @@ sudo journalctl -u selfchaind -f -o cat
 break
 ;;
 "Synchronization via SnapShot")
-echo -e "      \e[1m\e[32m SOOOON\e[0m"
+cd $HOME
+apt install lz4
+sudo systemctl stop selfchaind
+cp $HOME/.selfchain/data/priv_validator_state.json $HOME/.selfchain/priv_validator_state.json.backup
+rm -rf $HOME/.selfchain/data
+LATEST_SNAPSHOT=$(curl -s https://server-1.stavr.tech/Testnet/Selfchain/ | grep -oE 'self-snap-[0-9]+\.tar\.lz4' | while read SNAPSHOT; do HEIGHT=$(curl -s "https://server-1.stavr.tech/Testnet/Selfchain/${SNAPSHOT%.tar.lz4}-info.txt" | awk '/Block height:/ {print $3}'); echo "$SNAPSHOT $HEIGHT"; done | sort -k2 -nr | head -n 1 | awk '{print $1}')
+curl -o - -L https://server-1.stavr.tech/Testnet/Selfchain/$LATEST_SNAPSHOT | lz4 -c -d - | tar -x -C $HOME/.selfchain
+mv $HOME/.selfchain/priv_validator_state.json.backup $HOME/.selfchain/data/priv_validator_state.json
+wget -O $HOME/.selfchain/config/addrbook.json "https://server-1.stavr.tech/Testnet/Selfchain/addrbook.json"
+sudo systemctl restart selfchaind && journalctl -fu selfchaind -o cat
 
 break
 ;;
