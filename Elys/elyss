@@ -56,7 +56,7 @@ echo -e "              \e[1m\e[32m3. Downloading and building binaries--> \e[0m"
 cd $HOME && mkdir -p go/bin/
 git clone https://github.com/elys-network/elys elys
 cd elys
-git checkout v3.0.0-rc0
+git checkout v3.0.0-rc1
 make install
 
 elysd init $Validator_Name --chain-id $CHAIN_ID
@@ -144,7 +144,7 @@ break
 cd $HOME && rm -rf elys
 git clone https://github.com/elys-network/elys.git
 cd elys
-git checkout v3.0.0-rc0
+git checkout v3.0.0-rc1
 make install
 sudo systemctl restart elysd && sudo journalctl -fu elysd -n100 -ocat
 
