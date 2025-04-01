@@ -179,7 +179,7 @@ break
 "UPDATE")
 cd $HOME/nibiru/
 git fetch --all
-git checkout v2.2.0
+git checkout v2.2.0-p1
 make install
 systemctl restart nibid && journalctl -fu nibid -n1000 -o cat
 
