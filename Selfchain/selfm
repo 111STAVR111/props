@@ -173,8 +173,11 @@ echo -e "      \e[1m\e[32m!!!!!!!!!SAVE!!!!!!!!!!!!!!!!SAVE YOUR MNEMONIC PHRASE
 break
 ;;
 "UPDATE")
-echo -e "      \e[1m\e[32m SOOOON\e[0m"
-selfchaind version
+cd $HOME
+curl -O https://server-1.stavr.tech/Mainnet/Selfchain/selfchaind
+chmod +x selfchaind
+mv selfchaind $(which selfchaind)
+systemctl restart selfchaind && journalctl -fu selfchaind -n100 -ocat
 
 break
 ;;
