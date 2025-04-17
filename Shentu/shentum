@@ -87,7 +87,7 @@ echo -e "              \e[1m\e[32m3. Downloading and building binaries--> \e[0m"
 cd $HOME && mkdir -p go/bin/
 git clone https://github.com/shentufoundation/shentu
 cd shentu
-git checkout v2.14.0
+git checkout v2.14.1
 make install
 echo "${MAGNETA}🔥Binaries installed successfully 🔥${RESET}"
 sleep 1
@@ -167,7 +167,7 @@ break
 ;;
 "UPDATE")
 cd $HOME/shentu && git pull
-git checkout v2.14.0
+git checkout v2.14.1
 make install
 sudo systemctl restart shentud && sudo journalctl -fu shentud -o cat
 
