@@ -87,7 +87,7 @@ echo -e "              \e[1m\e[32m3. Downloading and building binaries--> \e[0m"
 cd $HOME && mkdir -p go/bin/
 git clone https://github.com/oraichain/wasmd/
 cd wasmd
-git checkout v0.50.9
+git checkout v0.50.10
 make build
 echo "${MAGNETA}🔥Binaries installed successfully 🔥${RESET}"
 sleep 1
@@ -179,7 +179,7 @@ break
 rm -r $HOME/wasmd
 git clone https://github.com/oraichain/wasmd/
 cd wasmd
-git checkout v0.50.9
+git checkout v0.50.10
 make build
 sudo systemctl restart oraid && sudo journalctl -fu oraid -ocat
 
