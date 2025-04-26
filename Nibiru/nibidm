@@ -88,7 +88,7 @@ cd $HOME && mkdir -p go/bin/
 git clone https://github.com/NibiruChain/nibiru/
 cd $HOME/nibiru/
 git fetch --all
-git checkout v2.2.0
+git checkout v2.3.0
 make install
 echo "${MAGNETA}🔥Binaries installed successfully 🔥${RESET}"
 sleep 1
@@ -179,7 +179,7 @@ break
 "UPDATE")
 cd $HOME/nibiru/
 git fetch --all
-git checkout v2.2.0-p1
+git checkout v2.3.0
 make install
 systemctl restart nibid && journalctl -fu nibid -n1000 -o cat
 
