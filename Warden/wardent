@@ -85,7 +85,7 @@ sleep 1
 echo -e "              \e[1m\e[32m3. Downloading and building binaries--> \e[0m" && sleep 1
 # INSTALL
 cd $HOME && mkdir -p go/bin/
-wget -O wardend https://github.com/warden-protocol/wardenprotocol/releases/download/v0.6.2/wardend-0.6.2-linux-amd64
+wget -O wardend https://github.com/warden-protocol/wardenprotocol/releases/download/v0.6.3/wardend-0.6.3-linux-amd64
 chmod +x wardend
 mv wardend $HOME/go/bin/wardend
 echo "${MAGNETA}🔥Binaries installed successfully 🔥${RESET}"
@@ -175,7 +175,7 @@ break
 ;;
 "UPDATE")
 cd $HOME
-wget -O wardend https://github.com/warden-protocol/wardenprotocol/releases/download/v0.6.2/wardend-0.6.2-linux-amd64
+wget -O wardend https://github.com/warden-protocol/wardenprotocol/releases/download/v0.6.3/wardend-0.6.3-linux-amd64
 chmod +x wardend
 mv wardend $(which wardend)
 sudo systemctl restart wardend && sudo journalctl -fu wardend -n100 -ocat
