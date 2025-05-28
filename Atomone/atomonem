@@ -112,7 +112,7 @@ fi
 
 wget -O $HOME/.atomone/config/addrbook.json "https://server-1.stavr.tech/Mainnet/Atomone/addrbook.json"
 wget -O $HOME/.atomone/config/genesis.json "https://server-1.stavr.tech/Mainnet/Atomone/genesis.json"
-sed -i.bak -e "s/^minimum-gas-prices *=.*/minimum-gas-prices = \"0uatone\"/;" ~/.atomone/config/app.toml
+sed -i.bak -e "s/^minimum-gas-prices *=.*/minimum-gas-prices = \"0.025uatone,0.225uphoton\"/;" ~/.atomone/config/app.toml
 external_address=$(wget -qO- eth0.me) 
 sed -i.bak -e "s/^external_address *=.*/external_address = \"$external_address:26656\"/" $HOME/.atomone/config/config.toml
 peers=""
