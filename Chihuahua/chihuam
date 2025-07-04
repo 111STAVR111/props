@@ -87,7 +87,7 @@ echo -e "              \e[1m\e[32m3. Downloading and building binaries--> \e[0m"
 cd $HOME && mkdir -p go/bin/
 git clone https://github.com/ChihuahuaChain/chihuahua chihuahua
 cd chihuahua
-git checkout v9.0.3
+git checkout v9.0.5
 make install
 echo "${MAGNETA}🔥Binaries installed successfully 🔥${RESET}"
 sleep 1
@@ -178,9 +178,9 @@ break
 "UPDATE")
 cd $HOME/chihuahua
 git pull
-git checkout v9.0.3
+git checkout v9.0.5
 make install
-sudo systemctl restart chihuahuad && sudo journalctl -fu chihuahuad -n1000 -o cat
+sudo systemctl restart chihuahuad && sudo journalctl -fu chihuahuad -n1000 -ocat
 
 break
 ;;
