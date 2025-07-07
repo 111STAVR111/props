@@ -56,7 +56,7 @@ echo -e "              \e[1m\e[32m3. Downloading and building binaries--> \e[0m"
 cd $HOME && mkdir -p $HOME/go/bin/
 git clone https://github.com/bandprotocol/chain band
 cd band
-git checkout v2.5.4
+git checkout v3.0.1
 make install
 
 bandd init $Validator_Name --chain-id $CHAIN_ID
@@ -156,8 +156,11 @@ sudo systemctl restart bandd && journalctl -u bandd -f -o cat
 break
 ;;
 "UPDATE")
-echo -e "      \e[1m\e[32m SOOOON\e[0m"
-bandd version
+cd $HOME/band
+git pull
+git checkout v3.0.1
+make install
+sudo systemctl restart bandd && sudo journalctl -fu bandd -n100 -ocat
 
 break
 ;;
