@@ -85,11 +85,11 @@ sleep 1
 echo -e "              \e[1m\e[32m3. Downloading and building binaries--> \e[0m" && sleep 1
 # INSTALL
 cd $HOME && mkdir -p go/bin/
-wget https://github.com/haqq-network/haqq/releases/download/v1.8.3/haqq_1.8.3_linux_amd64.tar.gz
-tar -xvzf haqq_1.8.3_linux_amd64.tar.gz
+wget https://github.com/haqq-network/haqq/releases/download/v1.8.5/haqq_1.8.5_linux_amd64.tar.gz
+tar -xvzf haqq_1.8.5_linux_amd64.tar.gz
 cd bin && chmod +x haqqd
 mv haqqd $HOME/go/bin/
-cd $HOME && rm -rf haqq_1.8.3_linux_amd64.tar.gz
+cd $HOME && rm -rf haqq_1.8.5_linux_amd64.tar.gz
 echo "${MAGNETA}🔥Binaries installed successfully 🔥${RESET}"
 sleep 1
 haqqd init $Validator_Name --chain-id $CHAIN_ID
@@ -178,11 +178,11 @@ break
 ;;
 "UPDATE")
 cd $HOME
-wget https://github.com/haqq-network/haqq/releases/download/v1.8.3/haqq_1.8.3_linux_amd64.tar.gz
-tar -xvzf haqq_1.8.3_linux_amd64.tar.gz
+wget https://github.com/haqq-network/haqq/releases/download/v1.8.5/haqq_1.8.5_linux_amd64.tar.gz
+tar -xvzf haqq_1.8.5_linux_amd64.tar.gz
 cd bin && chmod +x haqqd
 mv haqqd $(which haqqd)
-cd $HOME && rm -rf haqq_1.8.3_linux_amd64.tar.gz
+cd $HOME && rm -rf haqq_1.8.5_linux_amd64.tar.gz
 sudo systemctl restart haqqd && journalctl -fu haqqd -n1000 -ocat
 
 break
