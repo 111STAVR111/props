@@ -87,8 +87,9 @@ echo -e "              \e[1m\e[32m3. Downloading and building binaries--> \e[0m"
 cd $HOME && mkdir -p go/bin/
 git clone https://github.com/cheqd/cheqd-node
 cd cheqd-node
-git checkout v3.1.9
-make install
+git checkout v4.1.1
+make build
+mv /root/cheqd-node/build/cheqd-noded /root/go/bin/cheqd-noded
 echo "${MAGNETA}🔥Binaries installed successfully 🔥${RESET}"
 sleep 1
 cheqd-noded init $Validator_Name --chain-id $CHAIN_ID
@@ -170,10 +171,10 @@ break
 "UPDATE")
 cd $HOME/cheqd-node
 git pull
-git checkout v3.1.9
+git checkout v4.1.1
 make build
 mv /root/cheqd-node/build/cheqd-noded $(which cheqd-noded)
-sudo systemctl restart cheqd-noded && sudo journalctl -fu cheqd-noded -o cat
+sudo systemctl restart cheqd-noded && sudo journalctl -fu cheqd-noded -n100 -ocat
 
 break
 ;;
