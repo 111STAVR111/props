@@ -55,9 +55,9 @@ echo -e "              \e[1m\e[32m3. Downloading and building binaries--> \e[0m"
 #INSTALL
 cd $HOME && mkdir -p go/bin/
 mkdir gravity-bin && cd gravity-bin
-wget -O gravity https://github.com/Gravity-Bridge/Gravity-Bridge/releases/download/v1.12.0/gravity-linux-amd64
+wget -O gravity https://github.com/Gravity-Bridge/Gravity-Bridge/releases/download/v1.13.0/gravity-linux-amd64
 mv gravity-linux-amd64 gravity
-wget https://github.com/Gravity-Bridge/Gravity-Bridge/releases/download/v1.12.0/gbt
+wget https://github.com/Gravity-Bridge/Gravity-Bridge/releases/download/v1.13.0/gbt
 chmod +x *
 mv $HOME/gravity /usr/bin/
 mv $HOME/gbt /usr/bin/
@@ -163,8 +163,8 @@ break
 ;;
 "UPDATE")
 cd $HOME
-wget -O gravity https://github.com/Gravity-Bridge/Gravity-Bridge/releases/download/v1.12.0/gravity-linux-amd64
-wget https://github.com/Gravity-Bridge/Gravity-Bridge/releases/download/v1.12.0/gbt
+wget -O gravity https://github.com/Gravity-Bridge/Gravity-Bridge/releases/download/v1.13.0/gravity-linux-amd64
+wget https://github.com/Gravity-Bridge/Gravity-Bridge/releases/download/v1.13.0/gbt
 chmod +x gravity
 chmod +x gbt
 mv $HOME/gravity $(which gravity)
