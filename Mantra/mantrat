@@ -55,7 +55,7 @@ echo -e "              \e[1m\e[32m3. Downloading and building binaries--> \e[0m"
 #INSTALL
 cd $HOME && mkdir -p go/bin/
 git clone https://github.com/MANTRA-Chain/mantrachain
-wget -O mantrachaind https://github.com/MANTRA-Chain/mantrachain/releases/download/v5.0.0-rc8/mantrachaind-5.0.0-rc8-linux-amd64
+wget -O mantrachaind https://github.com/MANTRA-Chain/mantrachain/releases/download/v5.0.0-rc9/mantrachaind-5.0.0-rc9-linux-amd64
 chmod +x mantrachaind
 mv mantrachaind $HOME/go/bin/
 mantrachaind init $Validator_Name --chain-id $CHAIN_ID
@@ -154,7 +154,7 @@ break
 ;;
 "UPDATE")
 cd $HOME
-wget -O mantrachaind https://github.com/MANTRA-Chain/mantrachain/releases/download/v5.0.0-rc8/mantrachaind-5.0.0-rc8-linux-amd64
+wget -O mantrachaind https://github.com/MANTRA-Chain/mantrachain/releases/download/v5.0.0-rc9/mantrachaind-5.0.0-rc9-linux-amd64
 chmod +x mantrachaind
 mv mantrachaind $(which mantrachaind)
 sudo systemctl restart mantrachaind && sudo journalctl -fu mantrachaind -n1000 -ocat
