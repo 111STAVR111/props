@@ -87,7 +87,7 @@ echo -e "              \e[1m\e[32m3. Downloading and building binaries--> \e[0m"
 cd $HOME && mkdir -p go/bin/
 git clone https://github.com/FirmaChain/firmachain.git
 cd firmachain
-git checkout v0.5.0
+git checkout v0.5.0-patch
 make install
 echo "${MAGNETA}🔥Binaries installed successfully 🔥${RESET}"
 sleep 1
@@ -177,7 +177,7 @@ break
 "UPDATE")
 cd $HOME/firmachain
 git pull
-git checkout v0.5.0
+git checkout v0.5.0-patch
 make install
 sudo systemctl restart firmachaind && journalctl -fu firmachaind -n100 -ocat
 
