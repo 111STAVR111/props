@@ -85,7 +85,7 @@ sleep 1
 echo -e "              \e[1m\e[32m3. Downloading and building binaries--> \e[0m" && sleep 1
 # INSTALL
 cd $HOME && mkdir -p go/bin/
-wget -O kyved https://github.com/KYVENetwork/chain/releases/download/v2.1.0/kyved_mainnet_linux_amd64
+wget -O kyved https://github.com/KYVENetwork/chain/releases/download/v2.2.0/kyved_mainnet_linux_amd64
 chmod +x kyved
 sudo mv kyved $HOME/go/bin/kyved
 echo "${MAGNETA}🔥Binaries installed successfully 🔥${RESET}"
@@ -176,7 +176,7 @@ break
 ;;
 "UPDATE")
 cd $HOME
-wget -O kyved https://github.com/KYVENetwork/chain/releases/download/v2.1.0/kyved_mainnet_linux_amd64
+wget -O kyved https://github.com/KYVENetwork/chain/releases/download/v2.2.0/kyved_mainnet_linux_amd64
 chmod +x kyved
 mv kyved $(which kyved)
 systemctl restart kyved && journalctl -fu kyved -n100 -ocat
