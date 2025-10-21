@@ -84,10 +84,11 @@ sleep 1
 
 echo -e "              \e[1m\e[32m3. Downloading and building binaries--> \e[0m" && sleep 1
 # INSTALL
-cd $HOME && mkdir $HOME/go/bin/
-wget -O canined https://github.com/JackalLabs/canine-chain/releases/download/v4.6.0-beta.1/canined-Linux
-chmod +x canined
-mv canined $HOME/go/bin/
+cd $HOME
+git clone https://github.com/JackalLabs/canine-chain/
+cd $HOME/canine-chain
+git checkout v5.0.0-rc.1
+make install
 echo "${MAGNETA}🔥Binaries installed successfully 🔥${RESET}"
 sleep 1
 canined init $Validator_Name --chain-id $CHAIN_ID
@@ -175,10 +176,10 @@ echo -e "      \e[1m\e[32m!!!!!!!!!SAVE!!!!!!!!!!!!!!!!SAVE YOUR MNEMONIC PHRASE
 break
 ;;
 "UPDATE")
-cd $HOME
-wget -O canined https://github.com/JackalLabs/canine-chain/releases/download/v4.6.0-beta.1/canined-Linux
-chmod +x canined
-mv canined $(which canined)
+cd $HOME/canine-chain
+git pull
+git checkout v5.0.0-rc.1
+make install
 systemctl restart canined && journalctl -fu canined -n100 -ocat
 
 break
