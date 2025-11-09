@@ -87,8 +87,8 @@ echo -e "              \e[1m\e[32m3. Downloading and building binaries--> \e[0m"
 cd $HOME && mkdir -p go/bin/
 git clone https://github.com/NibiruChain/nibiru/
 cd $HOME
-wget https://github.com/NibiruChain/nibiru/releases/download/v2.7.0/nibid_2.7.0_linux_amd64.tar.gz
-tar -xvzf nibid_2.7.0_linux_amd64.tar.gz
+wget https://github.com/NibiruChain/nibiru/releases/download/v2.8.0/nibid_2.8.0_linux_amd64.tar.gz
+tar -xvzf nibid_2.8.0_linux_amd64.tar.gz
 chmod +x nibid
 mv nibid $HOME/go/bin/
 echo "${MAGNETA}🔥Binaries installed successfully 🔥${RESET}"
@@ -179,8 +179,8 @@ break
 ;;
 "UPDATE")
 cd $HOME
-wget https://github.com/NibiruChain/nibiru/releases/download/v2.7.0/nibid_2.7.0_linux_amd64.tar.gz
-tar -xvzf nibid_2.7.0_linux_amd64.tar.gz
+wget https://github.com/NibiruChain/nibiru/releases/download/v2.8.0/nibid_2.8.0_linux_amd64.tar.gz
+tar -xvzf nibid_2.8.0_linux_amd64.tar.gz
 chmod +x nibid
 mv nibid $(which nibid)
 systemctl restart nibid && journalctl -fu nibid -n1000 -ocat
