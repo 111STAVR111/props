@@ -71,7 +71,7 @@ sleep 1
 
 echo -e "        \e[1m\e[32m2. Installing GO--> \e[0m" && sleep 1
 # INSTALL GO
-ver="1.21.13"
+ver="1.22.4"
 wget "https://golang.org/dl/go$ver.linux-amd64.tar.gz"
 sudo rm -rf /usr/local/go
 sudo tar -C /usr/local -xzf "go$ver.linux-amd64.tar.gz"
@@ -87,7 +87,7 @@ echo -e "              \e[1m\e[32m3. Downloading and building binaries--> \e[0m"
 cd $HOME && mkdir -p go/bin/
 git clone https://github.com/atomone-hub/atomone
 cd atomone
-git checkout v2.1.0
+git checkout v3.0.3
 make install
 echo "${MAGNETA}🔥Binaries installed successfully 🔥${RESET}"
 sleep 1
@@ -176,7 +176,7 @@ break
 ;;
 "UPDATE")
 cd $HOME/atomone && git pull
-git checkout v2.1.0
+git checkout v3.0.3
 make install
 sudo systemctl restart atomoned && journalctl -fu atomoned -n1000 -ocat
 
