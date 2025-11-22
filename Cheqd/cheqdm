@@ -86,10 +86,10 @@ echo -e "              \e[1m\e[32m3. Downloading and building binaries--> \e[0m"
 # INSTALL
 cd $HOME && mkdir -p go/bin/
 git clone https://github.com/cheqd/cheqd-node
-wget https://github.com/cheqd/cheqd-node/releases/download/v4.1.4/cheqd-noded-4.1.4-linux-amd64.tar.gz
-tar -xvzf cheqd-noded-4.1.4-linux-amd64.tar.gz
-chmod +x cheqd-noded
-mv cheqd-noded /root/go/bin/cheqd-noded
+cd $HOME/cheqd-node
+git checkout v4.1.6
+make build
+mv $HOME/cheqd-node/build/cheqd-noded $HOME/go/bin/cheqd-noded
 echo "${MAGNETA}🔥Binaries installed successfully 🔥${RESET}"
 sleep 1
 cheqd-noded init $Validator_Name --chain-id $CHAIN_ID
@@ -169,12 +169,12 @@ echo -e "      \e[1m\e[32m!!!!!!!!!SAVE!!!!!!!!!!!!!!!!SAVE YOUR MNEMONIC PHRASE
 break
 ;;
 "UPDATE")
-cd $HOME
-wget https://github.com/cheqd/cheqd-node/releases/download/v4.1.4/cheqd-noded-4.1.4-linux-amd64.tar.gz
-tar -xvzf cheqd-noded-4.1.4-linux-amd64.tar.gz
-chmod +x cheqd-noded
-mv cheqd-noded $(which cheqd-noded)
-sudo systemctl restart cheqd-noded && sudo journalctl -fu cheqd-noded -n100 -ocat
+cd $HOME/cheqd-node
+git pull
+git checkout v4.1.6
+make build
+mv /root/cheqd-node/build/cheqd-noded $(which cheqd-noded)
+sudo systemctl restart cheqd-noded && sudo journalctl -fu cheqd-noded -n1000 -ocat
 
 break
 ;;
