@@ -87,7 +87,7 @@ echo -e "              \e[1m\e[32m3. Downloading and building binaries--> \e[0m"
 cd $HOME && mkdir -p go/bin/
 git clone https://github.com/ixofoundation/ixo-blockchain.git
 cd ixo-blockchain
-git checkout v6.0.0
+git checkout v6.0.1
 make install
 echo "${MAGNETA}🔥Binaries installed successfully 🔥${RESET}"
 sleep 1
@@ -177,9 +177,9 @@ break
 "UPDATE")
 cd $HOME/ixo-blockchain
 git fetch --all
-git checkout v6.0.0
+git checkout v6.0.1
 make install
-sudo systemctl restart ixod && journalctl -fu ixod -o cat
+sudo systemctl restart ixod && journalctl -fu ixod -ocat
 
 break
 ;;
